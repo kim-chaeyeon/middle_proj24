@@ -1,0 +1,15 @@
+<div>로그인</div>
+
+<form th:action="@{/member/login}" method="POST">
+    <div>
+        <span>유저 아이디</span>
+        <input type="text" name="username" placeholder="아이디">
+    </div>
+    <div>
+        <span>유저 비밀번호</span>
+        <input type="password" name="password" placeholder="비밀번호">
+    </div>
+    <div>
+        <button type="submit">로그인</button>
+    </div>
+</form>

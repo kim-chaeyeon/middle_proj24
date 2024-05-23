@@ -21,6 +21,14 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
                         .requestMatchers(new AntPathRequestMatcher("/**")).permitAll())
+                .formLogin(
+                        formLogin -> formLogin
+                                .loginPage("/member/login")
+                )
+                .logout(
+                        logout -> logout
+                                .logoutUrl("/member/logout")
+                )
         ;
         return http.build();
     }
