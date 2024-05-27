@@ -1,5 +1,6 @@
 <div>
     메인
-    <a href="/meber/login">로그인</a>
+    <a sec:authorize="isAnonymous()" href="/member/login">로그인</a>
+    <a sec:authorize="isAuthenticated()" href="/member/logout">로그아웃</a>
     <a href="/meber/signup">회원가입</a>
 </div>
