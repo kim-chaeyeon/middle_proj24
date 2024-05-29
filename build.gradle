@@ -41,6 +41,9 @@ dependencies {
 
 	// validation - 유효성 체크
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+	// 이메일
+	implementation 'org.springframework.boot:spring-boot-starter-mail:3.3.0'
 }
 
 tasks.named('test') {

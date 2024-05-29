@@ -8,6 +8,8 @@ import jakarta.persistence.ManyToOne;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @SuperBuilder
@@ -17,6 +19,5 @@ import lombok.experimental.SuperBuilder;
 public class Post extends BaseEntity {
     private String title;
     private String content;
-    @ManyToOne
-    private Member author;
+    private String thumnailImg;
 }

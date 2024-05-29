@@ -17,6 +17,17 @@ spring:
             token-uri: https://kauth.kakao.com/oauth/token
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: cojar.info@gmail.com
+    password: NEED_TO_INPUT_ON_SECRET
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
   jpa:
@@ -32,3 +43,5 @@ spring:
       org.hibernate.orm.jdbc.bind: TRACE
       org.hibernate.orm.jdbc.extract: TRACE
       org.springframework.transaction.interceptor: TRACE
+custom:
+  fileDirPath: C:\work\thumbnail

@@ -1,3 +1,12 @@
+<div>게시판 목록</div>
 <div>
-    [[${postList}]]
+    <ul th:each="post : ${postList}">
+        <li th:text="${post.title}"></li>
+        <li th:text="${post.content}"></li>
+        <li>
+            <img th:src="@{|/file/${post.thumnailImg}|}" alt="12314">
+        </li>
+    </ul>
 </div>
+
+<a href="/post/create">게시글 등록</a>

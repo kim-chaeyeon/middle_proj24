@@ -1,0 +1,13 @@
+<div>게시글 등록</div>
+
+<form action="/post/create" method="post" enctype="multipart/form-data">
+  <h3>제목</h3>
+  <input type="text" name="title">
+
+  <h3>내용</h3>
+  <textarea name="content"></textarea>
+
+  <h3>사진</h3>
+  <input type="file" name="thumbnail" accept="image/png, image/gif, image/jpeg">
+  <button type="submit">등록</button>
+</form>
