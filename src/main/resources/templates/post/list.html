@@ -1,12 +1,56 @@
-<div>게시판 목록</div>
-<div>
-    <ul th:each="post : ${postList}">
-        <li th:text="${post.title}"></li>
-        <li th:text="${post.content}"></li>
-        <li>
-            <img th:src="@{|/file/${post.thumnailImg}|}" alt="12314">
-        </li>
-    </ul>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>게시판 목록</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        .post-item {
+            border: 1px solid #dee2e6;
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 15px;
+        }
+        .post-title {
+            font-size: 1.5em;
+            margin-bottom: 0.5em;
+        }
+        .post-meta {
+            color: #6c757d;
+            margin-bottom: 1em;
+        }
+        .thumbnail {
+            height: 300px;
+            width: 500px;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+            <h1>게시판 목록</h1>
+            <div th:if="${postList.empty}">
+                <p>게시물이 없습니다.</p>
+            </div>
+            <div th:unless="${postList.empty}">
+                <div th:each="post : ${postList}" class="post-item">
+                    <h5 class="post-title">
+                        <a th:href="@{|/post/${post.id}|}" th:text="${post.title}">게시글 없음</a>
+                    </h5>
+                    <p class="post-meta">
+                        작성자: <span th:if="${post.author != null}" th:text="${post.author}"></span>
+                        <span th:unless="${post.author != null}">익명</span> <br>
+                        작성일: <span th:text="${#temporals.format(post.createDate, 'yyyy-MM-dd HH:mm')}"></span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="text-center mt-4">
+        <button class="btn btn-primary" onclick="location.href='/post/create'">게시글 등록</button>
+    </div>
 </div>
-
-<a href="/post/create">게시글 등록</a>
+</body>
+</html>

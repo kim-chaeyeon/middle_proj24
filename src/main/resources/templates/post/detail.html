@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>게시물 상세</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        .card-img-bottom {
+            max-height: 500px;
+            max-width: 300px;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+            <h1 th:text="${post.title}">제목</h1>
+            <p>작성자: <span th:text="${post.author != null ? post.author.name : '익명'}"></span></p>
+            <p>작성일: <span th:text="${#dates.format(post.createDate, 'yyyy-MM-dd HH:mm')}"></span></p>
+            <p th:text="${post.content}">내용</p>
+            <img th:src="@{|/file/${post.thumnailImg}|}" alt="thumbnail" class="card-img-bottom">
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -24,13 +24,17 @@ public class PostService {
         return postRepository.findAll();
     }
 
+    public Post getPost(Long id) {
+        return postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid post Id:" + id));
+    }
+
     public void create(String title, String content, MultipartFile thumbnail) {
         String thumbnailRelPath = "post/" + UUID.randomUUID().toString() + ".jpg";
         File thumbnailFile = new File(fileDirPath + "/" + thumbnailRelPath);
 
         try {
             thumbnail.transferTo(thumbnailFile);
-        } catch ( IOException e ) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
@@ -41,5 +45,4 @@ public class PostService {
                 .build();
         postRepository.save(post);
     }
-
 }
