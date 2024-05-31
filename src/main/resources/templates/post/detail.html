@@ -5,21 +5,68 @@
     <title>게시물 상세</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <style>
-        .card-img-bottom {
+        body {
+            background-color: #f8f9fa;
+            padding-top: 50px;
+        }
+        .container {
+            background-color: #f0f0f0;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .card-img-top {
             max-height: 500px;
-            max-width: 300px;
+            max-width: 100%;
+            margin-bottom: 20px;
+        }
+        .post-title {
+            font-weight: bold;
+            font-size: 2.25rem;
+        }
+        .post-content {
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+        .post-details {
+            margin-top: auto;
+            margin-bottom: 20px;
+            font-size: 0.75rem;
+        }
+        .btn-group {
+            margin-top: 10px;
+            float: right;
+        }
+        .btn-edit, .btn-delete {
+            margin-left: 10px;
         }
     </style>
 </head>
 <body>
-<div class="container mt-5">
+<div class="container">
     <div class="row">
         <div class="col-lg-8 offset-lg-2">
-            <h1 th:text="${post.title}">제목</h1>
-            <p>작성자: <span th:text="${post.author != null ? post.author.name : '익명'}"></span></p>
-            <p>작성일: <span th:text="${#dates.format(post.createDate, 'yyyy-MM-dd HH:mm')}"></span></p>
-            <p th:text="${post.content}">내용</p>
-            <img th:src="@{|/file/${post.thumnailImg}|}" alt="thumbnail" class="card-img-bottom">
+            <h1 th:text="${post.title}" class="post-title">제목</h1>
+            <img th:src="@{|/file/${post.thumbnailImg}|}" alt="thumbnail" class="card-img-top">
+            <p th:text="${post.content}" class="post-content">내용</p>
+
+            <!-- 작성자 및 작성일 -->
+            <div class="post-details" style="margin-top: auto;">
+                <p>작성자: <span th:text="${post.author != null ? post.author.name : '익명'}"></span></p>
+                <p>작성일: <span th:text="${#dates.format(post.createDate, 'yyyy-MM-dd HH:mm')}"></span></p>
+            </div>
+
+            <!-- 수정 및 삭제 버튼 -->
+            <div class="btn-group" role="group">
+                <!-- 수정 버튼 -->
+                <a th:href="@{|/post/modify/${post.id}|}" class="btn btn-secondary btn-edit">수정</a>
+
+                <!-- 삭제 폼 -->
+                <form th:action="@{|/post/delete/${post.id}|}" method="post" class="delete-form">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <button type="submit" class="btn btn-secondary btn-delete">삭제</button>
+                </form>
+            </div>
         </div>
     </div>
 </div>
