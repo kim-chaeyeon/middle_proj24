@@ -29,7 +29,11 @@ public class Post extends BaseEntity {
     @Setter
     protected LocalDateTime modifiedDate;
     private String author;
+    @Setter
+    @Getter
+    private int recommendCount;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> commentList = new ArrayList<>();
+
 }

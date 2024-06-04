@@ -2,6 +2,7 @@ package com.example.blog.domain.post.service;
 
 import com.example.blog.domain.post.entity.Post;
 import com.example.blog.domain.post.repository.PostRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -71,5 +72,13 @@ public class PostService {
     // 게시물 삭제 처리
     public void delete(Long id) {
         postRepository.deleteById(id);
+    }
+
+    @Transactional
+    public int incrementRecommendCount(Long postId) {
+        Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("Invalid post Id:" + postId));
+        post.setRecommendCount(post.getRecommendCount() + 1);
+        postRepository.save(post);
+        return post.getRecommendCount();
     }
 }

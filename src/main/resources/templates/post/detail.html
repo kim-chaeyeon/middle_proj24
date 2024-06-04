@@ -36,7 +36,7 @@
             font-size: 1.8rem;
         }
         .post-details {
-            margin-top: 20;
+            margin-top: 20px;
             font-size: 0.75rem;
         }
         .btn-group {
@@ -71,7 +71,20 @@
         .comment-form textarea {
             width: 100%;
         }
+        .recommend-button {
+            margin-top: 10px;
+        }
     </style>
+    <script>
+        function recommendPost(postId) {
+            fetch('/post/recommend/' + postId, {
+                method: 'POST'
+            }).then(response => response.json())
+              .then(data => {
+                  document.getElementById('recommend-count').textContent = data.recommendCount;
+              });
+        }
+    </script>
 </head>
 <body>
 <div class="container">
@@ -85,7 +98,11 @@
                 <div class="post-details">
                     <p>작성자: <span th:text="${post.author != null ? post.author.name : '익명'}"></span></p>
                     <p>작성일: <span th:text="${#dates.format(post.createDate, 'yyyy-MM-dd HH:mm')}"></span></p>
+                    <p>추천 수: <span id="recommend-count" th:text="${post.recommendCount}"></span></p>
                 </div>
+                <button class="btn btn-primary recommend-button" onclick="recommendPost(/*[[${post.id}]]*/)">
+                    추천
+                </button>
                 <div class="btn-group" role="group">
                     <a th:href="@{|/post/modify/${post.id}|}" class="btn btn-secondary btn-edit">수정</a>
                     <form th:action="@{|/post/delete/${post.id}|}" method="post" class="delete-form">

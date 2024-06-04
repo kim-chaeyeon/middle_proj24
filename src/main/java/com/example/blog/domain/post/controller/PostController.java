@@ -4,6 +4,7 @@ import com.example.blog.domain.post.entity.Post;
 import com.example.blog.domain.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +12,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/post")
@@ -79,5 +82,13 @@ public class PostController {
         //}
         postService.delete(id);
         return "redirect:/post/list";
+    }
+
+    @PostMapping("/post/recommend/{id}")
+    public ResponseEntity<Map<String, Integer>> recommendPost(@PathVariable Long id) {
+        int recommendCount = postService.incrementRecommendCount(id);
+        Map<String, Integer> response = new HashMap<>();
+        response.put("recommendCount", recommendCount);
+        return ResponseEntity.ok(response);
     }
 }
