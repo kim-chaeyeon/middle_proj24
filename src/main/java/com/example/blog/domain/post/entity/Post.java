@@ -2,11 +2,13 @@ package com.example.blog.domain.post.entity;
 
 
 import com.example.blog.global.jpa.BaseEntity;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -15,6 +17,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @ToString
 public class Post extends BaseEntity {
+    @Id
     private Long id;
     @Setter
     private String title;
@@ -23,10 +26,10 @@ public class Post extends BaseEntity {
     @Setter
     private String thumbnailImg;
     private LocalDateTime createDate;
+    @Setter
+    protected LocalDateTime modifiedDate;
     private String author;
 
-    public void setModifiedDate(LocalDateTime now) {
-        this.modifiedDate = now;
-    }
-
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> commentList = new ArrayList<>();
 }

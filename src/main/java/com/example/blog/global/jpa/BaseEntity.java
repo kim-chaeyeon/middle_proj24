@@ -4,6 +4,7 @@ package com.example.blog.global.jpa;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.CreatedDate;
@@ -26,6 +27,8 @@ public class BaseEntity {
     @CreatedDate
     private LocalDateTime createDate;
 
+    @Setter
     @LastModifiedDate
     protected LocalDateTime modifiedDate;
+
 }
