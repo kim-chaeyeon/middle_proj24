@@ -4,7 +4,7 @@ plugins {
 	id 'io.spring.dependency-management' version '1.1.4'
 }
 
-group = 'com.example'
+group = 'com.sbs'
 version = '0.0.1-SNAPSHOT'
 
 java {
@@ -23,27 +23,30 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
-	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
-	// 시큐리티
+	// 스프링 시큐리티
 	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6:3.1.1.RELEASE'
+	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
 
-	//oauth2
-	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+	// 타임리프
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
+
+	// 롬복
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.security:spring-security-test'
 
 	// validation - 유효성 체크
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 
-	// 이메일
-	implementation 'org.springframework.boot:spring-boot-starter-mail:3.3.0'
+	// 마크다운
+	implementation 'org.commonmark:commonmark:0.22.0'
 }
 
 tasks.named('test') {
