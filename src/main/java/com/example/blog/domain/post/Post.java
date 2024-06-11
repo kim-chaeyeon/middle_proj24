@@ -3,9 +3,8 @@ package com.example.blog.domain.post;
 import com.example.blog.domain.comment.Comment;
 import com.example.blog.domain.user.SiteUser;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -19,6 +18,9 @@ import java.util.Set;
 @Setter
 @Entity
 @ToString
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,7 +39,7 @@ public class Post {
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     @LazyCollection(LazyCollectionOption.EXTRA)
-    //answerList.size(); 함수가 실행 될 때 SELECT COUNT 실행
+    //commentList.size(); 함수가 실행 될 때 SELECT COUNT 실행
     private List<Comment> commentList = new ArrayList<>();
 
     @ManyToOne

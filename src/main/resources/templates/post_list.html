@@ -1,4 +1,4 @@
-<!--<html layout:decorate="~{layout}">-->
+<html layout:decorate="~{layout}">
 <div layout:fragment="content" class="container my-3">
 
     <div class="row my-3">
@@ -31,6 +31,8 @@
             <th>제목</th>
             <th>작성자</th>
             <th>작성일시</th>
+            <th>썸네일</th>
+
         </tr>
         </thead>
         <tbody>
@@ -45,6 +47,9 @@
             </td>
             <td><span th:if="${post.author != null}" th:text="${post.author.username}"></span></td>
             <td th:text="${#temporals.format(post.createDate, 'yyyy-MM-dd HH:mm')}"></td>
+            <td>
+                <img th:src="@{|/file/${post.thumbnailImg}|}" alt="12314">
+            </td>
         </tr>
         </tbody>
     </table>
@@ -82,5 +87,7 @@
     </nav>
     <!-- 페이징 끝-->
 </div>
-<!--</html>-->
+</html>
+
+
 

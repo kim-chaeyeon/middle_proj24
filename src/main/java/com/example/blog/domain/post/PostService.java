@@ -41,7 +41,7 @@ public class PostService {
     }
 
     public Post create(String title, String content, MultipartFile thumbnail, SiteUser user) {
-        String thumbnailRelPath = "question/" + UUID.randomUUID().toString() + ".jpg";
+        String thumbnailRelPath = "post/" + UUID.randomUUID().toString() + ".jpg";
         File thumbnailFile = new File(fileDirPath + "/" + thumbnailRelPath);
 
         try {
@@ -50,14 +50,16 @@ public class PostService {
             throw new RuntimeException(e);
         }
 
-        Post p = new Post();
-        p.setTitle(title);
-        p.setContent(content);
-        //p.setThumbnail(thumbnailRelPath);
+        Post post = Post.builder()
+                .title(title)
+                .content(content)
+                .author(user)
+                .createDate(LocalDateTime.now())
+                .thumbnailImg(thumbnailRelPath)
+                .build();
+        postRepository.save(post);
 
-        postRepository.save(p);
-
-        return p;
+        return post;
     }
 
     public Page<Post> getList(int page, String kw) {
