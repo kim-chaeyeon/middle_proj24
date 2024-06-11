@@ -8,3 +8,67 @@
 html > body {
     font-family: 'Pretendard-Regular';
 }
+
+/* post_list.css */
+/* 프로필 섹션 스타일 */
+.profile-section {
+    margin-bottom: 60px; /* 프로필 섹션과 게시물 섹션 사이의 간격 */
+    border-bottom: 3px solid #ccc; /* 나누는 선 */
+    padding-bottom: 20px;
+}
+
+.profile {
+    display: flex; /* Flexbox 사용 */
+    align-items: center; /* 수직 정렬 */
+    justify-content: center; /* 수평 정렬 */
+}
+
+.profile img {
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    margin-right: 5%; /* 사진과 정보 사이 간격을 조정 */
+}
+
+.profile-info {
+    text-align: left; /* 텍스트를 왼쪽으로 정렬 */
+    margin-top: 0%; /* 프로필 정보를 아래로 내리기 위한 여백 */
+}
+
+.profile-info p {
+    margin: 5px 0; /* 각 정보 사이의 간격 설정 */
+}
+
+/* 링크 스타일 */
+.no-underline {
+    text-decoration: none; /* 밑줄 제거 */
+    color: black; /* 링크 색상을 검정색으로 변경 */
+}
+
+.no-underline:hover {
+    color: black; /* 링크 호버 시에도 검정색 유지 */
+}
+
+/* 카드 스타일 */
+.card {
+    height: 100%;
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start; /* 카드 내 제목과 날짜의 수직 정렬을 아래로 조정 */
+    padding-bottom: 1.25rem; /* 카드 본문 하단 여백 */
+    justify-content: flex-end; /* 카드 본문을 밑으로 정렬 */
+}
+
+.card-title {
+    margin-top: 0; /* 제목 위 여백 제거 */
+    margin-bottom: 15px; /* 제목 아래 여백 설정 */
+}
+
+.card-img-top {
+        width: 100%;
+        height: 100%;
+    }
