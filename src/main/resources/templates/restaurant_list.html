@@ -1,0 +1,93 @@
+<html layout:decorate="~{layout}">
+<div layout:fragment="content" class="container my-3">
+
+    <div class="row my-3">
+        <div class="col-6">
+            <a th:href="@{/restaurant/create}" class="btn btn-primary">맛집 등록하기</a>
+        </div>
+
+        <div class="col-6">
+            <form>
+                <div class="input-group">
+                    <input type="text" name="kw" class="form-control" placeholder="검색어" th:value="${param.kw}">
+                    <button class="btn btn-outline-secondary">찾기</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <table class="table">
+
+        <colgroup>
+            <col width="100">
+            <col>
+            <col width="150">
+            <col width="200">
+        </colgroup>
+
+        <thead class="table-dark">
+        <tr>
+            <th>번호</th>
+            <th>제목</th>
+            <th>작성자</th>
+            <th>작성일시</th>
+            <th>썸네일</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="restaurant, loop : ${paging}">
+            <td th:text="${paging.totalElements - (paging.number * paging.size) - loop.index}"></td>
+            <td>
+                <a th:href="@{|/restaurant/detail/${restaurant.id}|}" th:text="${restaurant.title}"></a>
+                <span class="text-danger small ms-2"
+                      th:if="${#lists.size(restaurant.rcList) > 0}"
+                      th:text="${#lists.size(restaurant.rcList)}">
+                    </span>
+            </td>
+            <td><span th:if="${restaurant.author != null}" th:text="${restaurant.author.username}"></span></td>
+            <td th:text="${#temporals.format(restaurant.createDate, 'yyyy-MM-dd HH:mm')}"></td>
+            <td>
+                <img th:src="@{|/file/${restaurant.thumbnailImg}|}" alt="12314">
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- 페이징 시작-->
+    <nav th:if="${!paging.isEmpty()}" th:with="queryStrBase = '?kw=' + ${param.kw != null ? param.kw : ''}">
+        <ul class="pagination justify-content-center">
+            <li class="page-item" th:classappend="${paging.number == 0} ? 'disabled'">
+                <a class="page-link" th:href="@{|${queryStrBase}&page=0|}">
+                    <span>&laquo;</span>
+                </a>
+            </li>
+
+            <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
+                <a class="page-link" th:href="@{|${queryStrBase}&page=${paging.number-1}|}">이전</a>
+            </li>
+
+            <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
+                th:if="${page >= paging.number-5 and page <= paging.number+5}"
+                th:classappend="${page == paging.number} ? 'active'"
+                class="page-item">
+                <a th:text="${page}" class="page-link" th:href="@{|${queryStrBase}&page=${page}|}"></a>
+            </li>
+
+            <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
+                <a class="page-link" th:href="@{|${queryStrBase}&page=${paging.number + 1}|}">이후</a>
+            </li>
+
+            <li class="page-item" th:classappend="${paging.number == paging.totalPages - 1} ? 'disabled'">
+                <a class="page-link" th:href="@{|${queryStrBase}&page=${paging.totalPages - 1}|}">
+                    <span>&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <!-- 페이징 끝-->
+</div>
+</html>
+
+
+

@@ -82,7 +82,7 @@ public class CommentController {
 
         commentService.modify(comment, commentForm.getContent());
 
-        return "redirect:/post/detail/%d#answer_%d".formatted(comment.getPost().getId(), id);
+        return "redirect:/post/detail/%d#comment_%d".formatted(comment.getPost().getId(), id);
 
     }
 
@@ -107,6 +107,6 @@ public class CommentController {
 
         commentService.vote(comment, siteUser);
 
-        return "redirect:/post/detail/%d#answer_%d".formatted(comment.getPost().getId(), id);
+        return "redirect:/post/detail/%d#comment_%d".formatted(comment.getPost().getId(), id);
     }
 }

@@ -98,7 +98,7 @@ public class PostService {
             public Predicate toPredicate(Root<Post> p, CriteriaQuery<?> query, CriteriaBuilder cb) {
                 query.distinct(true);  // 중복을 제거
                 Join<Post, SiteUser> u1 = p.join("author", JoinType.LEFT);
-                Join<Post, Comment> a = p.join("CommentList", JoinType.LEFT);
+                Join<Post, Comment> a = p.join("commentList", JoinType.LEFT);
                 Join<Comment, SiteUser> u2 = a.join("author", JoinType.LEFT);
                 return cb.or(cb.like(p.get("title"), "%" + kw + "%"), // 제목
                         cb.like(p.get("content"), "%" + kw + "%"),      // 내용
