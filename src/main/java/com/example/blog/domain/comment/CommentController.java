@@ -23,6 +23,7 @@ import java.security.Principal;
 @Controller
 @RequiredArgsConstructor
 public class CommentController {
+
     private final PostService postService;
     private final CommentService commentService;
     private final UserService userService;

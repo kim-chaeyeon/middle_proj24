@@ -3,10 +3,6 @@
 
     <div class="row my-3">
         <div class="col-6">
-            <a th:href="@{/restaurant/create}" class="btn btn-primary">맛집 등록하기</a>
-        </div>
-
-        <div class="col-6">
             <form>
                 <div class="input-group">
                     <input type="text" name="kw" class="form-control" placeholder="검색어" th:value="${param.kw}">
@@ -16,43 +12,38 @@
         </div>
     </div>
 
-    <table class="table">
+    <div class="row">
+        <div th:each="restaurant, loop : ${paging}" class="col-md-4 mb-3">
+            <div class="card">
+                <img th:src="@{|/file/${restaurant.thumbnailImg}|}" class="card-img-top" alt="Thumbnail">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <a th:href="@{|/restaurant/detail/${restaurant.id}|}" th:text="${restaurant.title}" class="no-underline"></a>
+                    </h5>
+                    <h6>
+                        <a th:href="@{|/restaurant/detail/${restaurant.id}|}" th:text="${restaurant.cuisineType}" class="no-underline"></a>
+                    </h6>
+                    <p class="card-text">
+                        <small class="text-muted" th:text="${#temporals.format(restaurant.createDate, 'yyyy-MM-dd HH:mm')}"></small>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        <colgroup>
-            <col width="100">
-            <col>
-            <col width="150">
-            <col width="200">
-        </colgroup>
+<!--    <table class="table">-->
+<!--        <tbody>-->
+<!--        <tr th:each="restaurant, loop : ${paging}">-->
+<!--            <td th:text="${paging.totalElements - (paging.number * paging.size) - loop.index}"></td>-->
+<!--            <td>-->
+<!--                <span class="text-danger small ms-2"-->
+<!--                      th:if="${#lists.size(restaurant.rcList) > 0}"-->
+<!--                      th:text="${#lists.size(restaurant.rcList)}">-->
+<!--                    </span>-->
+<!--            </td>-->
+<!--        </tr>-->
+<!--        </tbody>-->
 
-        <thead class="table-dark">
-        <tr>
-            <th>번호</th>
-            <th>제목</th>
-            <th>작성자</th>
-            <th>작성일시</th>
-            <th>썸네일</th>
-
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="restaurant, loop : ${paging}">
-            <td th:text="${paging.totalElements - (paging.number * paging.size) - loop.index}"></td>
-            <td>
-                <a th:href="@{|/restaurant/detail/${restaurant.id}|}" th:text="${restaurant.title}"></a>
-                <span class="text-danger small ms-2"
-                      th:if="${#lists.size(restaurant.rcList) > 0}"
-                      th:text="${#lists.size(restaurant.rcList)}">
-                    </span>
-            </td>
-            <td><span th:if="${restaurant.author != null}" th:text="${restaurant.author.username}"></span></td>
-            <td th:text="${#temporals.format(restaurant.createDate, 'yyyy-MM-dd HH:mm')}"></td>
-            <td>
-                <img th:src="@{|/file/${restaurant.thumbnailImg}|}" alt="12314">
-            </td>
-        </tr>
-        </tbody>
-    </table>
 
     <!-- 페이징 시작-->
     <nav th:if="${!paging.isEmpty()}" th:with="queryStrBase = '?kw=' + ${param.kw != null ? param.kw : ''}">
@@ -86,6 +77,9 @@
         </ul>
     </nav>
     <!-- 페이징 끝-->
+    <div class="col-6">
+        <a th:href="@{/restaurant/create}" class="btn btn-primary">질문 등록하기</a>
+    </div>
 </div>
 </html>
 

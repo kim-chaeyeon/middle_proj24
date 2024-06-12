@@ -18,5 +18,15 @@ public class RestaurantForm {
     @Size(max = 20000, message = "내용은 20,000자 이내로 입력해주세요.")
     private String content;
 
+    @NotBlank(message = "사진은 필수입니다.")
     private MultipartFile thumbnail;
+
+    @NotBlank(message = "음식 종류를 선택하세요.")
+    private String cuisineType;
+
+//    @NotBlank(message = "주소를 입력하세요.")
+//    private String address;
+
+//    @NotBlank(message = "추천 읍식을 적어주세요.")
+//    private String recommendedDish;
 }

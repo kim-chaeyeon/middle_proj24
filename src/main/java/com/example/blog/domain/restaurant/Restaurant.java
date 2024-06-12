@@ -33,6 +33,10 @@ public class Restaurant {
 
     private String thumbnailImg;
 
+    private String cuisineType;
+
+    private String address;
+
     private LocalDateTime createDate;
     private LocalDateTime modifyDate;
 
@@ -54,6 +58,14 @@ public class Restaurant {
 
     public void setThumbnail(String thumbnailRelPath){
 
+    }
+
+    public enum CuisineType {
+        KOREAN,
+        CHINESE,
+        JAPANESE,
+        WESTERN,
+        SNACK
     }
 }
 
