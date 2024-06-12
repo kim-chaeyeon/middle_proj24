@@ -56,16 +56,18 @@ public class RestaurantController {
             @RequestParam("title") String title,
             @RequestParam("content") String content,
             @RequestParam("thumbnail") MultipartFile thumbnail,
+            @RequestParam("cuisineType") String cuisineType,
+            @RequestParam("address") String address,
             Principal principal) {
 
         // 유효성 검사 로직 추가 가능
-        if (title.isEmpty() || content.isEmpty() || thumbnail.isEmpty()) {
+        if (title.isEmpty() || content.isEmpty() || thumbnail.isEmpty() || cuisineType.isEmpty() || address.isEmpty()){
             // 에러 처리 로직
             return "restaurant_form";
         }
 
         SiteUser siteUser = this.userService.getUser(principal.getName());
-        Restaurant r = this.restaurantService.create(title, content, thumbnail, siteUser);
+        Restaurant r = this.restaurantService.create(title, content, thumbnail, cuisineType, address, siteUser);
 
         return "redirect:/restaurant/list";
     }
@@ -84,7 +86,7 @@ public class RestaurantController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
         }
 
-        restaurantService.modify(restaurant, restaurantForm.getTitle(), restaurantForm.getContent());
+        restaurantService.modify(restaurant, restaurantForm.getTitle(), restaurantForm.getContent(), restaurantForm.getCuisineType(), restaurantForm.getAddress());
 
         return "redirect:/restaurant/detail/%s".formatted(id);
     }
@@ -100,6 +102,8 @@ public class RestaurantController {
 
         restaurantForm.setTitle(restaurant.getTitle());
         restaurantForm.setContent(restaurant.getContent());
+        restaurantForm.setCuisineType(restaurant.getCuisineType());
+        restaurantForm.setAddress(restaurant.getAddress());
         return "restaurant_form";
     }
 

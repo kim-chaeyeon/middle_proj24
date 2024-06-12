@@ -72,3 +72,43 @@ html > body {
         width: 100%;
         height: 100%;
     }
+
+/* post_detail.css */
+
+/* 사각형 폼 스타일 */
+
+/* 이모티콘 스타일 */
+.fa-lg {
+    font-size: 20px;
+    color: black;
+}
+
+.post-wrapper {
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    padding: 20px;
+}
+
+.post-wrapper .card-body {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.mx-3 {
+    flex: 1; /* 요소의 크기를 최대한 늘립니다 */
+}
+
+
+.post-wrapper .card-body .d-flex.justify-content-between {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between; /* 요소들을 좌우로 분산 정렬 */
+    align-items: center; /* 수직 가운데 정렬 */
+}
+
+.post-wrapper .card-body .d-flex.justify-content-between > div:last-child {
+    margin-left: auto; /* 마지막 div를 오른쪽 끝으로 이동 */
+}
+
+

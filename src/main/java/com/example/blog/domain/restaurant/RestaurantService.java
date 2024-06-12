@@ -40,7 +40,7 @@ public class RestaurantService {
         return or.get();
     }
 
-    public Restaurant create(String title, String content, MultipartFile thumbnail, SiteUser user) {
+    public Restaurant create(String title, String content, MultipartFile thumbnail,  String cuisineType, String address, SiteUser user) {
         String thumbnailRelPath = "restaurant/" + UUID.randomUUID().toString() + ".jpg";
         File thumbnailFile = new File(fileDirPath + "/" + thumbnailRelPath);
 
@@ -56,6 +56,8 @@ public class RestaurantService {
                 .author(user)
                 .createDate(LocalDateTime.now())
                 .thumbnailImg(thumbnailRelPath)
+                .cuisineType(cuisineType)
+                .address(address)
                 .build();
         restaurantRepository.save(restaurant);
 
@@ -75,10 +77,12 @@ public class RestaurantService {
         return restaurantRepository.findAll(spec, pageable);
     }
 
-    public void modify(Restaurant restaurant, String title, String content) {
+    public void modify(Restaurant restaurant, String title, String content,String cuisineType, String address) {
         restaurant.setTitle(title);
         restaurant.setContent(content);
         restaurant.setModifyDate(LocalDateTime.now());
+        restaurant.setCuisineType(cuisineType);
+        restaurant.setAddress(address);
         restaurantRepository.save(restaurant);
     }
 
