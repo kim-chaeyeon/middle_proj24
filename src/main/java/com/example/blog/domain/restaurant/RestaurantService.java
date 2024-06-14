@@ -1,6 +1,8 @@
 package com.example.blog.domain.restaurant;
 
 import com.example.blog.DataNotFoundException;
+import com.example.blog.domain.naver.NaverClient;
+import com.example.blog.domain.naver.dto.SearchLocalReq;
 import com.example.blog.domain.restaurantComment.RC;
 import com.example.blog.domain.user.SiteUser;
 import jakarta.persistence.criteria.*;
@@ -27,6 +29,7 @@ import java.util.UUID;
 public class RestaurantService {
     private final RestaurantRepository restaurantRepository;
 
+
     @Value("${custom.fileDirPath}")
     private String fileDirPath;
 
@@ -34,13 +37,14 @@ public class RestaurantService {
         return restaurantRepository.findAll();
     }
 
+
     public Restaurant getRestaurant(Integer id) {
         Optional<Restaurant> or = restaurantRepository.findById(id);
         if (or.isEmpty()) throw new DataNotFoundException("restaurant not found");
         return or.get();
     }
 
-    public Restaurant create(String title, String content, MultipartFile thumbnail, String cuisineType, SiteUser user) {
+    public Restaurant create(String title, String content, MultipartFile thumbnail, String cuisineType, String address, String restaurantName, SiteUser user) {
         String thumbnailRelPath = "restaurant/" + UUID.randomUUID().toString() + ".jpg";
         File thumbnailFile = new File(fileDirPath + "/" + thumbnailRelPath);
 
@@ -57,6 +61,8 @@ public class RestaurantService {
                 .createDate(LocalDateTime.now())
                 .thumbnailImg(thumbnailRelPath)
                 .cuisineType(cuisineType)
+                .address(address)
+                .restaurantName(restaurantName)
                 .build();
         restaurantRepository.save(restaurant);
 
@@ -76,11 +82,13 @@ public class RestaurantService {
         return restaurantRepository.findAll(spec, pageable);
     }
 
-    public void modify(Restaurant restaurant, String title, String content, String cuisineType) {
+    public void modify(Restaurant restaurant, String title, String content, String cuisineType, String address, String restaurantName) {
         restaurant.setTitle(title);
         restaurant.setContent(content);
         restaurant.setModifyDate(LocalDateTime.now());
         restaurant.setCuisineType(cuisineType);
+        restaurant.setAddress(address);
+        restaurant.setRestaurantName(restaurantName);
         restaurantRepository.save(restaurant);
     }
 

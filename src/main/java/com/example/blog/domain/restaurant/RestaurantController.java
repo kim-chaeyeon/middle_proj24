@@ -1,5 +1,7 @@
 package com.example.blog.domain.restaurant;
 
+import com.example.blog.domain.naver.NaverClient;
+import com.example.blog.domain.naver.dto.SearchLocalRes;
 import com.example.blog.domain.post.Post;
 import com.example.blog.domain.post.PostForm;
 import com.example.blog.domain.restaurantComment.RCForm;
@@ -57,17 +59,18 @@ public class RestaurantController {
             @RequestParam("content") String content,
             @RequestParam("thumbnail") MultipartFile thumbnail,
             @RequestParam("cuisineType") String cuisineType,
-//            @RequestParam("address") String address,
+            @RequestParam("address") String address,
+            @RequestParam("restaurantName") String restaurantName,
             Principal principal) {
 
         // 유효성 검사 로직 추가 가능
-        if (title.isEmpty() || content.isEmpty() || thumbnail.isEmpty()|| cuisineType.isEmpty()){
+        if (title.isEmpty() || content.isEmpty() || thumbnail.isEmpty()|| cuisineType.isEmpty() || address.isEmpty() || restaurantName.isEmpty()){
             // 에러 처리 로직
             return "restaurant_form";
         }
 
         SiteUser siteUser = this.userService.getUser(principal.getName());
-        Restaurant r = this.restaurantService.create(title, content, thumbnail, cuisineType, siteUser);
+        Restaurant r = this.restaurantService.create(title, content, thumbnail, cuisineType, address, restaurantName, siteUser);
 
         return "redirect:/restaurant/list";
     }
@@ -86,7 +89,7 @@ public class RestaurantController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
         }
 
-        restaurantService.modify(restaurant, restaurantForm.getTitle(), restaurantForm.getContent(), restaurantForm.getCuisineType());
+        restaurantService.modify(restaurant, restaurantForm.getTitle(), restaurantForm.getContent(), restaurantForm.getCuisineType(), restaurantForm.getAddress(), restaurantForm.getRestaurantName());
 
         return "redirect:/restaurant/detail/%s".formatted(id);
     }
@@ -103,6 +106,8 @@ public class RestaurantController {
         restaurantForm.setTitle(restaurant.getTitle());
         restaurantForm.setContent(restaurant.getContent());
         restaurantForm.setCuisineType(restaurant.getCuisineType());
+        restaurantForm.setAddress(restaurant.getAddress());
+        restaurantForm.setRestaurantName(restaurant.getRestaurantName());
         return "restaurant_form";
     }
 

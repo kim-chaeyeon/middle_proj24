@@ -10,5 +10,8 @@ spring:
     show-sql: true
   main:
     allow-bean-definition-overriding: true
+  config:
+    import: optional:application-secret.yml
+
 custom:
-  fileDirPath: C:\work\thumbnail
+  fileDirPath: C:/work/thumbnail

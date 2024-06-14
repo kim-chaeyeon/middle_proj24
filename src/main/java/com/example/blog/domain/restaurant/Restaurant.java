@@ -29,13 +29,15 @@ public class Restaurant {
     private String title;
 
     @Column(columnDefinition = "TEXT")
-    private String content;
+    private String content; //추천음식
 
     private String thumbnailImg;
 
-    private String cuisineType;
+    private String cuisineType; //음식 카테고리
 
-    private String address;
+    private String address; //주소
+
+    private  String restaurantName; //식당이름
 
     private LocalDateTime createDate;
     private LocalDateTime modifyDate;
@@ -58,14 +60,6 @@ public class Restaurant {
 
     public void setThumbnail(String thumbnailRelPath){
 
-    }
-
-    public enum CuisineType {
-        KOREAN,
-        CHINESE,
-        JAPANESE,
-        WESTERN,
-        SNACK
     }
 }
 
