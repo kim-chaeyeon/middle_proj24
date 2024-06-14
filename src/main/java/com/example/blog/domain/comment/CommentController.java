@@ -2,8 +2,8 @@ package com.example.blog.domain.comment;
 
 import com.example.blog.domain.post.Post;
 import com.example.blog.domain.post.PostService;
-import com.example.blog.domain.user.SiteUser;
-import com.example.blog.domain.user.UserService;
+import com.example.blog.domain.member.entity.Member;
+import com.example.blog.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -25,28 +25,26 @@ import java.security.Principal;
 public class CommentController {
     private final PostService postService;
     private final CommentService commentService;
-    private final UserService userService;
+    private final MemberService memberService;
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/create/{id}")
     public String createComment(
             Model model,
-            @PathVariable("id")
-            Integer id,
+            @PathVariable("id") Integer id,
             @Valid CommentForm commentForm,
             BindingResult bindingResult,
-            Principal principal
-    ) {
+            Principal principal) {
 
         Post p = this.postService.getPost(id);
-        SiteUser siteUser = this.userService.getUser(principal.getName());
+        Member member = this.memberService.getCurrentMember();
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("post", p);
             return "post_detail";
         }
 
-        Comment comment = this.commentService.create(p, commentForm.getContent(), siteUser);
+        Comment comment = this.commentService.create(p, commentForm.getContent(), member);
 
         return "redirect:/post/detail/%d#comment_%d".formatted(id, comment.getId());
     }
@@ -55,8 +53,9 @@ public class CommentController {
     @GetMapping("/modify/{id}")
     public String commentModify(CommentForm commentForm, @PathVariable("id") Integer id, Principal principal) {
         Comment comment = this.commentService.getComment(id);
+        Member member = memberService.getCurrentMember();
 
-        if (!comment.getAuthor().getUsername().equals(principal.getName())) {
+        if (!comment.getAuthor().getUsername().equals(member.getUsername())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
         }
 
@@ -69,29 +68,29 @@ public class CommentController {
     @PostMapping("/modify/{id}")
     public String commentModify(@Valid CommentForm commentForm, BindingResult bindingResult,
                                 @PathVariable("id") Integer id, Principal principal) {
-
         if (bindingResult.hasErrors()) {
             return "comment_form";
         }
 
         Comment comment = this.commentService.getComment(id);
+        Member member = memberService.getCurrentMember();
 
-        if (!comment.getAuthor().getUsername().equals(principal.getName())) {
+        if (!comment.getAuthor().getUsername().equals(member.getUsername())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
         }
 
         commentService.modify(comment, commentForm.getContent());
 
         return "redirect:/post/detail/%d#comment_%d".formatted(comment.getPost().getId(), id);
-
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/delete/{id}")
     public String commentDelete(Principal principal, @PathVariable("id") Integer id) {
         Comment comment = this.commentService.getComment(id);
+        Member member = memberService.getCurrentMember();
 
-        if (!comment.getAuthor().getUsername().equals(principal.getName())) {
+        if (!comment.getAuthor().getUsername().equals(member.getUsername())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제권한이 없습니다.");
         }
 
@@ -103,9 +102,9 @@ public class CommentController {
     @GetMapping("/vote/{id}")
     public String commentVote(Principal principal, @PathVariable("id") Integer id) {
         Comment comment = this.commentService.getComment(id);
-        SiteUser siteUser = this.userService.getUser(principal.getName());
+        Member member = memberService.getCurrentMember();
 
-        commentService.vote(comment, siteUser);
+        commentService.vote(comment, member);
 
         return "redirect:/post/detail/%d#comment_%d".formatted(comment.getPost().getId(), id);
     }

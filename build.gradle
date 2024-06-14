@@ -27,6 +27,9 @@ dependencies {
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
 
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+
 	// 스프링 시큐리티
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
@@ -45,9 +48,33 @@ dependencies {
 	// validation - 유효성 체크
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 
+	implementation 'org.springframework.boot:spring-boot-starter-mail:3.3.0'
+
 	// 마크다운
 	implementation 'org.commonmark:commonmark:0.22.0'
+
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+	implementation 'org.webjars:sockjs-client:1.1.2'
+	implementation 'org.webjars:stomp-websocket:2.3.4'
+	implementation 'org.webjars.bower:bootstrap:4.3.1'
+	implementation 'org.webjars.bower:vue:2.6.14'
+	implementation 'org.webjars.bower:axios:0.21.1'
+	implementation 'com.google.code.gson:gson:2.8.9'
+
+	// 추가된 의존성
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+	implementation 'org.hibernate.validator:hibernate-validator'
+	implementation 'io.jsonwebtoken:jjwt:0.9.1'
+
+	// Testing
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	testImplementation 'org.springframework:spring-test'
+	testImplementation 'org.springframework:spring-test'
+
+
 }
+
 
 tasks.named('test') {
 	useJUnitPlatform()

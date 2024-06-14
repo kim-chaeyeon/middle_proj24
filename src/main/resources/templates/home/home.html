@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>밥먹다</title>
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+        header {
+            background-color: #FFCE45;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            height: 60px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        header a {
+            color: #333;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 20px;
+        }
+        header .left, header .right {
+            display: flex;
+            align-items: center;
+        }
+        header .right a {
+            margin-left: 15px;
+            font-size: 16px;
+        }
+        .header-slider {
+            max-width: 100%;
+            height: auto;
+            margin: 20px auto;
+        }
+        .swiper-container {
+            width: 100%;
+            height: 300px;
+        }
+        .swiper-slide {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .swiper-slide img {
+            max-width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .container {
+            display: flex;
+            margin: 20px;
+            justify-content: center;
+        }
+        nav,
+        aside {
+            width: 200px;
+            background-color: #FFCE45;
+            padding: 10px;
+            box-sizing: border-box;
+            margin: 0 10px;
+            font-weight: bold;
+            text-align: center;
+            height: 100%;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        section {
+            flex-grow: 1;
+            background-color: #FFF5DB;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        section header,
+        section footer {
+            background-color: #FFD700;
+            justify-content: space-evenly;
+            padding: 10px;
+            margin-bottom: 10px;
+            font-weight: bold;
+            text-align: center;
+            position: relative;
+        }
+        section article {
+            background-color: #FFF5DB;
+            padding: 20px;
+            box-sizing: border-box;
+            font-weight: bold;
+            text-align: center;
+            flex-grow: 1;
+        }
+        footer {
+            height: 60px;
+            line-height: 60px;
+            text-align: center;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        img {
+            width: 100%;
+            height: auto;
+            display: flex;
+            margin: 0 auto 20px;
+        }
+        .header-slider .swiper-slide img,
+        .container img {
+            width: 100%;
+            height: 100%;
+        }
+        .hover-image {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            display: none;
+            width: 200px;
+            height: auto;
+            border: 1px solid #ccc;
+            border-radius: 50%;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+        }
+        .hover-item:hover .hover-image {
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div class="left">
+        <a href="/">밥먹다</a>
+    </div>
+    <div class="right">
+        <a class="nav-link" sec:authorize="isAnonymous()" href="/member/login">로그인</a>
+        <a class="nav-link" sec:authorize="isAuthenticated()" href="/member/logout" onclick="logout()">로그아웃</a>
+        <a sec:authorize="isAuthenticated()" href="/member/myPage">마이페이지</a>
+        <span sec:authorize="isAuthenticated()" id="username"></span>
+    </div>
+</header>
+
+<div class="header-slider swiper-container">
+    <div class="swiper-wrapper">
+        <div class="swiper-slide">
+            <img src="https://i.ibb.co/B4bmRTH/002-1.png" alt="Slide 1">
+        </div>
+        <div class="swiper-slide">
+            <img src="https://i.ibb.co/nnLqSrw/001.png" alt="Slide 2">
+        </div>
+        <div class="swiper-slide">
+            <img src="https://i.ibb.co/R4Ctsx8/001-3.png" alt="Slide 3">
+        </div>
+        <div class="swiper-slide">
+            <img src="https://i.ibb.co/yyL2W80/001-1.png" alt="Slide 4">
+        </div>
+        <div class="swiper-slide">
+            <img src="https://i.ibb.co/64W7p8r/001-2.png" alt="Slide 5">
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <nav>
+        <img src="https://i.ibb.co/8mLg2YH/001-4.png" alt="왼쪽 배너">
+    </nav>
+    <section>
+        <header>
+            <div class="hover-item right" onmouseover="showImage('https://i.ibb.co/y5dDc3X/001-6.png')" onmouseout="hideImage()">
+                <a href="#">맛집 추천</a>
+            </div>
+            <div class="hover-item center" onmouseover="showImage('https://i.ibb.co/nBLsJfh/adfadf.jpg')" onmouseout="hideImage()">
+                <a href="#">밥 친구 구함</a>
+            </div>
+            <div class="hover-item left" onmouseover="showImage('https://i.ibb.co/FKrkMQd/business-card-ver.jpg')" onmouseout="hideImage()">
+                <a href="post/list">일상 스토리</a>
+            </div>
+        </header>
+        <article id="display-article">
+            &lt;article&gt;
+        </article>
+        <footer>&lt;footer&gt;
+        </footer>
+    </section>
+    <aside>
+        <a href="/chat/rooms">
+            <img src="https://i.ibb.co/B4bycb0/image.png" alt="오른쪽 밥바오톡" width="50%" height="50%">
+        </a>
+    </aside>
+</div>
+<footer>
+    <a href="#">
+        <img src="https://i.ibb.co/FYVfC70/003-1.png" alt="아래 사진" width="50%" height="50%">
+    </a>
+</footer>
+
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<script>
+    // Initialize Swiper
+    var swiper = new Swiper('.swiper-container', {
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+        },
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+        autoplay: {
+            delay: 3000,
+            disableOnInteraction: false,
+        },
+    });
+
+    // 서버에서 받아온 사용자 정보
+    var userInfo = {
+        loggedIn: false, // 로그인 상태 여부
+        username: "" // 로그인된 사용자 이름
+    };
+
+    // 헤더의 로그인 링크와 로그아웃 버튼을 제어하는 함수
+    function toggleLoginState(loggedIn) {
+        var loginLink = document.querySelector(".nav-link[sec\\:authorize=\"isAnonymous()\"]");
+        var logoutLink = document.querySelector(".nav-link[sec\\:authorize=\"isAuthenticated()\"]");
+
+        if (loggedIn) {
+            // 로그인되어 있는 경우, 로그아웃 버튼 표시
+            loginLink.style.display = "none";
+            logoutLink.style.display = "inline";
+            document.getElementById("username").innerText = userInfo.username;
+        } else {
+            // 로그인되어 있지 않은 경우, 로그인 링크 표시
+            loginLink.style.display = "inline";
+            logoutLink.style.display = "none";
+        }
+    }
+
+    // 로그아웃 처리 함수
+    function logout() {
+        // 로그아웃 처리 작업 수행 (예: 세션 삭제 등)
+        // 여기서는 간단히 예시로 로그인 상태를 false로 변경
+        userInfo.loggedIn = false;
+        toggleLoginState(userInfo.loggedIn);
+    }
+
+    // 초기 로그인 상태 설정
+    toggleLoginState(userInfo.loggedIn);
+
+    function showImage(src) {
+        var article = document.getElementById('display-article');
+        article.innerHTML = '<img src="' + src + '" alt="hovered image" style="width:70%;height:70%;">';
+    }
+
+    function hideImage() {
+        var article = document.getElementById('display-article');
+        article.innerHTML = '&lt;article&gt;';
+    }
+</script>
+</body>
+</html>

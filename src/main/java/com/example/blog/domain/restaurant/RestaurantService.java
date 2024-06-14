@@ -1,8 +1,8 @@
 package com.example.blog.domain.restaurant;
 
 import com.example.blog.DataNotFoundException;
+import com.example.blog.domain.member.entity.Member;
 import com.example.blog.domain.restaurantComment.RC;
-import com.example.blog.domain.user.SiteUser;
 import jakarta.persistence.criteria.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,7 +40,7 @@ public class RestaurantService {
         return or.get();
     }
 
-    public Restaurant create(String title, String content, MultipartFile thumbnail,  String cuisineType, String address, SiteUser user) {
+    public Restaurant create(String title, String content, MultipartFile thumbnail, String cuisineType, String address, Member author) {
         String thumbnailRelPath = "restaurant/" + UUID.randomUUID().toString() + ".jpg";
         File thumbnailFile = new File(fileDirPath + "/" + thumbnailRelPath);
 
@@ -53,7 +53,7 @@ public class RestaurantService {
         Restaurant restaurant = Restaurant.builder()
                 .title(title)
                 .content(content)
-                .author(user)
+                .author(author)
                 .createDate(LocalDateTime.now())
                 .thumbnailImg(thumbnailRelPath)
                 .cuisineType(cuisineType)
@@ -77,7 +77,7 @@ public class RestaurantService {
         return restaurantRepository.findAll(spec, pageable);
     }
 
-    public void modify(Restaurant restaurant, String title, String content,String cuisineType, String address) {
+    public void modify(Restaurant restaurant, String title, String content, String cuisineType, String address) {
         restaurant.setTitle(title);
         restaurant.setContent(content);
         restaurant.setModifyDate(LocalDateTime.now());
@@ -90,7 +90,7 @@ public class RestaurantService {
         restaurantRepository.delete(restaurant);
     }
 
-    public void vote(Restaurant restaurant, SiteUser voter) {
+    public void vote(Restaurant restaurant, Member voter) {
         restaurant.addVoter(voter);
         restaurantRepository.save(restaurant);
     }
@@ -98,12 +98,13 @@ public class RestaurantService {
     private Specification<Restaurant> search(String kw) {
         return new Specification<>() {
             private static final long serialVersionUID = 1L;
+
             @Override
             public Predicate toPredicate(Root<Restaurant> r, CriteriaQuery<?> query, CriteriaBuilder cb) {
                 query.distinct(true);  // 중복을 제거
-                Join<Restaurant, SiteUser> u1 = r.join("author", JoinType.LEFT);
+                Join<Restaurant, Member> u1 = r.join("author", JoinType.LEFT);
                 Join<Restaurant, RC> a = r.join("rcList", JoinType.LEFT);
-                Join<RC, SiteUser> u2 = a.join("author", JoinType.LEFT);
+                Join<RC, Member> u2 = a.join("author", JoinType.LEFT);
                 return cb.or(cb.like(r.get("title"), "%" + kw + "%"), // 제목
                         cb.like(r.get("content"), "%" + kw + "%"),      // 내용
                         cb.like(u1.get("username"), "%" + kw + "%"),    // 질문 작성자
@@ -113,4 +114,3 @@ public class RestaurantService {
         };
     }
 }
-

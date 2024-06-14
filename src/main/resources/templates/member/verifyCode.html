@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>이메일 인증</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            text-align: center;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+        h1 {
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+        form {
+            margin-bottom: 30px;
+        }
+        label {
+            font-size: 18px;
+        }
+        input[type="text"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .btn {
+            width: 100%;
+            padding: 12px 0;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>이메일 인증</h1>
+
+    <!--    <form action="/member/verifyCode" method="post" th:action="@{/member/login}">-->
+    <!--        <label for="verification">인증 코드 입력:</label><br>-->
+    <!--        <input type="text" id="verification" name="verification" required><br>-->
+    <!--        <button type="submit" class="btn">확인</button>-->
+    <!--    </form>-->
+
+    <form action="/member/verifyCode" method="post" >
+        <label for="verification">인증 코드 입력:</label><br>
+        <input type="text" id="verification" name="verification" required><br>
+        <button type="submit" class="btn">확인</button>
+    </form>
+
+    <p>이메일로 받은 인증 코드를 입력하세요.</p>
+</div>
+</body>
+</html>

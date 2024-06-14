@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>My Page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 32px;
+            color: #FF4081;
+        }
+        .profile-img {
+            display: block;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            object-fit: cover;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .info-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center; /* 중앙 정렬을 위한 설정 */
+        }
+        .info-box {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px; /* 박스 간 간격을 위한 설정 */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            width: 45%; /* 박스의 너비를 45%로 설정하여 두 줄에 배치 */
+        }
+        .info-box i {
+            color: #FFCE45;
+            margin-right: 10px;
+        }
+        .info-box span {
+            font-size: 16px;
+            color: #555;
+        }
+        .main-btn {
+            display: inline-block;
+            margin: 10px;
+            padding: 10px 20px;
+            background-color: #FFCE45;
+            color: #333;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        .main-btn:hover {
+            background-color: #FFD700;
+        }
+
+       .sub-btn {
+            display: inline-block;
+            margin: 10px; /* 여백 설정 */
+            padding: 10px 20px;
+            background-color: #FFCE45;
+            color: gray;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            margin-left: auto; /* 오른쪽 정렬 */
+        }
+        .sub-btn:hover {
+            background-color: #FFD700;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <a th:href="@{/}" class="main-btn">메인 화면으로 이동</a>
+    <a th:href="@{/member/modify}" class="main-btn">마이 페이지 수정하기</a>
+    <a th:href="@{#}" class="sub-btn">친구 목록</a>
+    <h1>My Page</h1>
+    <img th:src="@{|/file/${member.thumbnailImg}|}" alt="프로필 사진" class="profile-img"/>
+    <div class="info-container">
+        <div class="info-box">
+            <i class="fas fa-user"></i>
+            <span>닉네임 : <span th:text="${member.nickname}"></span></span>
+        </div>
+        <div class="info-box">
+            <i class="fas fa-user"></i>
+            <span>소셜 로그인 ID : <span th:text="${member.loginId}"></span></span>
+        </div>
+        <div class="info-box">
+            <i class="fas fa-id-badge"></i>
+            <span>ID : <span th:text="${member.username}"></span></span>
+        </div>
+        <div class="info-box">
+            <i class="fas fa-envelope"></i>
+            <span>이메일 : <span th:text="${member.email}"></span></span>
+        </div>
+        <div class="info-box">
+            <i class="fas fa-phone"></i>
+            <span>전화번호 : <span th:text="${member.phoneNumber}"></span></span>
+        </div>
+        <div class="info-box">
+            <i class="fas fa-utensils"></i>
+            <span>선호 음식 : <span th:text="${member.favoriteFood}"></span></span>
+        </div>
+        <div class="info-box">
+            <i class="fas fa-venus-mars"></i>
+            <span>성별 : <span th:text="${member.gender}"></span></span>
+        </div>
+        <div class="info-box">
+            <i class="fas fa-birthday-cake"></i>
+            <span>나이 : <span th:text="${member.age}"></span></span>
+        </div>
+        <div class="info-box">
+            <i class="fas fa-smile"></i>
+            <span>MBTI : <span th:text="${member.mbti}"></span></span>
+        </div>
+        <div class="info-box">
+            <i class="fas fa-instagram"></i>
+            <span>인스타 : <span th:text="${member.sns}"></span></span>
+        </div>
+        <div class="info-box">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>지역 : <span th:text="${member.region}"></span></span>
+        </div>
+    </div>
+    <div class="info-box">
+        <i class="fas fa-pen"></i>
+        <span><a th:href="@{#}">내가 작성한 글 + </a></span>
+    </div>
+
+</div>
+
+<script>
+    function checkLogin() {
+        var loggedIn = true; // 실제로는 서버에서 로그인 상태를 확인하는 로직이 필요합니다.
+        if (!loggedIn) {
+            window.location.href = "/member/login"; // 로그인 페이지의 URL로 리다이렉트합니다.
+        }
+    }
+
+    window.onload = checkLogin;
+</script>
+</body>
+</html>

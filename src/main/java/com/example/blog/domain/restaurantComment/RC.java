@@ -1,7 +1,7 @@
 package com.example.blog.domain.restaurantComment;
 
 import com.example.blog.domain.restaurant.Restaurant;
-import com.example.blog.domain.user.SiteUser;
+import com.example.blog.domain.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,18 +24,16 @@ public class RC {
     private LocalDateTime createDate;
     private LocalDateTime modifyDate;
 
-    // Many = RC, one = Restaurant
     @ManyToOne
     private Restaurant restaurant;
 
     @ManyToOne
-    private SiteUser author;
+    private Member author;
 
     @ManyToMany
-    Set<SiteUser> voters = new LinkedHashSet<>();
+    Set<Member> voters = new LinkedHashSet<>();
 
-    public void addVoter(SiteUser voter) {
+    public void addVoter(Member voter) {
         voters.add(voter);
     }
 }
-

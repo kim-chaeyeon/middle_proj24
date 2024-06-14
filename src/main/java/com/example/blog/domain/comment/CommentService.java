@@ -1,21 +1,20 @@
 package com.example.blog.domain.comment;
 
 import com.example.blog.DataNotFoundException;
+import com.example.blog.domain.member.entity.Member;
 import com.example.blog.domain.post.Post;
-import com.example.blog.domain.user.SiteUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
-import java.util.zip.DataFormatException;
 
 @RequiredArgsConstructor
 @Service
 public class CommentService {
     private final CommentRepository commentRepository;
 
-    public Comment create(Post p, String content, SiteUser author) {
+    public Comment create(Post p, String content, Member author) {
         Comment comment = new Comment();
         comment.setContent(content);
         comment.setPost(p);
@@ -46,7 +45,7 @@ public class CommentService {
         commentRepository.delete(comment);
     }
 
-    public void vote(Comment comment, SiteUser voter) {
+    public void vote(Comment comment, Member voter) {
         comment.addVoter(voter);
         commentRepository.save(comment);
     }
