@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>내 정보 페이지</title>
+    <style>
+        /* 스타일은 로그인 페이지와 동일하게 사용합니다 */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            text-align: center;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+        h1 {
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+        /* 추가적인 스타일링은 필요에 따라 작성하세요 */
+        .profile-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- 내 정보 페이지 -->
+<div class="container">
+    <a th:href="@{/}" class="main-btn">메인 화면으로 이동</a><br>
+    <h1>내 정보 페이지</h1>
+    <!-- 상단 중앙에는 등록된 사진 표시 -->
+    <!-- 회원 정보 출력 -->
+    <!--    <img th:src="@{|/file/${member.thumbnailImg}|}" alt="프로필 사진" class="profile-img"/>-->
+    <p>닉네임: <span th:text="${member.nickname}"></span></p>
+    <p>이메일: <span th:text="${member.email}"></span></p>
+    <p>전화번호: <span th:text="${member.phoneNumber}"></span></p>
+    <p>선호음식: <span th:text="${member.favoriteFood}"></span></p>
+    <p>성별: <span th:text="${member.gender}"></span></p>
+    <p>나이: <span th:text="${member.age}"></span></p>
+    <p>지역: <span th:text="${member.region}"></span></p>
+    <!-- 추가적인 회원 정보를 출력할 수 있도록 확장 -->
+</div>
+</body>
+</html>
+
+<script>
+    if (!loggedIn) {
+        window.location.href = "member/login"; // 로그인 페이지의 URL로 리다이렉트합니다.
+    }
+</script>

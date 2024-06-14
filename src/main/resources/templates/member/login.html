@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>로그인</title>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            text-align: center;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+        h1 {
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+        form {
+            margin-bottom: 30px;
+        }
+        label {
+            font-size: 18px;
+        }
+        input[type="text"],
+        input[type="password"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .btn {
+            width: 100%;
+            padding: 12px 0;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        .oauth-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 12px 0;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            text-decoration: none;
+            margin-bottom: 20px;
+        }
+        .oauth-btn .icon {
+            background: url('https://example.com/google-icon.png') no-repeat;
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+        }
+        .oauth-btn.google {
+            background-color: #4285f4;
+        }
+        .oauth-btn.google:hover {
+            background-color: #357ae8;
+        }
+        .oauth-btn.kakao {
+            background-color: #fee500;
+            color: #3c1e1e;
+        }
+        .oauth-btn.kakao:hover {
+            background-color: #ffd700;
+        }
+        .register-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 12px 0;
+            background-color: #34a853;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .register-btn:hover {
+            background-color: #2c8c42;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <header class="header">
+        <div style="float: left;">
+            <a href="/">밥은 먹고 다니냐?</a>
+        </div>
+        <div style="float: right;">
+            <a href="/login">로그인</a>
+        </div>
+        <div style="float: right; margin-right: 10px;">
+            <a href="/myprofile">마이 프로필</a>
+        </div>
+    </header>
+    <h1>
+        <img src="https://i.ibb.co/j5tSMPV/image.jpg" alt="밥친구 로그인" width="200" height="150">
+        <nav>로그인</nav>
+    </h1>
+
+    <!-- 아이디와 비밀번호 입력 필드 추가 -->
+    <form th:action="@{/member/login}" method="post">
+        <label for="username">아이디:</label><br>
+        <input type="text" id="username" name="username" placeholder="아이디"><br>
+        <label for="password">비밀번호:</label><br>
+        <input type="password" id="password" name="password" placeholder="비밀번호"><br><br>
+        <!-- 로그인 버튼 추가 -->
+        <button type="submit" class="btn">로그인</button>
+    </form>
+
+    <!-- 이미지로 구글 로그인 링크 추가 -->
+    <a href="https://accounts.google.com/signin/oauth" class="oauth-btn google">
+        <span class="icon"></span>
+        <span class="tpaLoginTxt">Google 계정으로 로그인</span>
+    </a>
+
+    <!-- 카카오 로그인 링크 추가 -->
+    <a href="/oauth2/authorization/kakao" class="oauth-btn kakao">
+        <span class="tpaLoginTxt">카카오 로그인</span>
+    </a>
+
+    <div>
+        <a th:href="@{/member/signup}">회원가입하러가기</a>
+        </a>
+    </div>
+</div>
+
+
+</body>
+</html>

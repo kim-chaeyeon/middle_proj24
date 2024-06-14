@@ -1,6 +1,6 @@
-package com.example.blog.chat.repository;
+package com.example.blog.domain.chat.repository;
 
-import com.example.blog.chat.model.ChatMessage;
+import com.example.blog.domain.chat.model.ChatMessage;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ChatMessageRepository extends JpaRepository<ChatMessage, String> {

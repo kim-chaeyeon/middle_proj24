@@ -1,7 +1,7 @@
-package com.example.blog.chat.controller;
+package com.example.blog.domain.chat.controller;
 
-import com.example.blog.chat.model.ChatRoom;
-import com.example.blog.chat.repository.ChatRoomRepository;
+import com.example.blog.domain.chat.model.ChatRoom;
+import com.example.blog.domain.chat.repository.ChatRoomRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;

@@ -2,7 +2,7 @@ package com.example.blog.domain.post;
 
 import com.example.blog.DataNotFoundException;
 import com.example.blog.domain.comment.Comment;
-import com.example.blog.domain.user.SiteUser;
+import com.example.blog.domain.member.entity.Member;
 import jakarta.persistence.criteria.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,7 +40,7 @@ public class PostService {
         return op.get();
     }
 
-    public Post create(String title, String content, MultipartFile thumbnail, SiteUser user) {
+    public Post create(String title, String content, MultipartFile thumbnail, Member author) {
         String thumbnailRelPath = "post/" + UUID.randomUUID().toString() + ".jpg";
         File thumbnailFile = new File(fileDirPath + "/" + thumbnailRelPath);
 
@@ -53,7 +53,7 @@ public class PostService {
         Post post = Post.builder()
                 .title(title)
                 .content(content)
-                .author(user)
+                .author(author)
                 .createDate(LocalDateTime.now())
                 .thumbnailImg(thumbnailRelPath)
                 .build();
@@ -86,7 +86,7 @@ public class PostService {
         postRepository.delete(post);
     }
 
-    public void vote(Post post, SiteUser voter) {
+    public void vote(Post post, Member voter) {
         post.addVoter(voter);
         postRepository.save(post);
     }
@@ -94,12 +94,13 @@ public class PostService {
     private Specification<Post> search(String kw) {
         return new Specification<>() {
             private static final long serialVersionUID = 1L;
+
             @Override
             public Predicate toPredicate(Root<Post> p, CriteriaQuery<?> query, CriteriaBuilder cb) {
                 query.distinct(true);  // 중복을 제거
-                Join<Post, SiteUser> u1 = p.join("author", JoinType.LEFT);
+                Join<Post, Member> u1 = p.join("author", JoinType.LEFT);
                 Join<Post, Comment> a = p.join("commentList", JoinType.LEFT);
-                Join<Comment, SiteUser> u2 = a.join("author", JoinType.LEFT);
+                Join<Comment, Member> u2 = a.join("author", JoinType.LEFT);
                 return cb.or(cb.like(p.get("title"), "%" + kw + "%"), // 제목
                         cb.like(p.get("content"), "%" + kw + "%"),      // 내용
                         cb.like(u1.get("username"), "%" + kw + "%"),    // 질문 작성자

@@ -1,7 +1,7 @@
 package com.example.blog.domain.restaurant;
 
 import com.example.blog.domain.restaurantComment.RC;
-import com.example.blog.domain.user.SiteUser;
+import com.example.blog.domain.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.LazyCollection;
@@ -42,30 +42,15 @@ public class Restaurant {
 
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.REMOVE)
     @LazyCollection(LazyCollectionOption.EXTRA)
-    //rcList.size(); 함수가 실행 될 때 SELECT COUNT 실행
     private List<RC> rcList = new ArrayList<>();
 
     @ManyToOne
-    private SiteUser author;
+    private Member author;
 
     @ManyToMany
-    Set<SiteUser> voters = new LinkedHashSet<>();
+    Set<Member> voters = new LinkedHashSet<>();
 
-    public void addVoter(SiteUser voter) {
+    public void addVoter(Member voter) {
         voters.add(voter);
     }
-
-
-    public void setThumbnail(String thumbnailRelPath){
-
-    }
-
-    public enum CuisineType {
-        KOREAN,
-        CHINESE,
-        JAPANESE,
-        WESTERN,
-        SNACK
-    }
 }
-

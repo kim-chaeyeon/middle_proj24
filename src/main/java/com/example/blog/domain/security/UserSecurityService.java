@@ -1,5 +1,7 @@
-package com.example.blog.domain.user;
+package com.example.blog.domain.security;
 
+import com.example.blog.domain.member.entity.Member;
+import com.example.blog.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -16,21 +18,33 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Service
 public class UserSecurityService implements UserDetailsService {
+    private final MemberRepository memberRepository;
 
-    private final UserRepository userRepository;
-
+    //    @Override
+//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+//        Optional<Member> _user = this.memberRepository.findByusername(username);
+//
+//        if (_user.isEmpty()) {
+//            throw new UsernameNotFoundException("유저를 찾을 수 없습니다.");
+//        }
+//
+//        Member member = _user.get();
+//        List<GrantedAuthority> authorities = new ArrayList<>();
+//
+//        return new User(member.getUsername(), member.getPassword(), authorities);
+//    }
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<SiteUser> _siteUser = this.userRepository.findByusername(username);
+        Optional<Member> _siteUser = this.memberRepository.findByusername(username);
         if (_siteUser.isEmpty()) {
             throw new UsernameNotFoundException("사용자를 찾을수 없습니다.");
         }
-        SiteUser siteUser = _siteUser.get();
+        Member siteUser = _siteUser.get();
         List<GrantedAuthority> authorities = new ArrayList<>();
         if ("admin".equals(username)) {
-            authorities.add(new SimpleGrantedAuthority(UserRole.ADMIN.getValue()));
+            authorities.add(new SimpleGrantedAuthority(com.example.chat.domain.security.UserRole.ADMIN.getValue()));
         } else {
-            authorities.add(new SimpleGrantedAuthority(UserRole.USER.getValue()));
+            authorities.add(new SimpleGrantedAuthority(com.example.chat.domain.security.UserRole.USER.getValue()));
         }
         return new User(siteUser.getUsername(), siteUser.getPassword(), authorities);
     }

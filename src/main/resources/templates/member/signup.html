@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>회원 가입</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            text-align: center;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+        h1 {
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+        form {
+            margin-bottom: 30px;
+        }
+        label {
+            font-size: 18px;
+        }
+        input[type="text"],
+        input[type="password"],
+        input[type="email"],
+        input[type="number"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        select {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .btn {
+            width: 100%;
+            padding: 12px 0;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        .main-btn {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+    </style>
+</head>
+<body>
+<a th:href="@{/}" class="main-btn">메인 화면으로 이동</a>
+<div class="container">
+    <h1>
+        <img th:src="@{https://i.ibb.co/j5tSMPV/image.jpg}" alt="밥친구 로그인" width="200" height="150">
+        <nav>밥친구 회원 가입</nav>
+    </h1>
+
+    <form id="signupForm" action="/member/signup" method="post" enctype="multipart/form-data" th:action="@{/member/signup}">
+        <!--        <input type="file" name="thumbnailImg" accept="image/png, image/gif, image/jpeg"><br>-->
+        <label for="phoneNumber">전화번호 (필수):</label><br>
+        <input type="text" id="phoneNumber" name="phoneNumber" required><br>
+        <label for="username">아이디 (필수):</label><br>
+        <input type="text" id="username" name="username" required><br>
+        <label for="nickname">닉네임 (필수):</label><br>
+        <input type="text" id="nickname" name="nickname" required><br>
+        <label for="password">비밀번호 (필수):</label><br>
+        <input type="password" id="password" name="password" required><br>
+        <label for="email">이메일 (필수):</label><br>
+        <input type="email" id="email" name="email" required><br>
+        <label for="age">나이 (필수, 성인만 가능):</label><br>
+        <input type="number" id="age" name="age" required min="18"><br>
+        <label for="gender">성별:</label><br>
+        <input type="radio" id="male" name="gender" value="male">
+        <label for="male">남성</label>
+        <input type="radio" id="female" name="gender" value="female">
+        <label for="female">여성</label><br>
+        <label for="region">지역:</label><br>
+        <select id="region" name="region">
+            <option value="서울">서울</option>
+            <option value="경기">경기</option>
+            <option value="인천">인천</option>
+            <option value="대전">대전</option>
+            <option value="부산">부산</option>
+            <!-- 다른 지역 옵션들 추가 -->
+        </select><br><br>
+        <label for="favoriteFood">선호 음식 (필수):</label><br>
+        <input type="text" id="favoriteFood" name="favoriteFood" required><br><br>
+        <button type="submit" class="btn">회원 가입</button>
+    </form>
+    <a th:href="@{/member/login}">이미 회원이신가요? 로그인하기</a>
+</div>
+
+<script th:inline="javascript">
+    function sendVerificationEmail() {
+        var email = document.getElementById('email').value;
+        if (!email) {
+            alert("이메일을 입력하세요.");
+            return;
+        }
+
+        fetch('/sendVerificationEmail', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: new URLSearchParams({email: email})
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('인증 코드가 이메일로 전송되었습니다.');
+            } else {
+                alert('인증 코드 전송에 실패했습니다.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('인증 코드 전송 중 오류가 발생했습니다.');
+        });
+    }
+</script>
+
+</body>
+</html>

@@ -1,10 +1,9 @@
 package com.example.blog.domain.post;
 
 import com.example.blog.domain.comment.Comment;
-import com.example.blog.domain.user.SiteUser;
+import com.example.blog.domain.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -39,21 +38,19 @@ public class Post {
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     @LazyCollection(LazyCollectionOption.EXTRA)
-    //commentList.size(); 함수가 실행 될 때 SELECT COUNT 실행
     private List<Comment> commentList = new ArrayList<>();
 
     @ManyToOne
-    private SiteUser author;
+    private Member author;
 
     @ManyToMany
-    Set<SiteUser> voters = new LinkedHashSet<>();
+    Set<Member> voters = new LinkedHashSet<>();
 
-    public void addVoter(SiteUser voter) {
+    public void addVoter(Member voter) {
         voters.add(voter);
     }
 
-
     public void setThumbnail(String thumbnailRelPath){
-
+        this.thumbnailImg = thumbnailRelPath;
     }
 }

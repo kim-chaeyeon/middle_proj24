@@ -1,4 +1,4 @@
-package com.example.blog.domain.user;
+package com.example.chat.domain.security;
 
 import lombok.Getter;
 

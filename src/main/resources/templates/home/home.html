@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>밥은 먹고 다니냐?</title>
+    <style>
+        * {
+            font-weight: bold;
+            color: white;
+            font-size: 20px;
+            text-align: center;
+        }
+        .header,
+        footer {
+            height: 50px;
+            text-align: center;
+            line-height: 50px;
+            background-color: indianred;
+            font-size: 20px;
+        }
+        .container::after {
+            content: '';
+            clear: both;
+            display: block;
+        }
+        .container {
+            margin: 10px 0;
+        }
+        nav,
+        aside {
+            width: 100px;
+            height: 400px;
+            float: left;
+            line-height: 400px;
+            background-color: indianred;
+        }
+        aside {
+            float: right;
+        }
+        section {
+            height: 400px;
+            background-color: indianred;
+            float: left;
+            width: calc(100% - 200px - 20px);
+            margin-left: 10px;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        .title {
+            height: 30px;
+            line-height: 30px;
+        }
+        .container > section > header {
+            height: 50px;
+            background-color: darkkhaki;
+            line-height: 50px;
+        }
+        .container > section > footer {
+            height: 80px;
+            background-color: darkkhaki;
+            line-height: 80px;
+        }
+        .container > section > article {
+            height: calc(100% - 160px - 20px);
+            background-color: darkkhaki;
+            line-height: 180px;
+            margin: 10px 0;
+        }
+        .chat-icon {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background-color: darkkhaki;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 30px;
+            color: white;
+            cursor: pointer;
+        }
+        .chat-icon:hover {
+            background-color: darksalmon;
+        }
+    </style>
+</head>
+<body>
+<header class="header" id="header">
+    <div style="float: left;">
+        <a href="/">밥은 먹고 다니냐?</a>
+    </div>
+    <div style="float: right;">
+        <a sec:authorize="isAnonymous()" href="/member/login">로그인</a>
+        <a sec:authorize="isAuthenticated()" href="/member/logout">로그아웃</a>
+    </div>
+    <div style="float: right; margin-right: 10px;">
+        <a sec:authorize="isAuthenticated()" href="/member/myPage">마이페이지</a>
+    </div>
+    <div style="float: right; margin-right: 10px;">
+    <span sec:authorize="isAuthenticated()">
+        <span th:text="${#authentication.name}"></span>
+    </span>
+    </div>
+</header>
+
+<div class="container">
+    <nav>&lt;nav&gt;</nav>
+    <section>
+        <div class="title">&lt;section&gt;</div>
+        <header>&lt;header&gt;</header>
+        <article>&lt;article&gt;</article>
+        <footer>&lt;footer&gt;</footer>
+    </section>
+    <aside>&lt;aside&gt;</aside>
+</div>
+<footer>&lt;footer&gt;</footer>
+
+<!-- 채팅방 이동 아이콘 -->
+<div class="chat-icon" onclick="window.location.href='/chat/rooms'">
+    💬
+</div>
+</body>
+</html>

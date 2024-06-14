@@ -1,8 +1,8 @@
-package com.example.blog.chat.controller;
+package com.example.blog.domain.chat.controller;
 
-import com.example.blog.chat.model.ChatMessage;
-import com.example.blog.chat.repository.ChatMessageRepository;
-import com.example.blog.chat.service.ChatMessageService;
+import com.example.blog.domain.chat.model.ChatMessage;
+import com.example.blog.domain.chat.repository.ChatMessageRepository;
+import com.example.blog.domain.chat.service.ChatMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.messaging.handler.annotation.DestinationVariable;

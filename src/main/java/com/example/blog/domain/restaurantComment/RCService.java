@@ -1,8 +1,8 @@
 package com.example.blog.domain.restaurantComment;
 
 import com.example.blog.DataNotFoundException;
+import com.example.blog.domain.member.entity.Member;
 import com.example.blog.domain.restaurant.Restaurant;
-import com.example.blog.domain.user.SiteUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +14,7 @@ import java.util.Optional;
 public class RCService {
     private final RCRepository rcRepository;
 
-    public RC create(Restaurant r, String content, SiteUser author) {
+    public RC create(Restaurant r, String content, Member author) {
         RC rc = new RC();
         rc.setContent(content);
         rc.setRestaurant(r);
@@ -29,7 +29,7 @@ public class RCService {
         Optional<RC> rc = rcRepository.findById(id);
         if (rc.isPresent()) {
             return rc.get();
-        }else {
+        } else {
             throw new DataNotFoundException("rc not found");
         }
     }
@@ -40,15 +40,12 @@ public class RCService {
         rcRepository.save(rc);
     }
 
-
     public void delete(RC rc) {
         rcRepository.delete(rc);
     }
 
-    public void vote(RC rc, SiteUser voter) {
+    public void vote(RC rc, Member voter) {
         rc.addVoter(voter);
         rcRepository.save(rc);
     }
-
 }
-

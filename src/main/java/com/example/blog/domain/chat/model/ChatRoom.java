@@ -1,4 +1,4 @@
-package com.example.blog.chat.model;
+package com.example.blog.domain.chat.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
