@@ -2,44 +2,45 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>회원 가입</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
             margin: 0;
             background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
         }
         .container {
+            margin: 50px auto;
             text-align: center;
             background-color: #ffffff;
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            width: 400px;
+            width: 90%;
+            max-width: 400px;
+            box-sizing: border-box;
+            overflow-y: auto;
         }
         h1 {
             margin-bottom: 30px;
             font-size: 28px;
+            color: #333;
         }
         form {
             margin-bottom: 30px;
         }
         label {
-            font-size: 18px;
+            font-size: 16px;
+            display: block;
+            margin: 10px 0 5px;
+            color: #555;
+            text-align: left;
         }
         input[type="text"],
         input[type="password"],
         input[type="email"],
-        input[type="number"] {
-            width: calc(100% - 20px);
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
-        }
+        input[type="number"],
+        input[type="file"],
         select {
             width: calc(100% - 20px);
             padding: 10px;
@@ -47,17 +48,19 @@
             border: 1px solid #ccc;
             border-radius: 5px;
             font-size: 16px;
+            box-sizing: border-box;
         }
         .btn {
-            width: 100%;
+            width: calc(100% - 20px);
             padding: 12px 0;
-            background-color: #007bff;
+            background-color: black;
             border: none;
             border-radius: 5px;
             color: #fff;
             font-size: 16px;
             cursor: pointer;
             margin-bottom: 20px;
+            transition: background-color 0.3s;
         }
         .btn:hover {
             background-color: #0056b3;
@@ -66,6 +69,35 @@
             position: absolute;
             top: 10px;
             left: 10px;
+            background-color: #FFCE45;
+            color: #333;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        .main-btn:hover {
+            background-color: #FFD700;
+        }
+        .radio-group {
+            text-align: left;
+            margin: 10px 0;
+        }
+        .radio-group label {
+            margin-right: 10px;
+            font-size: 16px;
+        }
+        .radio-inline {
+            display: inline-block;
+            margin-right: 20px;
+        }
+        .form-footer {
+            margin-top: 20px;
+        }
+        img {
+            width: 100%;
+            height: auto;
         }
     </style>
 </head>
@@ -73,74 +105,80 @@
 <a th:href="@{/}" class="main-btn">메인 화면으로 이동</a>
 <div class="container">
     <h1>
-        <img th:src="@{https://i.ibb.co/j5tSMPV/image.jpg}" alt="밥친구 로그인" width="200" height="150">
-        <nav>밥친구 회원 가입</nav>
+        <img th:src="@{https://i.ibb.co/n0szW03/image.png}" alt="밥친구 로그인">
+        <nav>회원 가입</nav>
     </h1>
 
-    <form id="signupForm" action="/member/signup" method="post" enctype="multipart/form-data" th:action="@{/member/signup}">
-        <!--        <input type="file" name="thumbnailImg" accept="image/png, image/gif, image/jpeg"><br>-->
-        <label for="phoneNumber">전화번호 (필수):</label><br>
-        <input type="text" id="phoneNumber" name="phoneNumber" required><br>
-        <label for="username">아이디 (필수):</label><br>
-        <input type="text" id="username" name="username" required><br>
-        <label for="nickname">닉네임 (필수):</label><br>
-        <input type="text" id="nickname" name="nickname" required><br>
-        <label for="password">비밀번호 (필수):</label><br>
-        <input type="password" id="password" name="password" required><br>
-        <label for="email">이메일 (필수):</label><br>
-        <input type="email" id="email" name="email" required><br>
-        <label for="age">나이 (필수, 성인만 가능):</label><br>
-        <input type="number" id="age" name="age" required min="18"><br>
-        <label for="gender">성별:</label><br>
-        <input type="radio" id="male" name="gender" value="male">
-        <label for="male">남성</label>
-        <input type="radio" id="female" name="gender" value="female">
-        <label for="female">여성</label><br>
-        <label for="region">지역:</label><br>
+    <form action="signupForm" method="post" enctype="multipart/form-data" th:action="@{/member/signup}">
+        <label for="phoneNumber"><i class="fas fa-phone"></i> 전화번호 (필수):</label>
+        <input type="text" id="phoneNumber" name="phoneNumber" required>
+
+        <label for="username"><i class="fas fa-user"></i> 아이디 (필수):</label>
+        <input type="text" id="username" name="username" required>
+
+        <label for="nickname"><i class="fas fa-user-tag"></i> 닉네임 (필수):</label>
+        <input type="text" id="nickname" name="nickname" required>
+
+        <label for="password"><i class="fas fa-lock"></i> 비밀번호 (필수):</label>
+        <input type="password" id="password" name="password" required>
+
+        <label for="email"><i class="fas fa-envelope"></i> 이메일 (필수):</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="age"><i class="fas fa-birthday-cake"></i> 나이 (필수, 성인만 가능):</label>
+        <input type="number" id="age" name="age" required min="20">
+
+<!--        <label for="gender"><i class="fas fa-venus-mars"></i> 성별:</label>-->
+<!--        <div class="radio-group">-->
+<!--            <div class="radio-inline">-->
+<!--                <input type="radio" id="남성" name="gender" value="남성">-->
+<!--                <label for="남성">남성</label>-->
+<!--            </div>-->
+<!--            <div class="radio-inline">-->
+<!--                <input type="radio" id="여성" name="gender" value="여성">-->
+<!--                <label for="여성">여성</label>-->
+<!--            </div>-->
+<!--        </div>-->
+        <label for="gender"><i class="fas fa-venus-mars"></i> 성별 (필수) :</label>
+        <select id="gender" name="gender">
+            <option value="--">--</option>
+            <option value="남성">남성</option>
+            <option value="여성">여성</option>
+
+            <!-- 다른 지역 옵션들 추가 -->
+        </select>
+
+        <label for="region"><i class="fas fa-map-marker-alt"></i> 지역 (필수) :</label>
         <select id="region" name="region">
+            <option value="--">--</option>
             <option value="서울">서울</option>
             <option value="경기">경기</option>
             <option value="인천">인천</option>
             <option value="대전">대전</option>
             <option value="부산">부산</option>
+            <option value="청양">청양</option>
+            <option value="대구">대구</option>
             <!-- 다른 지역 옵션들 추가 -->
-        </select><br><br>
-        <label for="favoriteFood">선호 음식 (필수):</label><br>
-        <input type="text" id="favoriteFood" name="favoriteFood" required><br><br>
+        </select>
+
+        <label for="favoriteFood"><i class="fas fa-utensils"></i> 선호 음식 (필수):</label>
+        <input type="text" id="favoriteFood" name="favoriteFood" required>
+
+        <label for="mbti"><i class="fas fa-smile"></i> 본인 MBTI (선택):</label>
+        <input type="text" id="mbti" name="mbti">
+
+        <label for="sns"><i class="fab fa-instagram"></i> 인스타 (선택):</label>
+        <input type="text" id="sns" name="sns">
+
+        <label for="thumbnail"><i class="fas fa-image"></i> 본인 사진 (필수):</label>
+        <input type="file" id="thumbnail" name="thumbnail" accept="image/png, image/gif, image/jpeg" required>
+
         <button type="submit" class="btn">회원 가입</button>
     </form>
-    <a th:href="@{/member/login}">이미 회원이신가요? 로그인하기</a>
+    <div class="form-footer">
+        <a th:href="@{/member/login}">이미 회원이신가요? 로그인하기</a>
+    </div>
 </div>
-
-<script th:inline="javascript">
-    function sendVerificationEmail() {
-        var email = document.getElementById('email').value;
-        if (!email) {
-            alert("이메일을 입력하세요.");
-            return;
-        }
-
-        fetch('/sendVerificationEmail', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: new URLSearchParams({email: email})
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('인증 코드가 이메일로 전송되었습니다.');
-            } else {
-                alert('인증 코드 전송에 실패했습니다.');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('인증 코드 전송 중 오류가 발생했습니다.');
-        });
-    }
-</script>
 
 </body>
 </html>

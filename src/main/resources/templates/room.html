@@ -66,6 +66,17 @@
     </style>
 
 </head>
+<header>
+    <div class="left">
+        <a href="/">밥먹다</a>
+    </div>
+    <div class="right">
+        <a class="nav-link" sec:authorize="isAnonymous()" href="/member/login">로그인</a>
+        <a class="nav-link" sec:authorize="isAuthenticated()" href="/member/logout" onclick="logout()">로그아웃</a>
+        <a sec:authorize="isAuthenticated()" href="/member/myPage">마이페이지</a>
+        <span sec:authorize="isAuthenticated()" id="username"></span>
+    </div>
+</header>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <a class="navbar-brand" href="/">밥은 먹고 다니냐</a>

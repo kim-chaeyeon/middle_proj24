@@ -1,4 +1,4 @@
-//package com.example.blog.chat.config;
+//package com.example.blog.domain.chat.config;
 //
 //import org.springframework.context.annotation.Bean;
 //import org.springframework.context.annotation.Configuration;

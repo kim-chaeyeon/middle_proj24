@@ -3,8 +3,10 @@ package com.example.blog.domain.member.controller;
 
 import com.example.blog.domain.email.EmailService;
 import com.example.blog.domain.member.entity.Member;
+import com.example.blog.domain.member.repository.MemberRepository;
 import com.example.blog.domain.member.service.MemberService;
 import com.example.blog.domain.member.service.VerificationCodeService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,20 +14,16 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
-
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
-@RequiredArgsConstructor
 @RequestMapping("/member")
+@RequiredArgsConstructor
 public class MemberController {
-
-    private final VerificationCodeService verificationCodeService;
-    private final MemberService memberService;
     private final EmailService emailService;
+    private final MemberService memberService;
+    private final VerificationCodeService verificationCodeService;
+    private final MemberRepository memberRepository;
 
     @PreAuthorize("isAnonymous()")
     @GetMapping("/login")
@@ -33,10 +31,6 @@ public class MemberController {
         return "member/login";
     }
 
-    //    @GetMapping("/signup")
-//    public String signupPage() {
-//        return "member/signup";
-//    }
     @GetMapping("/myPage")
     public String myPage(Model model) {
         Member currentMember = memberService.getCurrentMember();
@@ -44,33 +38,133 @@ public class MemberController {
         return "member/myPage";
     }
 
+    @GetMapping("/myPage/{nickname}")
+    public String viewMemberProfile(@PathVariable("nickname") String nickname, Model model) {
+        Member member = memberService.findByNickname(nickname);
+        if (member == null) {
+            return "redirect:/member/notFound"; // 회원이 없으면 "not found" 페이지로 리다이렉트
+        }
+        model.addAttribute("member", member);
+        return "member/viewProfile"; // 프로필 페이지를 반환
+    }
+    @GetMapping("/modify")
+    public String modifyForm(Model model) {
+        Member member = memberService.getCurrentMember();
+        if (member == null) {
+            // 사용자 정보가 없는 경우 로그인 페이지로 리다이렉트
+            return "redirect:/member/login";
+        }
+        model.addAttribute("member", member);
+        return "member/modify";
+    }
 
+    @PostMapping("/modify")
+    public String modify(@RequestParam("phoneNumber") String phoneNumber,
+                         @RequestParam("nickname") String nickname,
+                         @RequestParam("password") String password,
+                         @RequestParam("email") String email,
+                         @RequestParam("age") int age,
+                         @RequestParam("region") String region,
+                         @RequestParam("mbti") String mbti,
+                         @RequestParam("sns") String sns,
+                         @RequestParam("favoriteFood") String favoriteFood,
+                         @RequestParam("thumbnail") MultipartFile thumbnail) {
 
+        // 현재 로그인된 회원 정보를 가져옵니다.
+        Member member = memberService.getCurrentMember();
+        if (member == null) {
+            // 사용자 정보가 없는 경우 로그인 페이지로 리다이렉트
+            return "redirect:/member/login";
+        }
+
+        // 회원 정보를 수정합니다.
+        memberService.modify(member, phoneNumber, nickname, password, age, email, region, favoriteFood, mbti, sns, thumbnail);
+
+        // 수정 완료 후 마이페이지로 리다이렉트
+        return "redirect:/member/myPage";
+    }
+
+    @GetMapping("/admin")
+    public String adminPage() {
+        return "member/admin";
+    }
 
     @GetMapping("/signup")
-    public String signupForm(Model model) {
+    public String signForm(Model model) {
         return "member/signup"; // signup.html을 반환
     }
 
 
-
     @PostMapping("/signup")
-    public String signup(String username, String phoneNumber, String nickname, String password,
-                         String email, int age, String gender, String region, String favoriteFood, Model model) {
-        try {
-            memberService.signup(username, phoneNumber, nickname, password, email, age, gender, region, favoriteFood);
+    public String signup(@RequestParam("username") String username,
+                         @RequestParam("phoneNumber") String phoneNumber,
+                         @RequestParam("nickname") String nickname,
+                         @RequestParam("password") String password,
+                         @RequestParam("email") String email,
+                         @RequestParam("age") int age,
+                         @RequestParam("gender") String gender,
+                         @RequestParam("region") String region,
+                         @RequestParam("mbti") String mbti,
+                         @RequestParam("sns") String sns,
+                         @RequestParam("favoriteFood") String favoriteFood,
+                         @RequestParam("thumbnail") MultipartFile thumbnail,
+                         HttpSession session
+    ) {
 
-            String subject = " 회원가입!";
-            String body = "회원가입 성공 이메일!" + LocalDateTime.now();;
-            emailService.send(email, subject, body);
+        // 이메일 확인용 코드 생성
+        String verificationCode = verificationCodeService.generateVerificationCode(email);
+        // 회원가입 확인 이메일 보내기
 
+        String subject = "회원가입 인증코드";
+        String body = "회원가입인증 코드입니다. : " + verificationCode;
+        emailService.send(email, subject, body);
 
-            return "member/login"; // 회원 가입 후 로그인 페이지로 리다이렉트
-        } catch (Exception e) {
-            model.addAttribute("errorMessage", "회원 가입 중 오류가 발생했습니다.");
-            return "member/signup"; // 오류 발생 시 다시 회원 가입 페이지로
+        session.setAttribute("verificationCode", verificationCode);
+
+        // 파일 업로드 성공 시 회원 가입 처리
+        memberService.signup(username, phoneNumber, nickname, password, age, email, gender, region, favoriteFood, mbti, sns, thumbnail);
+
+        // 회원 가입 후 로그인 페이지로 리다이렉트
+        return "redirect:/member/verifyCode";
+    }
+    @GetMapping("/verifyCode")
+    public String verifyCodeForm(Model model) {
+        return "member/verifyCode"; // verifyCode.html을 반환
+    }
+    @PostMapping("/verifyCode")
+    public String verifyCode(@RequestParam("verification") String verificationCode, HttpSession session) {
+        String storedVerification = (String) session.getAttribute("verificationCode"); // 올바른 세션 키 사용
+        if (verificationCode != null && verificationCode.equals(storedVerification)) {
+            session.removeAttribute("verificationCode"); // 세션에서 올바른 키 제거
+            return "member/login";
+        } else {
+            return "member/verifyCode";
         }
     }
+
+    public class LoginRequest {
+        private String loginId;
+        private String password;
+
+        // Getters and setters
+        public String getLoginId() {
+            return loginId;
+        }
+
+        public void setLoginId(String loginId) {
+            this.loginId = loginId;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+
+        public void setPassword(String password) {
+            this.password = password;
+        }
+    }
+
+
     @GetMapping("/current")
     public ResponseEntity<Member> getCurrentUser() {
         try {
@@ -80,59 +174,4 @@ public class MemberController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
-
-
-    @GetMapping("/sendVerificationEmail")
-    public String showEmailForm() {
-        return "member/sendVerificationEmail";
-    }
-
-    @PostMapping("/sendVerificationEmail")
-    public ResponseEntity<Map<String, Object>> sendVerificationEmail(@RequestParam("email") String email) {
-        Map<String, Object> response = new HashMap<>();
-        try {
-            // 이메일로 인증 코드 생성 및 전송
-            String verificationCode = verificationCodeService.generateVerificationCode();
-            emailService.send(email, "이메일 인증 코드", "인증 코드: " + verificationCode);
-
-            // 이메일과 인증 코드를 세션에 저장 (생략)
-            response.put("success", true);
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            // 오류 발생 시 클라이언트에게 오류 응답 전송
-            response.put("success", false);
-            response.put("error", "오류가 발생했습니다.");
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
-        }
-    }
-
-    @GetMapping("/verifyCode")
-    public String showVerificationForm(@RequestParam("email") String email, Model model) {
-        model.addAttribute("email", email);
-        return "member/verifyCode";
-    }
-
-    @PostMapping("/verifyCode")
-    public String verifyCode(@RequestParam("email") String email, @RequestParam("code") String code, @ModelAttribute("verificationCode") String sessionCode, Model model) {
-        if (sessionCode != null && sessionCode.equals(code)) {
-            return "member/signup";
-        } else {
-            model.addAttribute("error", "인증 코드가 잘못되었습니다.");
-            return "member/verifyCode";
-        }
-    }
-
-    @PostMapping("/verifyEmail")
-    public ResponseEntity<String> verifyEmail(@RequestParam("verificationCode") String verificationCode) {
-        // 인증 코드 확인
-        boolean isValid = verificationCodeService.verifyVerificationCode(verificationCode);
-
-        if (isValid) {
-            return ResponseEntity.ok("이메일 인증이 완료되었습니다. 회원가입을 완료하세요.");
-        } else {
-            return ResponseEntity.badRequest().body("유효하지 않은 인증 코드입니다.");
-        }
-    }
-
-
 }
