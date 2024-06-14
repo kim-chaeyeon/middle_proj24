@@ -20,8 +20,8 @@
                     <h5 class="card-title">
                         <a th:href="@{|/restaurant/detail/${restaurant.id}|}" th:text="${restaurant.title}" class="no-underline"></a>
                     </h5>
-                    <h6>
-                        <a th:href="@{|/restaurant/detail/${restaurant.id}|}" th:text="${restaurant.cuisineType}" class="no-underline"></a>
+                    <h6 class="card-subtitle mb-2 text-muted">
+                        <a th:href="@{|/restaurant/detail/${restaurant.id}|}" th:text="${restaurant.address}" class="no-underline"></a>
                     </h6>
                     <p class="card-text">
                         <small class="text-muted" th:text="${#temporals.format(restaurant.createDate, 'yyyy-MM-dd HH:mm')}"></small>

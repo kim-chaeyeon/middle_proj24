@@ -1,9 +1,5 @@
 package com.example.blog.domain.restaurant;
 
-import com.example.blog.domain.naver.NaverClient;
-import com.example.blog.domain.naver.dto.SearchLocalRes;
-import com.example.blog.domain.post.Post;
-import com.example.blog.domain.post.PostForm;
 import com.example.blog.domain.restaurantComment.RCForm;
 import com.example.blog.domain.user.SiteUser;
 import com.example.blog.domain.user.UserService;

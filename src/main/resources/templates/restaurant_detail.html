@@ -11,6 +11,17 @@
             </div>
             <div class="card-text" th:utext="${@commonUtil.markdown(restaurant.content)}"></div>
             <div th:text="${restaurant.cuisineType}"></div>
+            <label class="font-weight-bold">식당 이름:</label>
+            <span th:text="${restaurant.restaurantName}"></span>
+        </div>
+        <div>
+            <label class="font-weight-bold">음식 종류:</label>
+            <span th:text="${restaurant.cuisineType}"></span>
+        </div>
+        <div>
+            <label class="font-weight-bold">주소:</label>
+            <span th:text="${restaurant.address}"></span>
+        </div>
 
             <div class="d-flex justify-content-end">
                 <div th:if="${restaurant.modifyDate != null}" class="badge bg-light text-dark p-2 text-start mx-3">

@@ -1,8 +1,7 @@
 package com.example.blog.domain.restaurant;
 
 import com.example.blog.DataNotFoundException;
-import com.example.blog.domain.naver.NaverClient;
-import com.example.blog.domain.naver.dto.SearchLocalReq;
+
 import com.example.blog.domain.restaurantComment.RC;
 import com.example.blog.domain.user.SiteUser;
 import jakarta.persistence.criteria.*;
