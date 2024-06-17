@@ -3,6 +3,7 @@ package com.example.blog.domain.member.controller;
 
 import com.example.blog.domain.email.EmailService;
 import com.example.blog.domain.member.entity.Member;
+import com.example.blog.domain.member.repository.MemberRepository;
 import com.example.blog.domain.member.service.MemberService;
 import com.example.blog.domain.member.service.VerificationCodeService;
 import jakarta.servlet.http.HttpSession;
@@ -22,6 +23,10 @@ public class MemberController {
     private final EmailService emailService;
     private final MemberService memberService;
     private final VerificationCodeService verificationCodeService;
+<<<<<<< HEAD
+=======
+    private final MemberRepository memberRepository;
+>>>>>>> 38ad50beb563f6ee5f8947b6073eef57ddd9963c
 
     @PreAuthorize("isAnonymous()")
     @GetMapping("/login")
@@ -137,6 +142,31 @@ public class MemberController {
             return "member/login";
         } else {
             return "member/verifyCode";
+<<<<<<< HEAD
+        }
+    }
+
+    public class LoginRequest {
+        private String loginId;
+        private String password;
+
+        // Getters and setters
+        public String getLoginId() {
+            return loginId;
+        }
+
+        public void setLoginId(String loginId) {
+            this.loginId = loginId;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+
+        public void setPassword(String password) {
+            this.password = password;
+=======
+>>>>>>> 38ad50beb563f6ee5f8947b6073eef57ddd9963c
         }
     }
 
@@ -161,6 +191,8 @@ public class MemberController {
             this.password = password;
         }
     }
+
+
     @GetMapping("/current")
     public ResponseEntity<Member> getCurrentUser() {
         try {
@@ -170,5 +202,8 @@ public class MemberController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 38ad50beb563f6ee5f8947b6073eef57ddd9963c
 }
