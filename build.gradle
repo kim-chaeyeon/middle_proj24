@@ -66,7 +66,6 @@ dependencies {
 	implementation 'org.hibernate.validator:hibernate-validator'
 	implementation 'io.jsonwebtoken:jjwt:0.9.1'
 
-<<<<<<< HEAD
 	// Testing
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
@@ -77,19 +76,8 @@ dependencies {
 }
 tasks.withType(JavaCompile) {
 	options.compilerArgs << '-parameters'
-=======
-	// email
-	implementation 'org.springframework.boot:spring-boot-starter-mail'
-	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 
-	// test
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework.security:spring-security-test'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-	testImplementation 'org.springframework:spring-test'
->>>>>>> 38ad50beb563f6ee5f8947b6073eef57ddd9963c
 }
-
 
 tasks.named('test') {
 	useJUnitPlatform()

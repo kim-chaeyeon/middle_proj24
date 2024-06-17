@@ -19,13 +19,10 @@ public class JoinRequest {
     private String password;
     private String passwordCheck;
 
-<<<<<<< HEAD
 
 
 
 
-=======
->>>>>>> 38ad50beb563f6ee5f8947b6073eef57ddd9963c
     public Member toEntity(){
         return Member.builder()
                 .username(username)

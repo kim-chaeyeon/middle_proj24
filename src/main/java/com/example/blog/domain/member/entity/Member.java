@@ -1,15 +1,8 @@
 package com.example.blog.domain.member.entity;
 
 
-<<<<<<< HEAD
 import jakarta.persistence.*;
 import lombok.*;
-=======
-import com.example.blog.domain.jpa.BaseEntity;
-import jakarta.persistence.*;
-import lombok.*;
-import lombok.experimental.SuperBuilder;
->>>>>>> 38ad50beb563f6ee5f8947b6073eef57ddd9963c
 import org.hibernate.annotations.Comment;
 
 @Entity
@@ -94,4 +87,3 @@ public class Member {
         this.naverId = naverId;
     }
 }
-

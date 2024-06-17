@@ -32,21 +32,6 @@ public class MemberService {
         memberRepository.save(joinRequest.toEntity());
     }
 
-<<<<<<< HEAD
-//    public Member login(LoginRequest loginRequest) {
-//        Optional<Member> optionalMember = memberRepository.findByLoginId(loginRequest.getLoginId());
-//
-//        if (optionalMember.isPresent()) {
-//            Member findMember = optionalMember.get();
-//            if (passwordEncoder.matches(loginRequest.getPassword(), findMember.getPassword())) {
-//                return findMember;
-//            }
-//        }
-//        return null;
-//    }
-=======
-
->>>>>>> 38ad50beb563f6ee5f8947b6073eef57ddd9963c
 
     public Member getLoginMemberById(Long memberId) {
         return memberRepository.findById(memberId).orElse(null);

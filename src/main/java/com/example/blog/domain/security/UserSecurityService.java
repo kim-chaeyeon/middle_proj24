@@ -42,9 +42,9 @@ public class UserSecurityService implements UserDetailsService {
         Member siteUser = _siteUser.get();
         List<GrantedAuthority> authorities = new ArrayList<>();
         if ("admin".equals(username)) {
-            authorities.add(new SimpleGrantedAuthority(com.example.chat.domain.security.UserRole.ADMIN.getValue()));
+            authorities.add(new SimpleGrantedAuthority(com.example.blog.domain.security.UserRole.ADMIN.getValue()));
         } else {
-            authorities.add(new SimpleGrantedAuthority(com.example.chat.domain.security.UserRole.USER.getValue()));
+            authorities.add(new SimpleGrantedAuthority(com.example.blog.domain.security.UserRole.USER.getValue()));
         }
         return new User(siteUser.getUsername(), siteUser.getPassword(), authorities);
     }

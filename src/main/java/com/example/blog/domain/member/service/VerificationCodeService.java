@@ -1,9 +1,6 @@
 package com.example.blog.domain.member.service;
 
-<<<<<<< HEAD
-=======
 
->>>>>>> 38ad50beb563f6ee5f8947b6073eef57ddd9963c
 import com.example.blog.domain.member.entity2.Verification;
 import com.example.blog.domain.member.repository.VerificationRepository;
 import org.springframework.stereotype.Service;
