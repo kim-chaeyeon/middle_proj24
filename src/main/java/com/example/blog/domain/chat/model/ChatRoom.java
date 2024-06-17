@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -23,6 +25,9 @@ public class ChatRoom {
     private UUID roomId;
 
     private String name;
+
+    @ElementCollection
+    private List<String> users = new ArrayList<>();
 
 
 //    public static ChatRoom create(String name) {

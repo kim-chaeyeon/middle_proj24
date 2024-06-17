@@ -24,25 +24,25 @@ public class Dev {
     public ApplicationRunner init(MemberService memberService) {
         return args -> {
             // Read profile image file and convert to MultipartFile
-            File file = new File("C:\\Users\\SBS\\Desktop\\밥먹냐.jpeg");
+            File file = new File("C:\\Users\\SBS\\Desktop\\밥먹냐.png");
             try (FileInputStream input = new FileInputStream(file)) {
                 MockMultipartFile multipartFile = new MockMultipartFile("file", file.getName(), "image/jpeg", input);
 
                 // Call the signup method
-                memberService.signup("user1", "01012345678", "user1", "1234", 0, "admin@test.com"
+                memberService.signup("user1", "01012345678", "user11", "1234", 0, "admin@test.com"
                         , "남자", "고성", "양식", "대전", "tong", multipartFile);
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            File file1 = new File("C:\\Users\\SBS\\Desktop\\개구리.jpg");
+            File file1 = new File("C:\\Users\\SBS\\Desktop\\개구리.png");
             try (FileInputStream input = new FileInputStream(file1)) {
                 MockMultipartFile multipartFile1 = new MockMultipartFile("file1", file1.getName(), "image/jpeg", input);
 
                 // Call the signup method
 
-                memberService.signup("user2", "01012345678", "user2", "1234", 25,
+                memberService.signup("user2", "01012345678", "user22", "1234", 25,
                         "admin@test.com", "여자", "대전", "일식", "iiii", "holy", multipartFile1);
             } catch (IOException e) {
                 e.printStackTrace();
