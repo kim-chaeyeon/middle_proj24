@@ -3,7 +3,7 @@
     max-width: 600px;
     margin: 0 auto;
     padding: 20px;
-    background-color: #f9f9f9;
+    background-color: #FFF5DB; /* 배경 색상 조정 */
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
@@ -15,6 +15,8 @@
 label {
     display: block;
     margin-bottom: 5px;
+    color: #333; /* 텍스트 색상 조정 */
+    font-weight: bold;
 }
 
 input[type="text"],
@@ -27,14 +29,16 @@ textarea {
     border-radius: 5px;
     box-sizing: border-box;
     font-size: 16px;
+    background-color: #FFCE45; /* 입력 필드 배경 색상 조정 */
+    color: #333; /* 텍스트 색상 조정 */
 }
 
 button[type="submit"] {
     display: block;
     width: 100%;
     padding: 10px;
-    background-color: #007bff;
-    color: #fff;
+    background-color: #FFCE45; /* 버튼 배경 색상 조정 */
+    color: #333; /* 버튼 텍스트 색상 조정 */
     border: none;
     border-radius: 5px;
     font-size: 16px;
@@ -43,7 +47,7 @@ button[type="submit"] {
 }
 
 button[type="submit"]:hover {
-    background-color: #0056b3;
+    background-color: #FFD700; /* 버튼 호버 색상 조정 */
 }
 
 #addressError {

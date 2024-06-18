@@ -5,9 +5,13 @@ import com.example.blog.domain.member.entity.Member;
 import com.example.blog.domain.member.service.MemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Hibernate;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -44,7 +48,6 @@ public class PostController {
     public String create(PostForm postForm) {
         return "post_form";
     }
-
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/create")
@@ -102,10 +105,13 @@ public class PostController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/delete/{id}")
     public String postDelete(Principal principal, @PathVariable("id") Integer id) {
-        Post post = this.postService.getPost(id);
+        Post post = postService.getPost(id);
         Member member = memberService.getCurrentMember();
 
-        if (!post.getAuthor().getUsername().equals(member.getUsername())) {
+        // 관리자 권한 추가
+        if (!post.getAuthor().getUsername().equals(member.getUsername())
+                && !memberService.isAdmin(member)
+                && !member.getUsername().equals("admin")) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제권한이 없습니다.");
         }
 
