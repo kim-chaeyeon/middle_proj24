@@ -14,4 +14,5 @@ public interface UserRepository extends JpaRepository<SiteUser, Integer> {
     void clearAutoIncrement();
 
     Optional<SiteUser> findByusername(String username);
+
 }

@@ -15,6 +15,9 @@
     <div class="row">
         <div th:each="restaurant, loop : ${paging}" class="col-md-4 mb-3">
             <div class="card">
+                <div class="mb-2">
+                    <span th:if="${restaurant.author != null}" th:text="${restaurant.author.username}"></span>
+                </div>
                 <img th:src="@{|/file/${restaurant.thumbnailImg}|}" class="card-img-top" alt="Thumbnail">
                 <div class="card-body">
                     <h5 class="card-title">

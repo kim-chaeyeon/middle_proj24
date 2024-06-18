@@ -140,5 +140,8 @@ fabric.properties
 hs_err_pid*
 replay_pid*
 
-##
+## secret
 application-secret.yml
+application-google-secret.yml
+
+

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}">
+<div layout:fragment="content" class="container my-3">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- 맛집 게시물 -->
+    <h2 class="border-bottom py-2" th:text="${friend.title}"></h2>
+    <div class="card my-3">
+        <div class="card-body">
+            <!-- 썸네일 표시 -->
+            <div class="card-text" th:utext="${@commonUtil.markdown(friend.content)}"></div>
+            <div th:text="${friend.cuisineType}"></div>
+            <label class="font-weight-bold">식당 이름:</label>
+            <span th:text="${friend.restaurantName}"></span>
+        </div>
+        <div>
+            <label class="font-weight-bold">음식 종류:</label>
+            <span th:text="${friend.cuisineType}"></span>
+        </div>
+        <div>
+            <label class="font-weight-bold">주소:</label>
+            <span th:text="${friend.address}"></span>
+        </div>
+        <p>현재 인원수: <span id="current-participants" th:text="${friend.currentParticipants}"></span></p>
+        <button class="btn btn-primary increment-btn" th:data-id="${friend.id}">같이먹기</button>
+        <script src="/js/currentParticipants.js"></script>
+
+        <div class="d-flex justify-content-end">
+            <div th:if="${friend.modifyDate != null}" class="badge bg-light text-dark p-2 text-start mx-3">
+                <div class="mb-2">modified at</div>
+                <div th:text="${#temporals.format(friend.modifyDate, 'yyyy-MM-dd HH:mm')}"></div>
+            </div>
+
+            <div class="badge bg-light text-dark p-2 text-start">
+                <div class="mb-2">
+                    <span th:if="${friend.author != null}" th:text="${friend.author.username}"></span>
+                </div>
+
+                <div th:text="${#temporals.format(friend.createDate, 'yyyy-MM-dd HH:mm')}"></div>
+
+                <div class="my-3">
+                    <a onclick="return confirm('추천하시겠습니까?');" class="btn btn-sm btn-outline-secondary"
+                       th:href="@{|/friend/vote/${friend.id}|}">
+                        추천
+                        <span class="badge rounded-pill bg-success" th:text="${#lists.size(friend.voters)}"></span>
+                    </a>
+
+                    <a th:href="@{|/friend/modify/${friend.id}|}" class="btn btn-sm btn-outline-secondary"
+                       sec:authorize="isAuthenticated()"
+                       th:if="${friend.author != null and #authentication.getPrincipal().getUsername() == friend.author.username}"
+                       th:text="수정"></a>
+
+                    <a onclick="return confirm('정말로 삭제하시겠습니까?');" th:href="@{|/friend/delete/${friend.id}|}"
+                       class="delete btn btn-sm btn-outline-secondary"
+                       sec:authorize="isAuthenticated()"
+                       th:if="${friend.author != null and #authentication.getPrincipal().getUsername() == friend.author.username}"
+                       th:text="삭제"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</html>

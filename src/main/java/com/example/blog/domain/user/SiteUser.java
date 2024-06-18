@@ -17,6 +17,8 @@ public class SiteUser {
 
     private String password;
 
+    private String profile;
+
     @Column(unique = true)
     private String email;
 }
