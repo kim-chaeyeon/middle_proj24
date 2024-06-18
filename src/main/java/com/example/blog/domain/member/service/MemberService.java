@@ -3,6 +3,7 @@ package com.example.blog.domain.member.service;
 
 import com.example.blog.domain.member.dto.JoinRequest;
 import com.example.blog.domain.member.entity.Member;
+import com.example.blog.domain.member.entity.MemberRole;
 import com.example.blog.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -32,17 +34,7 @@ public class MemberService {
         memberRepository.save(joinRequest.toEntity());
     }
 
-//    public Member login(LoginRequest loginRequest) {
-//        Optional<Member> optionalMember = memberRepository.findByLoginId(loginRequest.getLoginId());
-//
-//        if (optionalMember.isPresent()) {
-//            Member findMember = optionalMember.get();
-//            if (passwordEncoder.matches(loginRequest.getPassword(), findMember.getPassword())) {
-//                return findMember;
-//            }
-//        }
-//        return null;
-//    }
+
 
     public Member getLoginMemberById(Long memberId) {
         return memberRepository.findById(memberId).orElse(null);
@@ -63,12 +55,12 @@ public class MemberService {
     @Transactional
     public Member signupSocialUser(String username, String nickname, String email) {
         // 소셜 로그인한 회원 저장
-        return signup(username, "", nickname, "",0, email, "", "", "", "", "",  null);
+        return signup(username, "", nickname, "",0, email, "", "", "", "", "",  null, MemberRole.USER);
     }
 
     @Transactional
     public Member signup(String username, String phoneNumber, String nickname, String password, int age,
-                         String email, String gender, String region, String favoriteFood, String mbti, String sns, MultipartFile thumbnail) {
+                         String email, String gender, String region, String favoriteFood, String mbti, String sns, MultipartFile thumbnail, MemberRole role) {
         String thumbnailRelPath = "post/" + UUID.randomUUID().toString() + ".jpg";
         File thumbnailFile = new File(fileDirPath + "/" + thumbnailRelPath);
 
@@ -91,6 +83,7 @@ public class MemberService {
                 .sns(sns)
                 .mbti(mbti)
                 .thumbnailImg(thumbnailRelPath)
+                .role(role)
                 .build();
 
         return memberRepository.save(member);
@@ -141,4 +134,54 @@ public class MemberService {
         return memberRepository.findByNickname(nickname).orElse(null);
     }
 
+    // 썸네일 저장
+    private String saveThumbnail(MultipartFile thumbnail) {
+        String thumbnailRelPath = "post/" + UUID.randomUUID().toString() + ".jpg";
+        File thumbnailFile = new File(fileDirPath + "/" + thumbnailRelPath);
+
+        try {
+            thumbnail.transferTo(thumbnailFile);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return thumbnailRelPath;
+    }
+
+    public boolean isAdmin(Member member) {
+        return member.isAdmin();
+    }
+
+    // 모든 회원 정보 가져오기
+    public List<Member> getAllMembers() {
+        return memberRepository.findAll();
+    }
+
+
+
+    //회원 탈퇴
+    @Transactional
+    public void deleteMember(String username) {
+        Member member = memberRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("해당 회원을 찾을 수 없습니다. ID: " + username));
+
+
+        deleteRelatedFiles(member.getThumbnailImg());
+
+
+        memberRepository.delete(member);
+    }
+
+    private void deleteRelatedFiles(String filePath) {
+        if (filePath != null && !filePath.isEmpty()) {
+            File file = new File(fileDirPath + "/" + filePath);
+            if (file.exists()) {
+                if (file.delete()) {
+                    System.out.println("파일 삭제 성공: " + filePath);
+                } else {
+                    System.out.println("파일 삭제 실패: " + filePath);
+                }
+            }
+        }
+    }
 }

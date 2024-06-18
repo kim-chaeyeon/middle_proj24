@@ -3,13 +3,18 @@ package com.example.blog.domain.member.controller;
 
 import com.example.blog.domain.email.EmailService;
 import com.example.blog.domain.member.entity.Member;
+import com.example.blog.domain.member.entity.MemberRole;
 import com.example.blog.domain.member.service.MemberService;
 import com.example.blog.domain.member.service.VerificationCodeService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -45,6 +50,7 @@ public class MemberController {
         model.addAttribute("member", member);
         return "member/viewProfile"; // 프로필 페이지를 반환
     }
+
     @GetMapping("/modify")
     public String modifyForm(Model model) {
         Member member = memberService.getCurrentMember();
@@ -120,15 +126,17 @@ public class MemberController {
         session.setAttribute("verificationCode", verificationCode);
 
         // 파일 업로드 성공 시 회원 가입 처리
-        memberService.signup(username, phoneNumber, nickname, password, age, email, gender, region, favoriteFood, mbti, sns, thumbnail);
+        memberService.signup(username, phoneNumber, nickname, password, age, email, gender, region, favoriteFood, mbti, sns, thumbnail, MemberRole.USER);
 
         // 회원 가입 후 로그인 페이지로 리다이렉트
         return "redirect:/member/verifyCode";
     }
+
     @GetMapping("/verifyCode")
     public String verifyCodeForm(Model model) {
         return "member/verifyCode"; // verifyCode.html을 반환
     }
+
     @PostMapping("/verifyCode")
     public String verifyCode(@RequestParam("verification") String verificationCode, HttpSession session) {
         String storedVerification = (String) session.getAttribute("verificationCode"); // 올바른 세션 키 사용
@@ -161,6 +169,7 @@ public class MemberController {
             this.password = password;
         }
     }
+
     @GetMapping("/current")
     public ResponseEntity<Member> getCurrentUser() {
         try {
@@ -169,5 +178,27 @@ public class MemberController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
+    }
+
+
+
+
+    //회원 탈퇴
+    @GetMapping("/delete")
+    public String showDeleteForm(Model model) {
+        // 회원 탈퇴 폼을 보여주는 로직
+        return "member/delete"; // 탈퇴 확인 폼 페이지로 이동
+    }
+
+    @PostMapping("/delete")
+    public String deleteMember(@RequestParam("username") String username, HttpServletRequest request, HttpServletResponse response) {
+        // memberId를 이용해 회원 삭제 로직을 구현
+        memberService.deleteMember(username);
+
+        // 사용자 로그아웃
+        new SecurityContextLogoutHandler().logout(request, response, SecurityContextHolder.getContext().getAuthentication());
+
+        // 삭제 후 메인 페이지로 리다이렉트
+        return "redirect:/";
     }
 }
