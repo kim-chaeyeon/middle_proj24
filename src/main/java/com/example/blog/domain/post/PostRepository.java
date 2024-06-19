@@ -31,4 +31,5 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
 
     List<Post> findByAuthorNickname(String nickname);
 
+
 }

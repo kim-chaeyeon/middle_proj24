@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -109,7 +110,10 @@
                 <th>MBTI</th>
                 <th>SNS</th>
                 <th>지역</th>
-                <th>관리자 여부</th>
+
+
+                <th>회원 탈퇴</th>
+
             </tr>
             </thead>
             <tbody>
@@ -125,7 +129,15 @@
                 <td th:text="${member.mbti}"></td>
                 <td th:text="${member.sns}"></td>
                 <td th:text="${member.region}"></td>
-                <td th:text="${member.admin ? '예' : '아니요'}"></td>
+
+                <td>
+                    <form th:action="@{/admin/deleteMember/{username}(username=${member.username})}" method="post"
+                          onsubmit="return confirm('정말로 회원을 탈퇴시키겠습니까?');">
+                        <input type="hidden" name="_method" value="delete">
+                        <button type="submit">탈퇴</button>
+                    </form>
+                </td>
+
             </tr>
             </tbody>
         </table>
@@ -172,4 +184,6 @@
     toggleLoginState(userInfo.loggedIn);
 </script>
 </body>
+
 </html>
+

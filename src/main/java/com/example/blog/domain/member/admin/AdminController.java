@@ -3,10 +3,17 @@ package com.example.blog.domain.member.admin;
 import com.example.blog.domain.member.entity.Member;
 import com.example.blog.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.security.Principal;
 
 import java.util.List;
 
@@ -33,9 +40,18 @@ public class AdminController {
         return "admin/members";
     }
 
-    @GetMapping("/global/list")
-    public String showGlobalList(Model model){
 
-        return "global/list";
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @DeleteMapping("/admin/deleteMember/{username}")
+    public String deleteMemberByAdmin(@PathVariable("username") String username, Principal principal) {
+        Member admin = memberService.getCurrentMember();
+
+        if (!memberService.isAdmin(admin)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "관리자 권한이 필요합니다.");
+        }
+
+        memberService.deleteMemberByAdmin(username);
+        return "redirect:/admin/members";
+
     }
 }
