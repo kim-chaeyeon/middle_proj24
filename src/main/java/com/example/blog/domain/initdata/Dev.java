@@ -92,8 +92,10 @@ public class Dev {
                 MockMultipartFile multipartFile2 = new MockMultipartFile("file2", file1.getName(), "image/jpeg", input);
 
                 // Call the signup method
+
                 memberService.signup("user1", "01012345678", "user1", "1234", 0, "admin@test.com",
                         "남자", "고성", "양식", "대전", "tong", multipartFile2, MemberRole.USER);
+
             } catch (IOException e) {
                 e.printStackTrace();
             }

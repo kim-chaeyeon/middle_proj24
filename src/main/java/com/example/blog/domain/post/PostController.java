@@ -11,7 +11,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -53,10 +55,12 @@ public class PostController {
     @GetMapping("/list")
     public String list(Model model, @RequestParam(value = "page", defaultValue = "0") int page,
                        @RequestParam(value = "kw", defaultValue = "") String kw, Principal principal) {
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated() || authentication instanceof AnonymousAuthenticationToken) {
             return "redirect:/member/login"; // 로그인이 되어 있지 않은 경우 로그인 페이지로 리다이렉트
         }
+
 
         Member member = memberService.getCurrentMember();
 
@@ -73,9 +77,6 @@ public class PostController {
 
         return "post_list";
     }
-
-
-
 
 
 

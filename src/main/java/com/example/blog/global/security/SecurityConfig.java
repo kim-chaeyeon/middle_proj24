@@ -57,8 +57,10 @@ public class SecurityConfig {
     }
 
 
+
     @Bean
     public HiddenHttpMethodFilter hiddenHttpMethodFilter() {
         return new HiddenHttpMethodFilter();
     }
+
 }

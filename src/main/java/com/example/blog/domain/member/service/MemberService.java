@@ -150,14 +150,17 @@ public class MemberService {
         return thumbnailRelPath;
     }
 
+
 //    public boolean isAdmin(Member member) {
 //        return member.isAdmin();
 //    }
+
 
     // 모든 회원 정보 가져오기
     public List<Member> getAllMembers() {
         return memberRepository.findAll();
     }
+
 
 
     public boolean isAdmin(Member member) {
@@ -171,6 +174,7 @@ public class MemberService {
         deleteRelatedFiles(member.getThumbnailImg());
         memberRepository.delete(member);
     }
+
 
     //회원 탈퇴
     @Transactional
@@ -197,4 +201,5 @@ public class MemberService {
             }
         }
     }
+
 }

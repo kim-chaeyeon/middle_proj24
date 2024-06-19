@@ -3,6 +3,7 @@ package com.example.blog.domain.member.admin;
 import com.example.blog.domain.member.entity.Member;
 import com.example.blog.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
+
 import java.util.List;
 
 @Controller
@@ -38,6 +40,7 @@ public class AdminController {
         return "admin/members";
     }
 
+
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/admin/deleteMember/{username}")
     public String deleteMemberByAdmin(@PathVariable("username") String username, Principal principal) {
@@ -49,5 +52,6 @@ public class AdminController {
 
         memberService.deleteMemberByAdmin(username);
         return "redirect:/admin/members";
+
     }
 }

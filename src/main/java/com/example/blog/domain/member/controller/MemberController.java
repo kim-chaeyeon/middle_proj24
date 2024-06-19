@@ -8,9 +8,11 @@ import com.example.blog.domain.member.entity.MemberRole;
 import com.example.blog.domain.member.service.MemberService;
 import com.example.blog.domain.member.service.VerificationCodeService;
 
+
 import com.example.blog.domain.report.service.ReportService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -213,6 +215,7 @@ public class MemberController {
         return "redirect:/";
     }
 
+
     @PreAuthorize("hasRole('admin')")
     @GetMapping("/admin/deleteMember/{username}")
     public String deleteMemberByAdmin(@PathVariable("username") String username, Principal principal) {
@@ -225,5 +228,6 @@ public class MemberController {
         memberService.deleteMemberByAdmin(username);
         return "redirect:/admin/memberList";  // 회원 목록 페이지로 리다이렉트
     }
+
 
 }
