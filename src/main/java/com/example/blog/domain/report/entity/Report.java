@@ -29,5 +29,10 @@ public class Report {
 
     private String reason;
 
+    @ManyToOne
+    @JoinColumn(name = "author_id")
+    private Member author;
+
+
 
 }

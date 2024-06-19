@@ -6,6 +6,8 @@ import com.example.blog.domain.report.repository.ReportRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ReportService {
@@ -20,5 +22,8 @@ public class ReportService {
         report.setReporterNickname(reporter.getNickname());
         report.setReportedNickname(reported.getNickname());
         reportRepository.save(report);
+    }
+    public List<Report> getAllReports() {
+        return reportRepository.findAll();
     }
 }
