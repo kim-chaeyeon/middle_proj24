@@ -20,6 +20,7 @@ public class Block {
     @Column(nullable = false)
     private String blockerNickname;
 
+
     @ManyToOne
     @JoinColumn(name = "blocked_id", nullable = false)
     private Member blocked;

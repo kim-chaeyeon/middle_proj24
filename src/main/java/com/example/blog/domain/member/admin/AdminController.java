@@ -2,6 +2,8 @@ package com.example.blog.domain.member.admin;
 
 import com.example.blog.domain.member.entity.Member;
 import com.example.blog.domain.member.service.MemberService;
+import com.example.blog.domain.report.entity.Report;
+import com.example.blog.domain.report.service.ReportService;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
@@ -21,6 +23,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AdminController {
     private final MemberService memberService;
+    private final ReportService reportService;
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/admin/page")
@@ -51,7 +54,14 @@ public class AdminController {
         }
 
         memberService.deleteMemberByAdmin(username);
-        return "redirect:/admin/members";
+        return "admin/members";
 
+    }
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/admin/reports")
+    public String showAllReports(Model model) {
+        List<Report> reports = reportService.getAllReports();
+        model.addAttribute("reports", reports);
+        return "admin/reports";
     }
 }

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>신고된 회원 목록</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 32px;
+            color: #FF4081;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table, th, td {
+            border: 1px solid #dddddd;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f9f9f9;
+        }
+        .main-btn {
+            display: inline-block;
+            margin: 10px;
+            padding: 10px 20px;
+            background-color: #FFCE45;
+            color: #333;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        .main-btn:hover {
+            background-color: #FFD700;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>신고된 회원 목록</h1>
+    <table>
+        <thead>
+        <tr>
+            <th>신고자</th>
+            <th>신고된 회원</th>
+            <th>사유</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="report : ${reports}">
+            <td th:text="${report.reporter.nickname}">Reporter Nickname</td>
+            <td th:text="${report.reported.nickname}">Reported Nickname</td>
+            <td th:text="${report.reason}">Reason</td>
+        </tr>
+        </tbody>
+    </table>
+    <a th:href="@{/}" class="main-btn">메인 화면으로 이동</a>
+</div>
+</body>
+</html>

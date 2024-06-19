@@ -9,6 +9,7 @@ import com.example.blog.domain.member.service.MemberService;
 import com.example.blog.domain.member.service.VerificationCodeService;
 
 
+import com.example.blog.domain.post.Post;
 import com.example.blog.domain.report.service.ReportService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -229,5 +230,62 @@ public class MemberController {
         return "redirect:/admin/memberList";  // 회원 목록 페이지로 리다이렉트
     }
 
+    @PostMapping("/report")
+    @ResponseBody
+    public ResponseEntity<Void> reportMember(@RequestParam("reportedNickname") String reportedNickname,
+                                             @RequestParam("reason") String reason) {
+        Member reporter = memberService.getCurrentMember();
+        Member reported = memberService.findByNickname(reportedNickname);
+        if (reported != null) {
+            reportService.reportMember(reporter, reported, reason);
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PostMapping("/block")
+    @ResponseBody
+    public ResponseEntity<Void> blockMember(@RequestParam("blockedNickname") String blockedNickname) {
+        Member blocker = memberService.getCurrentMember();
+        Member blocked = memberService.findByNickname(blockedNickname);
+        if (blocked != null) {
+            blockService.blockMember(blocker, blocked);
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PostMapping("/unblock")
+    @ResponseBody
+    public ResponseEntity<Void> unblockMember(@RequestParam("blockedNickname") String blockedNickname) {
+        Member blocker = memberService.getCurrentMember();
+        Member blocked = memberService.findByNickname(blockedNickname);
+        if (blocked != null) {
+            blockService.unblockMember(blocker, blocked);
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/posts/{nickname}")
+    @ResponseBody
+    public ResponseEntity<List<Post>> getPostsByNickname(@PathVariable String nickname, Principal principal) {
+        String currentUsername = principal.getName();
+        if (blockService.isBlocked(currentUsername, nickname)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        List<Post> posts = memberService.getPostsByNickname(nickname);
+        return ResponseEntity.ok(posts);
+    }
+    @GetMapping("/isBlocked")
+    @ResponseBody
+    public ResponseEntity<Boolean> isBlocked(@RequestParam("nickname") String nickname, Principal principal) {
+        String currentUsername = principal.getName();
+        boolean isBlocked = blockService.isBlocked(currentUsername, nickname);
+        return ResponseEntity.ok(isBlocked);
+    }
 
 }
