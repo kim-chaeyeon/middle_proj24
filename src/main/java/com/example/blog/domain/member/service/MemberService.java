@@ -130,6 +130,8 @@ public class MemberService {
                 .orElseThrow(() -> new RuntimeException("회원을 찾을 수 없습니다."));
     }
 
+
+
     public Member findByNickname(String nickname) {
         return memberRepository.findByNickname(nickname).orElse(null);
     }
@@ -148,9 +150,9 @@ public class MemberService {
         return thumbnailRelPath;
     }
 
-    public boolean isAdmin(Member member) {
-        return member.isAdmin();
-    }
+//    public boolean isAdmin(Member member) {
+//        return member.isAdmin();
+//    }
 
     // 모든 회원 정보 가져오기
     public List<Member> getAllMembers() {
@@ -158,6 +160,17 @@ public class MemberService {
     }
 
 
+    public boolean isAdmin(Member member) {
+        return member.getUsername().equals("admin");
+    }
+
+    @Transactional
+    public void deleteMemberByAdmin(String username) {
+        Member member = memberRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("해당 회원을 찾을 수 없습니다. ID: " + username));
+        deleteRelatedFiles(member.getThumbnailImg());
+        memberRepository.delete(member);
+    }
 
     //회원 탈퇴
     @Transactional

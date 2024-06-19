@@ -23,6 +23,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
 import java.util.List;
@@ -210,6 +211,19 @@ public class MemberController {
 
         // 삭제 후 메인 페이지로 리다이렉트
         return "redirect:/";
+    }
+
+    @PreAuthorize("hasRole('admin')")
+    @GetMapping("/admin/deleteMember/{username}")
+    public String deleteMemberByAdmin(@PathVariable("username") String username, Principal principal) {
+        Member admin = memberService.getCurrentMember();
+
+        if (!memberService.isAdmin(admin)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "관리자 권한이 필요합니다.");
+        }
+
+        memberService.deleteMemberByAdmin(username);
+        return "redirect:/admin/memberList";  // 회원 목록 페이지로 리다이렉트
     }
 
 }

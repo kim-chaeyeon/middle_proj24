@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,9 +31,33 @@ public class PostController {
     private final PostService postService;
     private final MemberService memberService;
 
+//    @GetMapping("/list")
+//    public String list(Model model, @RequestParam(value = "page", defaultValue = "0") int page,
+//                       @RequestParam(value = "kw", defaultValue = "") String kw, Principal principal) {
+//        Member member = memberService.getCurrentMember();
+//
+//        if (member != null && member.getUsername().equals("admin")) {
+//            Page<Post> paging = postService.getList(page, kw); // admin일 경우 모든 게시물 가져오기
+//            model.addAttribute("paging", paging);
+//            model.addAttribute("loggedInUser", member);
+//        } else {
+//            String region = member.getRegion();
+//            Page<Post> paging = postService.getList(page, kw, region); // 일반 사용자일 경우 지역별 게시물 가져오기
+//            model.addAttribute("paging", paging);
+//            model.addAttribute("loggedInUser", member);
+//        }
+//
+//        return "post_list";
+//    }
+
     @GetMapping("/list")
     public String list(Model model, @RequestParam(value = "page", defaultValue = "0") int page,
                        @RequestParam(value = "kw", defaultValue = "") String kw, Principal principal) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated() || authentication instanceof AnonymousAuthenticationToken) {
+            return "redirect:/member/login"; // 로그인이 되어 있지 않은 경우 로그인 페이지로 리다이렉트
+        }
+
         Member member = memberService.getCurrentMember();
 
         if (member != null && member.getUsername().equals("admin")) {
@@ -48,6 +73,10 @@ public class PostController {
 
         return "post_list";
     }
+
+
+
+
 
 
     @GetMapping("/detail/{id}")
