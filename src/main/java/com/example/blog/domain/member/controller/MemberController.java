@@ -1,13 +1,17 @@
 package com.example.blog.domain.member.controller;
 
 
+import com.example.blog.domain.block.service.BlockService;
 import com.example.blog.domain.email.EmailService;
 import com.example.blog.domain.member.entity.Member;
 import com.example.blog.domain.member.entity.MemberRole;
 import com.example.blog.domain.member.service.MemberService;
 import com.example.blog.domain.member.service.VerificationCodeService;
+
+import com.example.blog.domain.report.service.ReportService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,6 +24,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.security.Principal;
+import java.util.List;
+
 @Controller
 @RequestMapping("/member")
 @RequiredArgsConstructor
@@ -27,6 +34,8 @@ public class MemberController {
     private final EmailService emailService;
     private final MemberService memberService;
     private final VerificationCodeService verificationCodeService;
+    private final ReportService reportService;
+    private final BlockService blockService;
 
     @PreAuthorize("isAnonymous()")
     @GetMapping("/login")
@@ -183,6 +192,7 @@ public class MemberController {
 
 
 
+
     //회원 탈퇴
     @GetMapping("/delete")
     public String showDeleteForm(Model model) {
@@ -201,4 +211,5 @@ public class MemberController {
         // 삭제 후 메인 페이지로 리다이렉트
         return "redirect:/";
     }
+
 }

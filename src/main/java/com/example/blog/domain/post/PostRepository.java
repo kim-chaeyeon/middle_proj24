@@ -10,6 +10,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 public interface PostRepository extends JpaRepository<Post, Integer> {
     Post findByTitle(String title);
 
@@ -24,5 +26,9 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
     @Query(value="ALTER TABLE post AUTO_INCREMENT = 1", nativeQuery = true)
     void clearAutoIncrement();
 
+
     Page<Post> findByAuthor(Member member, Pageable pageable);
+
+    List<Post> findByAuthorNickname(String nickname);
+
 }

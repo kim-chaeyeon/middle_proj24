@@ -90,10 +90,29 @@
         .sub-btn:hover {
             background-color: #FFD700;
         }
+        .button-container {
+            display: flex;
+            justify-content: flex-end; /* 오른쪽으로 정렬 */
+            margin-bottom: 20px; /* 버튼 컨테이너와 다른 요소들 사이의 간격 */
+        }
+        .report-btn, .block-btn, .unblock-btn {
+            background-color: #FF0000; /* 레드 컬러 */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
     </style>
 </head>
 <body>
 <div class="container">
+    <div class="button-container">
+        <button class="report-btn" onclick="reportMember()"><i class="fa-solid fa-triangle-exclamation"></i>&nbsp;신고</button>
+        <button class="block-btn" onclick="blockMember()"><i class="fa-solid fa-user-lock"></i>&nbsp;차단</button>
+        <button class="unblock-btn" onclick="unblockMember()"><i class="fa-solid fa-unlock"></i>&nbsp;차단 해제</button>
+    </div>
     <a th:href="@{/}" class="main-btn">메인 화면으로 이동</a>
     <h1><span th:text="${member.nickname}">닉네임</span>의 프로필</h1>
     <img th:src="@{|/file/${member.thumbnailImg}|}" alt="프로필 사진" class="profile-img"/>
@@ -127,9 +146,52 @@
             <span>지역 : <span th:text="${member.region}"></span></span>
         </div>
     </div>
+
 </div>
 
 <script>
+    function reportMember() {
+        let reason = prompt("신고 사유를 입력하세요:");
+        if (reason) {
+            let nickname = document.querySelector('h1 span').textContent; // 프로필에 표시된 닉네임 가져오기
+            fetch(`/member/report?reportedNickname=${nickname}&reason=${reason}`, {
+                method: 'POST'
+            }).then(response => {
+                if (response.ok) {
+                    alert("신고가 접수되었습니다.");
+                } else {
+                    alert("신고에 실패했습니다.");
+                }
+            });
+        }
+    }
+
+    function blockMember() {
+        let nickname = document.querySelector('h1 span').textContent; // 프로필에 표시된 닉네임 가져오기
+        fetch(`/member/block?blockedNickname=${nickname}`, {
+            method: 'POST'
+        }).then(response => {
+            if (response.ok) {
+                alert("차단되었습니다.");
+            } else {
+                alert("차단에 실패했습니다.");
+            }
+        });
+    }
+
+    function unblockMember() {
+        let nickname = document.querySelector('h1 span').textContent; // 프로필에 표시된 닉네임 가져오기
+        fetch(`/member/unblock?blockedNickname=${nickname}`, {
+            method: 'POST'
+        }).then(response => {
+            if (response.ok) {
+                alert("차단이 해제되었습니다.");
+            } else {
+                alert("차단 해제에 실패했습니다.");
+            }
+        });
+    }
+
     function checkLogin() {
         var loggedIn = true; // 실제로는 서버에서 로그인 상태를 확인하는 로직이 필요합니다.
         if (!loggedIn) {
@@ -137,7 +199,22 @@
         }
     }
 
-    window.onload = checkLogin;
+    function checkBlockedStatus() {
+        let nickname = document.querySelector('h1 span').textContent;
+        fetch(`/member/isBlocked?nickname=${nickname}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data) {
+                    alert("차단된 사용자입니다. 프로필을 볼 수 없습니다.");
+                    window.location.href = "/"; // 메인 페이지로 리다이렉트
+                }
+            });
+    }
+
+    window.onload = function() {
+        checkLogin();
+        checkBlockedStatus();
+    };
 </script>
 </body>
 </html>

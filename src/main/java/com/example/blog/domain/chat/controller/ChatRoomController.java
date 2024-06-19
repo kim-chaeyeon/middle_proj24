@@ -1,5 +1,6 @@
 package com.example.blog.domain.chat.controller;
 
+
 import com.example.blog.domain.chat.model.ChatRoom;
 import com.example.blog.domain.chat.repository.ChatRoomRepository;
 import com.example.blog.domain.member.entity.Member;
@@ -20,6 +21,7 @@ public class ChatRoomController {
 
     private final ChatRoomRepository chatRoomRepository;
     private final MemberRepository memberRepository;
+
     private final Map<UUID, Set<String>> chatRoomMembers = new HashMap<>(); // 채팅방 멤버 목록
 
 
