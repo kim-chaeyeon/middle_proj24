@@ -45,6 +45,7 @@
             <!-- 내용 -->
             <div class="card-text" th:utext="${@commonUtil.markdown(post.content)}"></div>
 
+
             <!-- 버튼 영역 -->
             <div class="d-flex align-items-center">
                 <!-- 수정일자 -->
@@ -63,6 +64,7 @@
                 </div>
 
                 <!-- 삭제 버튼 -->
+                <!--                관리자 삭제 추가-->
                 <div class="mx-3">
                     <a onclick="return confirm('정말로 삭제하시겠습니까?');" th:href="@{|/post/delete/${post.id}|}"
                        sec:authorize="isAuthenticated()"
