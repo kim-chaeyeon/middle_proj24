@@ -1,14 +1,10 @@
 package com.example.blog.domain.member.service;
 
 
-
 import com.example.blog.domain.member.dto.JoinRequest;
 import com.example.blog.domain.member.entity.Member;
 import com.example.blog.domain.member.entity.MemberRole;
 import com.example.blog.domain.member.repository.MemberRepository;
-
-import com.example.blog.domain.post.Post;
-import com.example.blog.domain.post.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,7 +23,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class MemberService {
 
-    private final PostRepository postRepository;
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
 
@@ -138,10 +133,6 @@ public class MemberService {
     public Member findByNickname(String nickname) {
         return memberRepository.findByNickname(nickname).orElse(null);
     }
-    public List<Post> getPostsByNickname(String nickname) {
-        return postRepository.findByAuthorNickname(nickname);
-    }
-
 
     // 썸네일 저장
     private String saveThumbnail(MultipartFile thumbnail) {

@@ -29,4 +29,6 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
 
     Page<Post> findByAuthor(Member member, Pageable pageable);
 
+    List<Post> findByAuthorNickname(String nickname);
+
 }
