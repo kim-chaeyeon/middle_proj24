@@ -110,58 +110,5 @@ public class PostService {
         };
     }
 
-<<<<<<< HEAD
-    public Page<Post> getList(int page, String kw, String region) {
-        List<Sort.Order> sorts = new ArrayList<>();
-        sorts.add(Sort.Order.desc("createDate"));
 
-        Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
-
-        Specification<Post> spec = Specification.where(region(region));
-
-        if (kw != null && !kw.trim().isEmpty()) {
-            spec = spec.and(search(kw));
-        }
-
-        return postRepository.findAll(spec, pageable);
-    }
-
-// 특정 지역에 해당하는 게시글을 검색할때 필요함! 이거 없으면 그냥 전처럼 지역 상관없이 다 출력됨
-// Specification을 사용하여 데이터베이스 쿼리를 동적으로 생성하기 위한 메서드 -> 이 문장은 이해가 안되.. 찌발..
-
-    private Specification<Post> region(String region) {
-        return (root, query, cb) -> cb.equal(root.get("region"), region);
-    }
-
-// create도 마찬가지! 지역 추가 해줘야겠지?
-
-    public Post create(String title, String content, MultipartFile thumbnail, Member author, String region) {
-        String thumbnailRelPath = "post/" + UUID.randomUUID().toString() + ".jpg";
-        File thumbnailFile = new File(fileDirPath + "/" + thumbnailRelPath);
-
-        try {
-            thumbnail.transferTo(thumbnailFile);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        Post post = Post.builder()
-                .title(title)
-                .content(content)
-                .author(author)
-                .createDate(LocalDateTime.now())
-                .thumbnailImg(thumbnailRelPath)
-                .region(region)
-                .build();
-        postRepository.save(post);
-
-        return post;
-    }
-
-    public Page<Post> getPostsByAuthor(Member member, Pageable pageable) {
-        return postRepository.findByAuthor(member, pageable);
-    }
-
-=======
->>>>>>> 7f82a1d (commit)
 }

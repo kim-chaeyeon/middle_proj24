@@ -26,9 +26,7 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
     @Query(value="ALTER TABLE post AUTO_INCREMENT = 1", nativeQuery = true)
     void clearAutoIncrement();
 
-<<<<<<< HEAD
+
     Page<Post> findByAuthor(Member member, Pageable pageable);
-=======
-    List<Post> findByAuthorNickname(String nickname);
->>>>>>> 7f82a1d (commit)
+
 }
