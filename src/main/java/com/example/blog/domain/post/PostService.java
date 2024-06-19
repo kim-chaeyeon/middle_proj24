@@ -110,6 +110,7 @@ public class PostService {
         };
     }
 
+<<<<<<< HEAD
     public Page<Post> getList(int page, String kw, String region) {
         List<Sort.Order> sorts = new ArrayList<>();
         sorts.add(Sort.Order.desc("createDate"));
@@ -161,4 +162,6 @@ public class PostService {
         return postRepository.findByAuthor(member, pageable);
     }
 
+=======
+>>>>>>> 7f82a1d (commit)
 }
