@@ -1,44 +1,73 @@
 <html layout:decorate="~{layout}">
 <div layout:fragment="content" class="container my-3">
+    <head>
+        <title>밥먹다 Daily Story</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+        <style>
+            .profile-section {
+                display: flex;
+                align-items: center;
+                margin-bottom: 20px;
+            }
+            .profile {
+                display: flex;
+                align-items: center;
+            }
+            .profile img {
+                border-radius: 50%;
+                margin-right: 20px;
+                width: 100px;
+                height: 100px;
+                object-fit: cover;
+            }
+            .profile-info p {
+                margin: 0;
+            }
+        </style>
+    </head>
+    <body>
+    <div class="container my-3">
+        <h2>밥먹다 Daily Story</h2>
 
-    <h2> 밥먹다 Daily Story </h2>
-    <!-- 프로필 섹션 -->
-    <div class="profile-section mb-3">
-        <div class="profile">
-            <!-- 프로필 사진 -->
-            <img src="https://picsum.photos/200/300" alt="Profile Image">
-            <!-- 프로필 정보 -->
-            <div class="profile-info">
-                <p>Name: John Doe</p>
-                <p>Age: 30</p>
-                <p>MBTI: ENFP</p>
-                <p>SNS: @johndoe</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- 게시물 섹션 -->
-    <div class="row">
-        <div th:each="post, loop : ${paging}" class="col-md-4 mb-3">
-            <div class="card">
-                <img th:src="@{|/file/${post.thumbnailImg}|}" class="card-img-top" alt="Thumbnail">
-                <div class="card-body">
-                    <h5 class="card-title">
-                        <a th:href="@{|/post/detail/${post.id}|}" th:text="${post.title}" class="no-underline"></a>
-                    </h5>
-                    <p class="card-text">
-                        <small class="text-muted" th:text="${#temporals.format(post.createDate, 'yyyy-MM-dd HH:mm')}"></small>
-                    </p>
+        <!-- 프로필 섹션 -->
+        <div th:if="${loggedInUser != null}" class="profile-section mb-3">
+            <div class="profile">
+                <!-- 프로필 사진 -->
+                <img th:src="@{|/file/${loggedInUser.thumbnailImg}|}" alt="Profile Image">
+                <!-- 프로필 정보 -->
+                <div class="profile-info">
+                    <p>닉네임: <span th:text="${loggedInUser.nickname}"></span></p>
+                    <p>나이: <span th:text="${loggedInUser.age}"></span></p>
+                    <p>지역: <span th:text="${loggedInUser.region}"></span></p>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- 게시물 등록 버튼 -->
-    <div class="row my-3">
-        <div class="col-6">
-            <a th:href="@{/post/create}" class="btn btn-primary">게시물 등록하기</a>
+        <!-- 게시물 섹션 -->
+        <div class="row">
+            <div th:each="post : ${paging}" class="col-md-4 mb-3">
+                <div class="card">
+                    <img th:src="@{|/file/${post.thumbnailImg}|}" class="card-img-top" alt="Thumbnail">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <a th:href="@{|/post/detail/${post.id}|}" th:text="${post.title}" class="no-underline"></a>
+                        </h5>
+                        <p class="card-text">
+                            작성자: <span th:text="${post.author.nickname}"></span> <br>
+                            지역: <span th:text="${post.author.region}"></span> <br>
+                            <small class="text-muted" th:text="${#temporals.format(post.createDate, 'yyyy-MM-dd HH:mm')}"></small>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 게시물 등록 버튼 -->
+        <div class="row my-3">
+            <div class="col-6">
+                <a th:href="@{/post/create}" class="btn btn-primary">게시물 등록하기</a>
+            </div>
         </div>
     </div>
-</div>
+    </body>
 </html>
