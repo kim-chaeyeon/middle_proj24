@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${pageName}">회원 목록</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+        header {
+            background-color: #FFCE45;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            height: 60px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        header a {
+            color: #333;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 20px;
+        }
+        header .left, header .right {
+            display: flex;
+            align-items: center;
+        }
+        header .right a {
+            margin-left: 15px;
+            font-size: 16px;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+        section {
+            flex-grow: 1;
+            background-color: #FFF5DB;
+            padding: 20px;
+            box-sizing: border-box;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2, h3 {
+            text-align: center;
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #FFCE45;
+            color: white;
+        }
+        footer {
+            height: 60px;
+            line-height: 60px;
+            text-align: center;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div class="left">
+        <a href="javascript:history.back()" class="main-btn">이전 화면으로 이동</a>
+    </div>
+    <div class="left marge:10%">
+        <a href="/">밥먹다</a>
+    </div>
+    <div class="right">
+        <a class="nav-link" sec:authorize="isAnonymous()" href="/member/login">로그인</a>
+        <a class="nav-link" sec:authorize="isAuthenticated()" href="/member/logout" onclick="logout()">로그아웃</a>
+        <a sec:authorize="isAuthenticated()" href="/member/myPage">마이페이지</a>
+        <span sec:authorize="isAuthenticated()" id="username"></span>
+    </div>
+</header>
+
+<div class="container">
+    <section>
+        <h1 th:text="${pageName}">회원 목록</h1>
+        <hr/>
+        <h2>관리자 페이지</h2>
+        <h3>모든 회원 정보</h3>
+        <table>
+            <thead>
+            <tr>
+                <th>유저번호</th>
+                <th>아이디</th>
+                <th>닉네임</th>
+                <th>이메일</th>
+                <th>전화번호</th>
+                <th>선호음식</th>
+                <th>성별</th>
+                <th>나이</th>
+                <th>MBTI</th>
+                <th>SNS</th>
+                <th>지역</th>
+                <th>관리자 여부</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="member : ${members}">
+                <td th:text="${member.id}"></td>
+                <td th:text="${member.username}"></td>
+                <td th:text="${member.nickname}"></td>
+                <td th:text="${member.email}"></td>
+                <td th:text="${member.phoneNumber}"></td>
+                <td th:text="${member.favoriteFood}"></td>
+                <td th:text="${member.gender}"></td>
+                <td th:text="${member.age}"></td>
+                <td th:text="${member.mbti}"></td>
+                <td th:text="${member.sns}"></td>
+                <td th:text="${member.region}"></td>
+                <td th:text="${member.admin ? '예' : '아니요'}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</div>
+
+<footer>
+    밥먹다 관리자 페이지
+</footer>
+
+<script>
+    // 서버에서 받아온 사용자 정보
+    var userInfo = {
+        loggedIn: false, // 로그인 상태 여부
+        username: "" // 로그인된 사용자 이름
+    };
+
+    // 헤더의 로그인 링크와 로그아웃 버튼을 제어하는 함수
+    function toggleLoginState(loggedIn) {
+        var loginLink = document.querySelector(".nav-link[sec\\:authorize=\"isAnonymous()\"]");
+        var logoutLink = document.querySelector(".nav-link[sec\\:authorize=\"isAuthenticated()\"]");
+
+        if (loggedIn) {
+            // 로그인되어 있는 경우, 로그아웃 버튼 표시
+            loginLink.style.display = "none";
+            logoutLink.style.display = "inline";
+            document.getElementById("username").innerText = userInfo.username;
+        } else {
+            // 로그인되어 있지 않은 경우, 로그인 링크 표시
+            loginLink.style.display = "inline";
+            logoutLink.style.display = "none";
+        }
+    }
+
+    // 로그아웃 처리 함수
+    function logout() {
+        // 로그아웃 처리 작업 수행 (예: 세션 삭제 등)
+        // 여기서는 간단히 예시로 로그인 상태를 false로 변경
+        userInfo.loggedIn = false;
+        toggleLoginState(userInfo.loggedIn);
+    }
+
+    // 초기 로그인 상태 설정
+    toggleLoginState(userInfo.loggedIn);
+</script>
+</body>
+</html>

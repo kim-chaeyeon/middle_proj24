@@ -86,5 +86,11 @@ public class Member {
     public void setNaverId(String naverId) {
         this.naverId = naverId;
     }
+
+    private boolean admin;
+
+
+
+
 }
 

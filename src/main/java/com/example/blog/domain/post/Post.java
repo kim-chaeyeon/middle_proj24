@@ -43,6 +43,8 @@ public class Post {
     @ManyToOne
     private Member author;
 
+    private String region;
+
     @ManyToMany
     Set<Member> voters = new LinkedHashSet<>();
 

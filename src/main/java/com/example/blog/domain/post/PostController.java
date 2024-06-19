@@ -5,9 +5,15 @@ import com.example.blog.domain.member.entity.Member;
 import com.example.blog.domain.member.service.MemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Hibernate;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,12 +31,24 @@ public class PostController {
     private final MemberService memberService;
 
     @GetMapping("/list")
-    public String list(Model model, @RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value = "kw", defaultValue = "") String kw) {
-        Page<Post> paging = this.postService.getList(page, kw);
-        model.addAttribute("paging", paging);
+    public String list(Model model, @RequestParam(value = "page", defaultValue = "0") int page,
+                       @RequestParam(value = "kw", defaultValue = "") String kw, Principal principal) {
+        Member member = memberService.getCurrentMember();
+
+        if (member != null && member.getUsername().equals("admin")) {
+            Page<Post> paging = postService.getList(page, kw); // admin일 경우 모든 게시물 가져오기
+            model.addAttribute("paging", paging);
+            model.addAttribute("loggedInUser", member);
+        } else {
+            String region = member.getRegion();
+            Page<Post> paging = postService.getList(page, kw, region); // 일반 사용자일 경우 지역별 게시물 가져오기
+            model.addAttribute("paging", paging);
+            model.addAttribute("loggedInUser", member);
+        }
 
         return "post_list";
     }
+
 
     @GetMapping("/detail/{id}")
     public String detail(Model model, @PathVariable("id") Integer id, CommentForm commentForm) {
@@ -45,7 +63,6 @@ public class PostController {
         return "post_form";
     }
 
-
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/create")
     public String postCreate(
@@ -58,12 +75,11 @@ public class PostController {
             return "post_form";
         }
 
-        Member member = this.memberService.getCurrentMember();
-        Post p = this.postService.create(title, content, thumbnail, member);
+        Member member = memberService.getCurrentMember();
+        Post post = postService.create(title, content, thumbnail, member, member.getRegion());
 
         return "redirect:/post/list";
     }
-
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/modify/{id}")
     public String postModify(@Valid PostForm postForm, BindingResult bindingResult,
@@ -102,10 +118,13 @@ public class PostController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/delete/{id}")
     public String postDelete(Principal principal, @PathVariable("id") Integer id) {
-        Post post = this.postService.getPost(id);
+        Post post = postService.getPost(id);
         Member member = memberService.getCurrentMember();
 
-        if (!post.getAuthor().getUsername().equals(member.getUsername())) {
+        // 관리자 권한 추가
+        if (!post.getAuthor().getUsername().equals(member.getUsername())
+                && !memberService.isAdmin(member)
+                && !member.getUsername().equals("admin")) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제권한이 없습니다.");
         }
 
@@ -123,5 +142,19 @@ public class PostController {
         this.postService.vote(post, member);
 
         return "redirect:/post/detail/%s".formatted(id);
+    }
+
+    @GetMapping("/myPost")
+    @PreAuthorize("isAuthenticated()")
+    public String myPosts(Model model, Principal principal, @RequestParam(value = "page", defaultValue = "0") int page) {
+        Member member = memberService.getCurrentMember();
+        Pageable pageable = PageRequest.of(page, 10);  // 한 페이지에 10개의 게시물 표시
+
+        Page<Post> myPosts = postService.getPostsByAuthor(member, pageable);
+
+        model.addAttribute("myPosts", myPosts);
+        model.addAttribute("loggedInUser", member);
+
+        return "myPost";
     }
 }

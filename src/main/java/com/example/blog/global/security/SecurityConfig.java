@@ -16,20 +16,19 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
+
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
-                        // 회원 관련 페이지는 모두 허용
-                        .requestMatchers(new AntPathRequestMatcher("/chat/**")).authenticated() // 채팅 경로는 인증 필요
-                        .requestMatchers(new AntPathRequestMatcher("/**")).permitAll())
-                .formLogin((formLogin) -> formLogin
-                        // GET
-                        // 시큐리티에게 우리가 만든 로그인 페이지 url을 알려준다.
-                        // 만약 이걸 하지 않으면 로그인 페이지 url은 "/login" 이다.
+                .authorizeRequests(authorizeRequests -> authorizeRequests
+                        .requestMatchers("/chat/**").authenticated() // 채팅 경로는 인증 필요
+                        .requestMatchers("/admin/**").hasRole("ADMIN") // 관리자 경로는 관리자 권한 필요
+                        .requestMatchers("/api/posts/**").hasRole("ADMIN") // API 경로도 관리자 권한 필요
+                        .anyRequest().permitAll()
+                )
+                .formLogin(formLogin -> formLogin
                         .loginPage("/member/login")
                         .defaultSuccessUrl("/", true)
-
                 )
                 .oauth2Login(
                         oauth2Login -> oauth2Login
@@ -41,8 +40,8 @@ public class SecurityConfig {
                                 .logoutSuccessUrl("/")
                                 .invalidateHttpSession(true)
                 )
-                .csrf((csrf) -> csrf
-                        .ignoringRequestMatchers(new AntPathRequestMatcher("/**")));
+                .csrf().disable(); // CSRF 보안 기능 비활성화
+
         return http.build();
     }
 
@@ -53,6 +52,6 @@ public class SecurityConfig {
 
     @Bean
     AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-            return authenticationConfiguration.getAuthenticationManager();
+        return authenticationConfiguration.getAuthenticationManager();
     }
 }

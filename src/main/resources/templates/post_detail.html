@@ -2,13 +2,23 @@
 <div layout:fragment="content" class="container my-3">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
+
+
     <!-- 게시물 폼 추가 -->
     <div class="post-wrapper my-3">
+
+        <!-- 작성자 정보 -->
+        <div class="mb-3">
+            <strong>작성자:</strong> <span th:text="${post.author.nickname}"></span> <br>
+            <strong>지역:</strong> <span th:text="${post.author.region}"></span>
+        </div>
+
         <div class="card-body">
             <!-- 썸네일 표시 -->
             <div th:if="${post.thumbnailImg != null}">
                 <img th:src="@{|/file/${post.thumbnailImg}|}" alt="thumbnail" class="img-thumbnail mb-3">
             </div>
+
 
             <!-- 추천 버튼과 작성일자 -->
             <div class="d-flex justify-content-between">
@@ -25,6 +35,8 @@
                 </div>
             </div>
 
+
+
             <!-- 제목 -->
             <div>
                 <h2 class="border-bottom py-2" th:text="${post.title}"></h2>
@@ -32,6 +44,7 @@
 
             <!-- 내용 -->
             <div class="card-text" th:utext="${@commonUtil.markdown(post.content)}"></div>
+
 
             <!-- 버튼 영역 -->
             <div class="d-flex align-items-center">
@@ -51,21 +64,17 @@
                 </div>
 
                 <!-- 삭제 버튼 -->
+                <!--                관리자 삭제 추가-->
                 <div class="mx-3">
                     <a onclick="return confirm('정말로 삭제하시겠습니까?');" th:href="@{|/post/delete/${post.id}|}"
                        sec:authorize="isAuthenticated()"
-                       th:if="${post.author != null and #authentication.getPrincipal().getUsername() == post.author.username}">
+                       th:if="${post.author != null and (#authentication.getPrincipal().getUsername() == post.author.username or #authentication.getPrincipal().getAuthorities().contains(new org.springframework.security.core.authority.SimpleGrantedAuthority('ROLE_ADMIN')))}">
                         <i class="fas fa-trash-alt fa-lg"></i>
                     </a>
                 </div>
             </div>
         </div>
     </div>
-
-
-
-
-
 
     <!-- 댓글의 갯수 표시 -->
     <h5 class="border-bottom my-3 py-2"
