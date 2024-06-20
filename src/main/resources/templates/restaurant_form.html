@@ -1,23 +1,46 @@
-<html layout:decorate="~{layout}">
-<div layout:fragment="content" class="container my-3">
-    <h5 class="my-3 border-bottom pb-2">질문등록</h5>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Restaurant Form</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<div class="container my-3">
+    <h5 class="my-3 border-bottom pb-2">맛집등록</h5>
 
-    <form th:action method="post" th:object="${restaurantForm}" enctype="multipart/form-data">
+    <form id="restaurantForm" th:action="@{/restaurant/create}" method="post" th:object="${restaurantForm}" enctype="multipart/form-data">
         <div th:replace="~{form_errors :: formErrorsFragment}"></div>
 
         <div class="mb-3">
-            <label for="title" class="form-label">제목</label>
-            <input required maxlength="200" placeholder="제목(200자 이하)" th:field="*{title}" type="text" class="form-control">
+            <label for="title" class="form-label">음식</label>
+            <input required maxlength="200" placeholder="음식(200자 이하)" th:field="*{title}" type="text" class="form-control">
         </div>
         <div class="mb-3">
-            <label for="content" class="form-label">내용</label>
-            <textarea required maxlength="20000" placeholder="내용(20,000자 이하)" th:field="*{content}" class="form-control" rows="10"></textarea>
+            <label for="content" class="form-label">추천음식</label>
+            <textarea required maxlength="20000" placeholder="추천음식, 추천하는 이유(20,000자 이하)" th:field="*{content}" class="form-control" rows="10"></textarea>
         </div>
         <div class="mb-3">
             <label for="thumbnail" class="form-label">썸네일</label>
             <input type="file" th:field="*{thumbnail}" class="form-control">
         </div>
+        <div class="mb-3">
+            <label for="cuisineType" class="form-label">음식종류</label>
+            <input th:field="*{cuisineType}" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for="restaurantName" class="form-label">식당 이름</label>
+            <input type="text" th:field="*{restaurantName}" id="restaurantName" class="form-control">
+            <button type="button" id="searchAddress" class="btn btn-secondary my-2">주소 검색</button>
+        </div>
+        <div class="mb-3">
+            <label for="address" class="form-label">주소</label>
+            <input type="text" id="address" th:field="*{address}" class="form-control" readonly>
+        </div>
+
         <input type="submit" value="저장하기" class="btn btn-primary my-2">
     </form>
 </div>
+
+<script src="/js/searchAddress.js"></script>
+</body>
 </html>

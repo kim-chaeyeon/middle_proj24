@@ -29,7 +29,7 @@ public class RCService {
         Optional<RC> rc = rcRepository.findById(id);
         if (rc.isPresent()) {
             return rc.get();
-        } else {
+        }else {
             throw new DataNotFoundException("rc not found");
         }
     }
@@ -40,6 +40,7 @@ public class RCService {
         rcRepository.save(rc);
     }
 
+
     public void delete(RC rc) {
         rcRepository.delete(rc);
     }
@@ -48,4 +49,5 @@ public class RCService {
         rc.addVoter(voter);
         rcRepository.save(rc);
     }
+
 }

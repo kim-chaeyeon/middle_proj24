@@ -1,106 +1,112 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>맛집 등록</title>
-    <link rel="stylesheet" href="styles.css">
-    <!-- Google Maps Places API 라이브러리 추가 -->
-    <script src="https://maps.googleapis.com/maps/api/js?key= myKey"></script>
-</head>
-<body>
-<div class="container">
-    <h1>맛집 등록</h1>
-    <form action="/restaurant/create" method="post" enctype="multipart/form-data">
-        <div class="form-group">
-            <label for="title">제목</label>
-            <input type="text" id="title" name="title" required>
-        </div>
-        <div class="form-group">
-            <label for="content">내용</label>
-            <textarea id="content" name="content" rows="5" required></textarea>
-        </div>
-        <div class="form-group">
-            <label for="cuisine">음식 종류</label>
-            <select id="cuisine" name="cuisine" required>
-                <option value="KOREAN">한식</option>
-                <option value="CHINESE">중식</option>
-                <option value="JAPANESE">일식</option>
-                <option value="WESTERN">양식</option>
-                <option value="SNACK">분식</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="address">맛집 주소</label>
-            <input type="text" id="address" name="address" autocomplete="off" required>
-            <span id="addressError" style="color: red;"></span>
-        </div>
-        <div class="form-group">
-            <label for="thumbnail">썸네일</label>
-            <input type="file" id="thumbnail" name="thumbnail" accept="image/*" required>
-        </div>
-        <button type="submit">등록하기</button>
-    </form>
-</div>
+<html layout:decorate="~{layout}">
+<div layout:fragment="content" class="container my-3">
 
-<!-- Google Maps Places API 자동 완성 기능 스크립트 -->
-<script>
-    var input = document.getElementById('address');
-    var autocomplete = new google.maps.places.Autocomplete(input);
-</script>
-</body>
-</html>
-
-
-
-<!--     댓글의 갯수 표시 -->
-    <h5 class="border-bottom my-3 py-2"
-        th:text="|${#lists.size(restaurant.rcList)}개의 댓글이 있습니다.|"></h5>
-
-    <!-- 댓글 반복 시작 -->
-    <div th:id="|rc_${rc.id}" class="card my-3" th:each="rc : ${restaurant.rcList}">
+    <!-- 맛집 게시물 -->
+    <h2 class="border-bottom py-2" th:text="${restaurant.title}"></h2>
+    <div class="card my-3">
         <div class="card-body">
-            <div class="card-text" th:utext="${@commonUtil.markdown(rc.content)}"></div>
-            <div class="d-flex justify-content-end">
-                <div th:if="${rc.modifyDate != null}" class="badge bg-light text-dark p-2 text-start mx-3">
-                    <div class="mb-2">modified at</div>
-                    <div th:text="${#temporals.format(rc.modifyDate, 'yyyy-MM-dd HH:mm')}"></div>
+            <!-- 썸네일 표시 -->
+            <div th:if="${restaurant.thumbnailImg != null}">
+                <img th:src="@{|/file/${restaurant.thumbnailImg}|}" alt="thumbnail" class="img-thumbnail mb-3">
+            </div>
+            <div class="card-text" th:utext="${@commonUtil.markdown(restaurant.content)}"></div>
+            <div th:text="${restaurant.cuisineType}"></div>
+            <label class="font-weight-bold">식당 이름:</label>
+            <span th:text="${restaurant.restaurantName}"></span>
+        </div>
+        <div>
+            <label class="font-weight-bold">음식 종류:</label>
+            <span th:text="${restaurant.cuisineType}"></span>
+        </div>
+        <div>
+            <label class="font-weight-bold">주소:</label>
+            <span th:text="${restaurant.address}"></span>
+        </div>
+
+        <div class="d-flex justify-content-end">
+            <div th:if="${restaurant.modifyDate != null}" class="badge bg-light text-dark p-2 text-start mx-3">
+                <div class="mb-2">modified at</div>
+                <div th:text="${#temporals.format(restaurant.modifyDate, 'yyyy-MM-dd HH:mm')}"></div>
+            </div>
+
+            <div class="badge bg-light text-dark p-2 text-start">
+                <div class="mb-2">
+                    <span th:if="${restaurant.author != null}" th:text="${restaurant.author.username}"></span>
                 </div>
-                <div class="badge bg-light text-dark p-2 text-start">
-                    <div class="mb-2">
-                        <span th:if="${rc.author != null}" th:text="${rc.author.username}"></span>
-                    </div>
-                    <div th:text="${#temporals.format(rc.createDate, 'yyyy-MM-dd HH:mm')}"></div>
-                    <div class="my-3">
-                        <a onclick="return confirm('추천하시겠습니까?');" class="btn btn-sm btn-outline-secondary"
-                           th:href="@{|/rc/vote/${rc.id}|}">
-                            추천
-                            <span class="badge rounded-pill bg-success" th:text="${#lists.size(rc.voters)}"></span>
-                        </a>
 
-                        <a th:href="@{|/rc/modify/${rc.id}|}" class="btn btn-sm btn-outline-secondary"
-                           sec:authorize="isAuthenticated()"
-                           th:if="${rc.author != null and #authentication.getPrincipal().getUsername() == rc.author.username}"
-                           th:text="수정"></a>
+                <div th:text="${#temporals.format(restaurant.createDate, 'yyyy-MM-dd HH:mm')}"></div>
 
-                        <a onclick="return confirm('정말로 삭제하시겠습니까?');" th:href="@{|/rc/delete/${rc.id}|}"
-                           class="delete btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
-                           th:if="${rc.author != null and #authentication.getPrincipal().getUsername() == rc.author.username}"
-                           th:text="삭제"></a>
-                    </div>
+                <div class="my-3">
+                    <a onclick="return confirm('추천하시겠습니까?');" class="btn btn-sm btn-outline-secondary"
+                       th:href="@{|/restaurant/vote/${restaurant.id}|}">
+                        추천
+                        <span class="badge rounded-pill bg-success" th:text="${#lists.size(restaurant.voters)}"></span>
+                    </a>
+
+                    <a th:href="@{|/restaurant/modify/${restaurant.id}|}" class="btn btn-sm btn-outline-secondary"
+                       sec:authorize="isAuthenticated()"
+                       th:if="${restaurant.author != null and #authentication.getPrincipal().getUsername() == restaurant.author.username}"
+                       th:text="수정"></a>
+
+                    <a onclick="return confirm('정말로 삭제하시겠습니까?');" th:href="@{|/restaurant/delete/${restaurant.id}|}"
+                       class="delete btn btn-sm btn-outline-secondary"
+                       sec:authorize="isAuthenticated()"
+                       th:if="${restaurant.author != null and #authentication.getPrincipal().getUsername() == restaurant.author.username}"
+                       th:text="삭제"></a>
                 </div>
             </div>
         </div>
     </div>
-    <!-- 댓글 반복 끝  -->
+</div>
 
-    <!-- 댓글 작성 -->
-    <form th:action="@{|/rc/create/${restaurant.id}|}" th:object="${rcForm}" method="post" class="my-3">
-<!--        <div th:replace="~{form_errors :: formErrorsFragment}"></div>-->
+<!--     댓글의 갯수 표시 -->
+<h5 class="border-bottom my-3 py-2"
+    th:text="|${#lists.size(restaurant.rcList)}개의 댓글이 있습니다.|"></h5>
 
-        <textarea sec:authorize="isAnonymous()" disabled placeholder="로그인 후 이용해주세요." th:field="*{content}" rows="3" class="form-control"></textarea>
-<!--        <textarea sec:authorize="isAuthenticated()" required maxlength="20000" placeholder="내용(20,000자 이하)" th:field="*{content}" rows="7" class="form-control"></textarea>-->
-        <input sec:authorize="isAuthenticated()" type="submit" value="댓글등록" class="btn btn-primary my-2">
-    </form>
+<!-- 댓글 반복 시작 -->
+<div th:id="|rc_${rc.id}" class="card my-3" th:each="rc : ${restaurant.rcList}">
+    <div class="card-body">
+        <div class="card-text" th:utext="${@commonUtil.markdown(rc.content)}"></div>
+        <div class="d-flex justify-content-end">
+            <div th:if="${rc.modifyDate != null}" class="badge bg-light text-dark p-2 text-start mx-3">
+                <div class="mb-2">modified at</div>
+                <div th:text="${#temporals.format(rc.modifyDate, 'yyyy-MM-dd HH:mm')}"></div>
+            </div>
+            <div class="badge bg-light text-dark p-2 text-start">
+                <div class="mb-2">
+                    <span th:if="${rc.author != null}" th:text="${rc.author.username}"></span>
+                </div>
+                <div th:text="${#temporals.format(rc.createDate, 'yyyy-MM-dd HH:mm')}"></div>
+                <div class="my-3">
+                    <a onclick="return confirm('추천하시겠습니까?');" class="btn btn-sm btn-outline-secondary"
+                       th:href="@{|/rc/vote/${rc.id}|}">
+                        추천
+                        <span class="badge rounded-pill bg-success" th:text="${#lists.size(rc.voters)}"></span>
+                    </a>
+
+                    <a th:href="@{|/rc/modify/${rc.id}|}" class="btn btn-sm btn-outline-secondary"
+                       sec:authorize="isAuthenticated()"
+                       th:if="${rc.author != null and #authentication.getPrincipal().getUsername() == rc.author.username}"
+                       th:text="수정"></a>
+
+                    <a onclick="return confirm('정말로 삭제하시겠습니까?');" th:href="@{|/rc/delete/${rc.id}|}"
+                       class="delete btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
+                       th:if="${rc.author != null and #authentication.getPrincipal().getUsername() == rc.author.username}"
+                       th:text="삭제"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 댓글 반복 끝  -->
+
+<!-- 댓글 작성 -->
+<form th:action="@{|/rc/create/${restaurant.id}|}" th:object="${rcForm}" method="post" class="my-3">
+    <!--        <div th:replace="~{form_errors :: formErrorsFragment}"></div>-->
+
+    <textarea sec:authorize="isAnonymous()" disabled placeholder="로그인 후 이용해주세요." th:field="*{content}" rows="3" class="form-control"></textarea>
+    <!--        <textarea sec:authorize="isAuthenticated()" required maxlength="20000" placeholder="내용(20,000자 이하)" th:field="*{content}" rows="7" class="form-control"></textarea>-->
+    <input sec:authorize="isAuthenticated()" type="submit" value="댓글등록" class="btn btn-primary my-2">
+</form>
 </div>
 </html>
