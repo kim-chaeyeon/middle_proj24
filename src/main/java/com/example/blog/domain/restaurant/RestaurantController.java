@@ -25,7 +25,7 @@ public class RestaurantController {
     private final MemberService memberService;
 
     @GetMapping("/list")
-    public String list(Model model, @RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value = "kw", defaultValue = "") String kw) {
+    public String list(Model model, @RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value = "kw", defaultValue = "")String kw) {
         Page<Restaurant> paging = this.restaurantService.getList(page, kw);
         model.addAttribute("paging", paging);
 
@@ -35,6 +35,7 @@ public class RestaurantController {
     @GetMapping("/detail/{id}")
     public String detail(Model model, @PathVariable("id") Integer id, RCForm rcForm) {
         Restaurant r = this.restaurantService.getRestaurant(id);
+
         model.addAttribute("restaurant", r);
 
         return "restaurant_detail";
@@ -43,6 +44,7 @@ public class RestaurantController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/create")
     public String create(RestaurantForm restaurantForm) {
+
         return "restaurant_form";
     }
 
@@ -54,14 +56,17 @@ public class RestaurantController {
             @RequestParam("thumbnail") MultipartFile thumbnail,
             @RequestParam("cuisineType") String cuisineType,
             @RequestParam("address") String address,
+            @RequestParam("restaurantName") String restaurantName,
             Principal principal) {
 
-        if (title.isEmpty() || content.isEmpty() || thumbnail.isEmpty() || cuisineType.isEmpty() || address.isEmpty()) {
+        // 유효성 검사 로직 추가 가능
+        if (title.isEmpty() || content.isEmpty() || thumbnail.isEmpty()|| cuisineType.isEmpty() || address.isEmpty() || restaurantName.isEmpty()){
+            // 에러 처리 로직
             return "restaurant_form";
         }
 
-        Member member = this.memberService.getCurrentMember();
-        Restaurant r = this.restaurantService.create(title, content, thumbnail, cuisineType, address, member);
+        Member siteUser = this.memberService.getCurrentMember();
+        Restaurant r = this.restaurantService.create(title, content, thumbnail, cuisineType, address, restaurantName, siteUser);
 
         return "redirect:/restaurant/list";
     }
@@ -75,13 +80,12 @@ public class RestaurantController {
         }
 
         Restaurant restaurant = restaurantService.getRestaurant(id);
-        Member member = memberService.getCurrentMember();
 
-        if (!restaurant.getAuthor().getUsername().equals(member.getUsername())) {
+        if (!restaurant.getAuthor().getUsername().equals(principal.getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
         }
 
-        restaurantService.modify(restaurant, restaurantForm.getTitle(), restaurantForm.getContent(), restaurantForm.getCuisineType(), restaurantForm.getAddress());
+        restaurantService.modify(restaurant, restaurantForm.getTitle(), restaurantForm.getContent(), restaurantForm.getCuisineType(), restaurantForm.getAddress(), restaurantForm.getRestaurantName());
 
         return "redirect:/restaurant/detail/%s".formatted(id);
     }
@@ -90,9 +94,8 @@ public class RestaurantController {
     @GetMapping("/modify/{id}")
     public String restaurantModify(RestaurantForm restaurantForm, @PathVariable("id") Integer id, Principal principal) {
         Restaurant restaurant = restaurantService.getRestaurant(id);
-        Member member = memberService.getCurrentMember();
 
-        if (!restaurant.getAuthor().getUsername().equals(member.getUsername())) {
+        if (!restaurant.getAuthor().getUsername().equals(principal.getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
         }
 
@@ -100,6 +103,7 @@ public class RestaurantController {
         restaurantForm.setContent(restaurant.getContent());
         restaurantForm.setCuisineType(restaurant.getCuisineType());
         restaurantForm.setAddress(restaurant.getAddress());
+        restaurantForm.setRestaurantName(restaurant.getRestaurantName());
         return "restaurant_form";
     }
 
@@ -107,10 +111,9 @@ public class RestaurantController {
     @GetMapping("/delete/{id}")
     public String restaurantDelete(Principal principal, @PathVariable("id") Integer id) {
         Restaurant restaurant = this.restaurantService.getRestaurant(id);
-        Member member = memberService.getCurrentMember();
 
-        if (!restaurant.getAuthor().getUsername().equals(member.getUsername())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제권한이 없습니다.");
+        if (!restaurant.getAuthor().getUsername().equals(principal.getName())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
         }
 
         restaurantService.delete(restaurant);
@@ -122,7 +125,7 @@ public class RestaurantController {
     @GetMapping("/vote/{id}")
     public String restaurantVote(Principal principal, @PathVariable("id") Integer id) {
         Restaurant restaurant = this.restaurantService.getRestaurant(id);
-        Member member = memberService.getCurrentMember();
+        Member member = this.memberService.getCurrentMember();
 
         this.restaurantService.vote(restaurant, member);
 

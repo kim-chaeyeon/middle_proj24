@@ -18,11 +18,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
-
 @RequestMapping("/rc")
 @Controller
 @RequiredArgsConstructor
 public class RCController {
+
     private final RestaurantService restaurantService;
     private final RCService rcService;
     private final MemberService memberService;
@@ -31,10 +31,12 @@ public class RCController {
     @PostMapping("/create/{id}")
     public String createRC(
             Model model,
-            @PathVariable("id") Integer id,
+            @PathVariable("id")
+            Integer id,
             @Valid RCForm rcForm,
             BindingResult bindingResult,
-            Principal principal) {
+            Principal principal
+    ) {
 
         Restaurant r = this.restaurantService.getRestaurant(id);
         Member member = this.memberService.getCurrentMember();
@@ -53,9 +55,8 @@ public class RCController {
     @GetMapping("/modify/{id}")
     public String rcModify(RCForm rcForm, @PathVariable("id") Integer id, Principal principal) {
         RC rc = this.rcService.getRC(id);
-        Member member = memberService.getCurrentMember();
 
-        if (!rc.getAuthor().getUsername().equals(member.getUsername())) {
+        if (!rc.getAuthor().getUsername().equals(principal.getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
         }
 
@@ -68,29 +69,29 @@ public class RCController {
     @PostMapping("/modify/{id}")
     public String rcModify(@Valid RCForm rcForm, BindingResult bindingResult,
                            @PathVariable("id") Integer id, Principal principal) {
+
         if (bindingResult.hasErrors()) {
             return "restaurantComment_form";
         }
 
         RC rc = this.rcService.getRC(id);
-        Member member = memberService.getCurrentMember();
 
-        if (!rc.getAuthor().getUsername().equals(member.getUsername())) {
+        if (!rc.getAuthor().getUsername().equals(principal.getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
         }
 
         rcService.modify(rc, rcForm.getContent());
 
         return "redirect:/restaurant/detail/%d#rc_%d".formatted(rc.getRestaurant().getId(), id);
+
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/delete/{id}")
     public String rcDelete(Principal principal, @PathVariable("id") Integer id) {
         RC rc = this.rcService.getRC(id);
-        Member member = memberService.getCurrentMember();
 
-        if (!rc.getAuthor().getUsername().equals(member.getUsername())) {
+        if (!rc.getAuthor().getUsername().equals(principal.getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제권한이 없습니다.");
         }
 
@@ -102,7 +103,7 @@ public class RCController {
     @GetMapping("/vote/{id}")
     public String rcVote(Principal principal, @PathVariable("id") Integer id) {
         RC rc = this.rcService.getRC(id);
-        Member member = memberService.getCurrentMember();
+        Member member = this.memberService.getCurrentMember();
 
         rcService.vote(rc, member);
 

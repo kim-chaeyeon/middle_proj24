@@ -1,0 +1,43 @@
+<html layout:decorate="~{layout}">
+<div layout:fragment="content" class="container my-3">
+
+    <!-- 프로필 섹션 -->
+    <div class="profile-section mb-3">
+        <div class="profile">
+            <!-- 프로필 사진 -->
+            <img src="https://picsum.photos/200/300" alt="Profile Image">
+            <!-- 프로필 정보 -->
+            <div class="profile-info">
+                <p>Name: John Doe</p>
+                <p>Age: 30</p>
+                <p>MBTI: ENFP</p>
+                <p>SNS: @johndoe</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 게시물 섹션 -->
+    <div class="row">
+        <div th:each="post, loop : ${paging}" class="col-md-4 mb-3">
+            <div class="card">
+
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <a th:href="@{|/friend/detail/${post.id}|}" th:text="${post.title}" class="no-underline"></a>
+                    </h5>
+                    <p class="card-text">
+                        <small class="text-muted" th:text="${#temporals.format(post.createDate, 'yyyy-MM-dd HH:mm')}"></small>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 게시물 등록 버튼 -->
+    <div class="row my-3">
+        <div class="col-6">
+            <a th:href="@{/friend/create}" class="btn btn-primary">게시물 등록하기</a>
+        </div>
+    </div>
+</div>
+</html>

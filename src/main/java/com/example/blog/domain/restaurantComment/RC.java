@@ -9,7 +9,6 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.Set;
-
 @Getter
 @Setter
 @Entity
@@ -24,6 +23,7 @@ public class RC {
     private LocalDateTime createDate;
     private LocalDateTime modifyDate;
 
+    // Many = RC, one = Restaurant
     @ManyToOne
     private Restaurant restaurant;
 

@@ -1,17 +1,15 @@
-package com.example.blog.domain.restaurant;
+package com.example.blog.domain.friend;
 
-import com.example.blog.domain.restaurantComment.RC;
+
 import com.example.blog.domain.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+
 @Getter
 @Setter
 @Entity
@@ -19,10 +17,14 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Restaurant {
+public class Friend {
+
+
+    // Setters
+    // Getters
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(length = 200)
     private String title;
@@ -30,23 +32,20 @@ public class Restaurant {
     @Column(columnDefinition = "TEXT")
     private String content; //추천음식
 
-    private String thumbnailImg;
-
-    private String cuisineType; //음식 카테고리
-
+    private int capacity;
+    private int currentParticipants;
     private String address; //주소
-
     private  String restaurantName; //식당이름
+    private String cuisineType;
 
     private LocalDateTime createDate;
     private LocalDateTime modifyDate;
 
-    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.REMOVE)
-    @LazyCollection(LazyCollectionOption.EXTRA)
-    //rcList.size(); 함수가 실행 될 때 SELECT COUNT 실행
-    private List<RC> rcList = new ArrayList<>();
+    @ElementCollection
+    private List<String> addressList;
 
     @ManyToOne
+    @JoinColumn(name = "author_id")
     private Member author;
 
     @ManyToMany
@@ -56,8 +55,4 @@ public class Restaurant {
         voters.add(voter);
     }
 
-
-    public void setThumbnail(String thumbnailRelPath){
-
-    }
 }
