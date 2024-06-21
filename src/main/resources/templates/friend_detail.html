@@ -2,6 +2,7 @@
 <html layout:decorate="~{layout}">
 <div layout:fragment="content" class="container my-3">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2e886fa0387a4683a275ed630512bc1f&libraries=services"></script>
 
     <!-- 맛집 게시물 -->
     <h2 class="border-bottom py-2" th:text="${friend.title}"></h2>
@@ -18,10 +19,20 @@
             <span th:text="${friend.cuisineType}"></span>
         </div>
         <div>
+            날짜: <span th:text="${#temporals.format(friend.meetingDate, 'yyyy-MM-dd')}"></span>
+        </div>
+        <div>
+            시간: <span th:text="${#temporals.format(friend.meetingTime, 'HH:mm')}"></span>
+        </div>
+
+        <div>
             <label class="font-weight-bold">주소:</label>
-            <span th:text="${friend.address}"></span>
+            <span id="address-${friend.id}" th:text="${friend.address}"></span>
         </div>
         <p>현재 인원수: <span id="current-participants" th:text="${friend.currentParticipants}"></span></p>
+        <div id="map-${friend.id}" class="map-container" style="width:100%;height:200px;"></div>
+        <script src="/js/friendsearchAddressdetail.js"></script>
+
         <button class="btn btn-primary increment-btn" th:data-id="${friend.id}">같이먹기</button>
         <script src="/js/currentParticipants.js"></script>
 
@@ -59,4 +70,5 @@
             </div>
         </div>
     </div>
+</div>
 </html>

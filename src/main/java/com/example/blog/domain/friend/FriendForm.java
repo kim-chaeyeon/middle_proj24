@@ -5,6 +5,10 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+
 @Setter
 @Getter
 public class FriendForm {
@@ -46,4 +50,11 @@ public class FriendForm {
 
     @NotBlank(message = "식당 이름을 입력해주세요")
     private String restaurantName;
+
+    @NotBlank(message = "날짜를 입력해주세요.")
+    private LocalDate meetingDate;
+
+    @NotBlank(message = "시간을 입력해주세요.")
+    private LocalTime meetingTime;
+
 }
