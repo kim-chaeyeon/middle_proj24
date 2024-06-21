@@ -62,6 +62,10 @@ public class PostService {
         return post;
     }
 
+    public List<Post> getPostsByAuthorNickname(String nickname) {
+        return postRepository.findByAuthorNickname(nickname);
+    }
+
     public Page<Post> getList(int page, String kw) {
         List<Sort.Order> sorts = new ArrayList<>();
         sorts.add(Sort.Order.desc("createDate"));
