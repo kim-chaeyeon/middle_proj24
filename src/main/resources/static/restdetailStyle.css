@@ -1,0 +1,194 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    font-size: 24px;
+    color: #FF6F00;
+}
+
+.label {
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.media-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.d-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; /* Align items to the top */
+    gap: 10px; /* Optional: Add some space between items */
+}
+
+.thumbnail-container,
+.map-container {
+    width: 48%;
+    height: 0;
+    padding-bottom: 48%; /* Maintain aspect ratio for square */
+    position: relative;
+}
+
+.thumbnail-container img,
+.map-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 4px;
+    object-fit: cover; /* Maintain aspect ratio */
+}
+
+/* Adjust icon size and vertical alignment */
+.button-container i {
+    font-size: 2em;
+    vertical-align: middle;
+}
+
+
+
+.font-weight-bold {
+    font-weight: bold;
+    font-size: 1em;
+}
+
+.card {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.badge {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.btn-outline-secondary {
+    border-color: #FF6F00;
+    color: #FF6F00;
+}
+
+.btn-outline-secondary:hover {
+    background-color: #FF6F00;
+    color: white;
+}
+
+.btn-primary {
+    background-color: #FF6F00;
+    border-color: #FF6F00;
+    color: white;
+    cursor: pointer;
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+}
+
+.btn-primary:hover {
+    background-color: #e65c00;
+}
+
+.address-list-container {
+    margin-top: 10px;
+}
+
+.icon-circle {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 36px; /* Adjust size as needed */
+    height: 36px; /* Adjust size as needed */
+    background-color: #e9ecef; /* Light gray background */
+    border-radius: 50%; /* Makes the container circular */
+    font-size: 18px; /* Adjust icon size */
+    margin-right: 5px; /* 아이콘과 유저 이름 사이 여백 설정 */
+}
+.icon-circle i {
+    color: #495057; /* Icon color */
+}
+.username {
+    font-size: 0.8rem; /* 작은 텍스트 사이즈 */
+    color: #555; /* 텍스트 색상 */
+}
+.icon-circle:hover .username {
+    color: #000; /* 마우스 오버 시 텍스트 색상 변경 */
+}
+
+.button-container i {
+    vertical-align: middle;
+    margin-top: 4px; /* Adjust the value as needed to move the icons down */
+}
+
+/* Ensure the buttons are horizontally aligned */
+.button-container {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end; /* Align buttons to the right */
+    margin-bottom: 10px;
+}
+
+/* Gray button styles */
+.button-gray {
+    background-color: white;
+    border-color: #6c757d;
+    color: black;
+    text-decoration: none; /* Remove underline */
+    display: flex;
+    align-items: center; /* Center align the contents */
+}
+
+/* Change button color on hover */
+.button-gray:hover {
+    background-color: white;
+    border-color: #545b62;
+    color: gray;
+    text-decoration: none; /* Remove underline */
+}
+
+/* Ensure icons inside buttons are centered */
+.button-gray i {
+    vertical-align: middle;
+    font-size: 1.5em; /* Adjust the size as needed */
+    margin-top: 4px; /* Move the icon slightly down */
+}
+
+/* Increase the size of the heart icon */
+.heart-icon {
+    font-size: 1.5em; /* Adjust the size as needed */
+    margin-right: 5px; /* Add space between the icon and the text */
+}
+
+/* Ensure badge is inline with icon */
+.button-gray .badge {
+    margin-left: 5px;
+    vertical-align: middle;
+}
+
+.createDate {
+    display: flex;
+    gap: 7px;
+    justify-content: flex-end;
+}
+
+
+
