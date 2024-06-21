@@ -5,7 +5,9 @@ import com.example.blog.domain.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -37,6 +39,13 @@ public class Friend {
     private String address; //주소
     private  String restaurantName; //식당이름
     private String cuisineType;
+
+    @Setter
+    @Getter
+    private LocalDate meetingDate;
+    @Setter
+    @Getter
+    private LocalTime meetingTime;
 
     private LocalDateTime createDate;
     private LocalDateTime modifyDate;

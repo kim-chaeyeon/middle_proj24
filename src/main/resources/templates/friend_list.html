@@ -1,43 +1,77 @@
-<html layout:decorate="~{layout}">
-<div layout:fragment="content" class="container my-3">
-
-    <!-- 프로필 섹션 -->
-    <div class="profile-section mb-3">
-        <div class="profile">
-            <!-- 프로필 사진 -->
-            <img src="https://picsum.photos/200/300" alt="Profile Image">
-            <!-- 프로필 정보 -->
-            <div class="profile-info">
-                <p>Name: John Doe</p>
-                <p>Age: 30</p>
-                <p>MBTI: ENFP</p>
-                <p>SNS: @johndoe</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- 게시물 섹션 -->
-    <div class="row">
-        <div th:each="post, loop : ${paging}" class="col-md-4 mb-3">
-            <div class="card">
-
-                <div class="card-body">
-                    <h5 class="card-title">
-                        <a th:href="@{|/friend/detail/${post.id}|}" th:text="${post.title}" class="no-underline"></a>
-                    </h5>
-                    <p class="card-text">
-                        <small class="text-muted" th:text="${#temporals.format(post.createDate, 'yyyy-MM-dd HH:mm')}"></small>
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 게시물 등록 버튼 -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Friend List</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2e886fa0387a4683a275ed630512bc1f&libraries=services"></script>
+    <link rel="stylesheet" type="text/css" href="/style.css">
+</head>
+<body>
+<div class="container my-3">
     <div class="row my-3">
         <div class="col-6">
-            <a th:href="@{/friend/create}" class="btn btn-primary">게시물 등록하기</a>
+            <form>
+                <div class="input-group">
+                    <input type="text" name="kw" class="form-control" placeholder="검색어" th:value="${param.kw}">
+                    <button class="btn btn-outline-secondary">찾기</button>
+                </div>
+            </form>
         </div>
     </div>
+
+    <div class="row">
+        <div th:each="friend, loop : ${paging}" class="col-md-4 mb-3">
+            <div class="card" th:id="'address' + ${friend.id}">
+                <h2 th:text="${friend.title}"></h2>
+                <p> 날짜: <span th:text="${friend.meetingDate}"></span></p>
+                <p> 시간: <span th:text="${friend.meetingTime}"></span></p>
+                <h6 class="card-subtitle mb-2 text-muted">
+                    <a th:href="@{|/friend/detail/${friend.id}|}" th:text="${friend.address}" class="no-underline"></a>
+                </h6>
+                <p>음식종류: <span th:text="${friend.cuisineType}"></span></p>
+                <!-- 지도 컨테이너 추가 -->
+                <div th:id="'map-' + ${friend.id}" class="map-container" style="width:100%;height:200px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 페이징 시작 -->
+    <nav th:if="${!paging.isEmpty()}" th:with="queryStrBase = '?kw=' + ${param.kw != null ? param.kw : ''}">
+        <ul class="pagination justify-content-center">
+            <li class="page-item" th:classappend="${paging.number == 0} ? 'disabled'">
+                <a class="page-link" th:href="@{|${queryStrBase}&page=0|}">
+                    <span>&laquo;</span>
+                </a>
+            </li>
+
+            <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
+                <a class="page-link" th:href="@{|${queryStrBase}&page=${paging.number-1}|}">이전</a>
+            </li>
+
+            <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
+                th:if="${page >= paging.number-5 and page <= paging.number+5}"
+                th:classappend="${page == paging.number} ? 'active'"
+                class="page-item">
+                <a th:text="${page}" class="page-link" th:href="@{|${queryStrBase}&page=${page}|}"></a>
+            </li>
+
+            <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
+                <a class="page-link" th:href="@{|${queryStrBase}&page=${paging.number + 1}|}">이후</a>
+            </li>
+
+            <li class="page-item" th:classappend="${paging.number == paging.totalPages - 1} ? 'disabled'">
+                <a class="page-link" th:href="@{|${queryStrBase}&page=${paging.totalPages - 1}|}">
+                    <span>&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <!-- 페이징 끝 -->
+    <div class="col-6">
+        <a th:href="@{/friend/create}" class="btn btn-primary">질문 등록하기</a>
+    </div>
 </div>
+
+<script src="/js/friendsearchAddressList.js"></script>
+</body>
 </html>

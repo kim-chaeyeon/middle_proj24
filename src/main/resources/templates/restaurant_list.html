@@ -1,12 +1,19 @@
-<html layout:decorate="~{layout}">
-<div layout:fragment="content" class="container my-3">
-
-    <div class="row my-3">
-        <div class="col-6">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Restaurant List</title>
+    <link rel="stylesheet" type="text/css" href="/restStyle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container my-3">
+    <div class="search-container">
+        <div class="search-box">
             <form>
                 <div class="input-group">
                     <input type="text" name="kw" class="form-control" placeholder="검색어" th:value="${param.kw}">
-                    <button class="btn btn-outline-secondary">찾기</button>
+                    <button class="btn btn-outline-secondary"><i class="fa-solid fa-magnifying-glass"></i></button>
                 </div>
             </form>
         </div>
@@ -15,11 +22,23 @@
     <div class="row">
         <div th:each="restaurant, loop : ${paging}" class="col-md-4 mb-3">
             <div class="card">
-                <div class="mb-2">
-                    <span th:if="${restaurant.author != null}" th:text="${restaurant.author.username}"></span>
-                </div>
                 <img th:src="@{|/file/${restaurant.thumbnailImg}|}" class="card-img-top" alt="Thumbnail">
+
+
                 <div class="card-body">
+                    <!--                    <div class="mb-2">-->
+                    <!--                        <span th:if="${restaurant.author != null}" th:text="${restaurant.author.username}"></span>-->
+                    <!--                    </div>-->
+                    <h5 class="mb-2">
+                        <a th:href="@{|/post/memberPosts/${restaurant.author.nickname}|}" class="no-underline">
+                            <span class="icon-circle">
+                                <i class="fa-regular fa-user"></i>
+                            </span>
+                            <span class="nickname" th:text="${restaurant.author.nickname}"></span>
+
+                        </a>
+                    </h5>
+
                     <h5 class="card-title">
                         <a th:href="@{|/restaurant/detail/${restaurant.id}|}" th:text="${restaurant.title}" class="no-underline"></a>
                     </h5>
@@ -34,54 +53,42 @@
         </div>
     </div>
 
-    <!--    <table class="table">-->
-    <!--        <tbody>-->
-    <!--        <tr th:each="restaurant, loop : ${paging}">-->
-    <!--            <td th:text="${paging.totalElements - (paging.number * paging.size) - loop.index}"></td>-->
-    <!--            <td>-->
-    <!--                <span class="text-danger small ms-2"-->
-    <!--                      th:if="${#lists.size(restaurant.rcList) > 0}"-->
-    <!--                      th:text="${#lists.size(restaurant.rcList)}">-->
-    <!--                    </span>-->
-    <!--            </td>-->
-    <!--        </tr>-->
-    <!--        </tbody>-->
-
-
     <!-- 페이징 시작-->
     <nav th:if="${!paging.isEmpty()}" th:with="queryStrBase = '?kw=' + ${param.kw != null ? param.kw : ''}">
         <ul class="pagination justify-content-center">
+
+            <!-- 이전 페이지로 이동 버튼 -->
             <li class="page-item" th:classappend="${paging.number == 0} ? 'disabled'">
-                <a class="page-link" th:href="@{|${queryStrBase}&page=0|}">
-                    <span>&laquo;</span>
+                <a class="page-link" th:href="@{|${queryStrBase}&page=0|}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
 
-            <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
-                <a class="page-link" th:href="@{|${queryStrBase}&page=${paging.number-1}|}">이전</a>
-            </li>
-
+            <!-- 페이지 숫자 버튼 -->
             <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
-                th:if="${page >= paging.number-5 and page <= paging.number+5}"
-                th:classappend="${page == paging.number} ? 'active'"
+                th:if="${page >= paging.number-2 and page <= paging.number+2}"
+                th:classappend="${page == paging.number} ? 'active' : ''"
                 class="page-item">
-                <a th:text="${page}" class="page-link" th:href="@{|${queryStrBase}&page=${page}|}"></a>
+                <a th:text="${page + 1}" class="page-link" th:href="@{|${queryStrBase}&page=${page}|}"></a>
             </li>
 
-            <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
-                <a class="page-link" th:href="@{|${queryStrBase}&page=${paging.number + 1}|}">이후</a>
-            </li>
-
+            <!-- 다음 페이지로 이동 버튼 -->
             <li class="page-item" th:classappend="${paging.number == paging.totalPages - 1} ? 'disabled'">
-                <a class="page-link" th:href="@{|${queryStrBase}&page=${paging.totalPages - 1}|}">
-                    <span>&raquo;</span>
+                <a class="page-link" th:href="@{|${queryStrBase}&page=${paging.totalPages - 1}|}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
                 </a>
             </li>
+
         </ul>
     </nav>
+
     <!-- 페이징 끝-->
     <div class="col-6">
-        <a th:href="@{/restaurant/create}" class="btn btn-primary">질문 등록하기</a>
+        <a th:href="@{/restaurant/create}" class="btn-blog">맛집 등록하기</a>
     </div>
 </div>
+</body>
 </html>
+
+
+

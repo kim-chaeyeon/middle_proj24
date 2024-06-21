@@ -98,4 +98,8 @@ $(document).ready(function() {
             }
         });
     });
+<<<<<<< HEAD
 });
+=======
+});
+>>>>>>> 2642f483f066036e733b9edcff1faa62d1143da6
