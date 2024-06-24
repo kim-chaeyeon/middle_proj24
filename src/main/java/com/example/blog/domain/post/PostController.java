@@ -6,6 +6,8 @@ import com.example.blog.domain.member.service.MemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -39,23 +41,21 @@ public class PostController {
 
     @GetMapping("/memberPosts/{nickname}")
     public String getPostsByAuthorNickname(@PathVariable String nickname, Model model, @RequestParam(defaultValue = "0") int page) {
+        Member member = memberService.findByNickname(nickname);
+        if (member == null) {
+            return "redirect:/error";
+        }
         List<Post> memberPosts = postService.getPostsByAuthorNickname(nickname);
-        model.addAttribute("userPosts", memberPosts); // "userPosts"로 변경
-        model.addAttribute("nickname", nickname); // "member"로 변경
+        model.addAttribute("userPosts", memberPosts);
+        model.addAttribute("nickname", nickname);
+        model.addAttribute("thumbnailImg", member.getThumbnailImg());
+        model.addAttribute("region", member.getRegion());
+        model.addAttribute("gender", member.getGender());
+        model.addAttribute("age", member.getAge());
         return "member_posts";
     }
 
-//
-//    @GetMapping("/list/{nickname}")
-//    public String listByUser(Model model, @PathVariable("nickname") String nickname,
-//                             @RequestParam(value = "page", defaultValue = "0") int page,
-//                             @RequestParam(value = "kw", defaultValue = "") String kw) {
-//        Page<Post> paging = this.postService.getPostsByUsername(nickname, page, kw);
-//        model.addAttribute("paging", paging);
-//        model.addAttribute("nickname", nickname);
-//
-//        return "post_list"; // 리디렉션 제거, 직접 뷰를 반환하도록 수정
-//    }
+
 
 
     @GetMapping("/detail/{id}")
@@ -149,5 +149,19 @@ public class PostController {
         this.postService.vote(post, member);
 
         return "redirect:/post/detail/%s".formatted(id);
+    }
+
+    @GetMapping("/myPost")
+    @PreAuthorize("isAuthenticated()")
+    public String myPosts(Model model, Principal principal, @RequestParam(value = "page", defaultValue = "0") int page) {
+        Member member = memberService.getCurrentMember();
+        Pageable pageable = PageRequest.of(page, 10);  // 한 페이지에 10개의 게시물 표시
+
+        Page<Post> myPosts = postService.getPostsByAuthor(member, pageable);
+
+        model.addAttribute("myPosts", myPosts);
+        model.addAttribute("loggedInUser", member);
+
+        return "myPost";
     }
 }

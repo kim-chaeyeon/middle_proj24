@@ -98,4 +98,6 @@ $(document).ready(function() {
             }
         });
     });
+
 });
+
