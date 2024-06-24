@@ -38,7 +38,6 @@ public class FriendController {
     @GetMapping("/detail/{id}")
     public String detail(Model model, @PathVariable("id") Integer id) {
         Friend f = this.friendService.getFriend(id);
-
         model.addAttribute("friend", f);
 
         return "friend_detail";
@@ -67,7 +66,7 @@ public class FriendController {
         }
 
         Member member = this.memberService.getCurrentMember();
-        Friend f = this.friendService.create(title,content,capacity,cuisineType,address, restaurantName, meetingDate, meetingTime,member);
+        Friend f = this.friendService.create(title,content,capacity,cuisineType,address, restaurantName, meetingDate, meetingTime, member);
 
         return "redirect:/friend/list";
     }
@@ -140,5 +139,4 @@ public class FriendController {
         Friend friend = friendService.incrementParticipants(id);
         return ResponseEntity.ok(friend);
     }
-    // Additional endpoints for retrieving, updating, deleting friends
 }

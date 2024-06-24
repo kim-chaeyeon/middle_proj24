@@ -1,18 +1,28 @@
 $(document).ready(function() {
-    // Initialize the map
-    var container = document.getElementById('map'); // 지도를 표시할 div
-    var options = {
-        center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
-        level: 3 // 지도의 확대 레벨
-    };
-    var map = new kakao.maps.Map(container, options);
+    // Initialize the map for each card when the page loads
+    $('[id^=map-]').each(function() {
+        var mapContainer = $(this)[0]; // The map container for the current card
+        var mapOptions = {
+            center: new kakao.maps.LatLng(33.450701, 126.570667), // Default center coordinates
+            level: 3 // Default zoom level
+        };
+        var map = new kakao.maps.Map(mapContainer, mapOptions);
+        var geocoder = new kakao.maps.services.Geocoder();
+        var marker = new kakao.maps.Marker({
+            map: map
+        });
 
-    // 주소-좌표 변환 객체를 생성합니다
-    var geocoder = new kakao.maps.services.Geocoder();
-
-    // 지도에 표시할 마커를 생성합니다
-    var marker = new kakao.maps.Marker({
-        map: map
+        // Get the address from the card and show the map
+        var address = $(this).closest('.card').find('span[id^=address-]').text();
+        geocoder.addressSearch(address, function(result, status) {
+            if (status === kakao.maps.services.Status.OK) {
+                var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+                marker.setPosition(coords);
+                map.setCenter(coords);
+            } else {
+                console.error('Geocoder failed due to:', status);
+            }
+        });
     });
 
     // Address search button click event

@@ -54,7 +54,6 @@ public class Friend {
     private List<String> addressList;
 
     @ManyToOne
-    @JoinColumn(name = "author_id")
     private Member author;
 
     @ManyToMany
