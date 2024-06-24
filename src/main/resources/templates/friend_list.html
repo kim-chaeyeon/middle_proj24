@@ -4,16 +4,18 @@
     <title>Friend List</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2e886fa0387a4683a275ed630512bc1f&libraries=services"></script>
-    <link rel="stylesheet" type="text/css" href="/style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="/frdStyle.css">
 </head>
 <body>
 <div class="container my-3">
-    <div class="row my-3">
-        <div class="col-6">
+    <div class="row my-3 search-container">
+        <div class="col-6 search-box">
             <form>
                 <div class="input-group">
                     <input type="text" name="kw" class="form-control" placeholder="검색어" th:value="${param.kw}">
-                    <button class="btn btn-outline-secondary">찾기</button>
+                    <button class="btn btn-outline-secondary"><i class="fa-solid fa-magnifying-glass"></i></button>
                 </div>
             </form>
         </div>
@@ -22,15 +24,19 @@
     <div class="row">
         <div th:each="friend, loop : ${paging}" class="col-md-4 mb-3">
             <div class="card" th:id="'address' + ${friend.id}">
-                <h2 th:text="${friend.title}"></h2>
-                <p> 날짜: <span th:text="${friend.meetingDate}"></span></p>
-                <p> 시간: <span th:text="${friend.meetingTime}"></span></p>
-                <h6 class="card-subtitle mb-2 text-muted">
-                    <a th:href="@{|/friend/detail/${friend.id}|}" th:text="${friend.address}" class="no-underline"></a>
-                </h6>
-                <p>음식종류: <span th:text="${friend.cuisineType}"></span></p>
-                <!-- 지도 컨테이너 추가 -->
-                <div th:id="'map-' + ${friend.id}" class="map-container" style="width:100%;height:200px;"></div>
+                <div class="card-body">
+                    <div th:id="'map-' + ${friend.id}" class="map-container" style="width:100%;height:300px;"></div>
+                    <h2 class="card-title" th:text="${friend.title}"></h2>
+                    <div class="date-time-container">
+                        <p> 날짜: <span th:text="${friend.meetingDate}"></span></p>
+                        <p> 시간: <span th:text="${friend.meetingTime}"></span></p>
+                    </div>
+                    <h6 class="card-subtitle mb-2 text-muted">
+                        <a th:href="@{|/friend/detail/${friend.id}|}" th:text="${friend.address}" class="no-underline"></a>
+                    </h6>
+<!--                    <p>음식종류: <span th:text="${friend.cuisineType}"></span></p>-->
+                    <!-- 지도 컨테이너 추가 -->
+                </div>
             </div>
         </div>
     </div>
@@ -44,19 +50,12 @@
                 </a>
             </li>
 
-            <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
-                <a class="page-link" th:href="@{|${queryStrBase}&page=${paging.number-1}|}">이전</a>
-            </li>
 
             <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
                 th:if="${page >= paging.number-5 and page <= paging.number+5}"
                 th:classappend="${page == paging.number} ? 'active'"
                 class="page-item">
                 <a th:text="${page}" class="page-link" th:href="@{|${queryStrBase}&page=${page}|}"></a>
-            </li>
-
-            <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
-                <a class="page-link" th:href="@{|${queryStrBase}&page=${paging.number + 1}|}">이후</a>
             </li>
 
             <li class="page-item" th:classappend="${paging.number == paging.totalPages - 1} ? 'disabled'">
@@ -68,7 +67,7 @@
     </nav>
     <!-- 페이징 끝 -->
     <div class="col-6">
-        <a th:href="@{/friend/create}" class="btn btn-primary">질문 등록하기</a>
+        <a th:href="@{/friend/create}" class="btn btn-primary btn-blog">질문 등록하기</a>
     </div>
 </div>
 

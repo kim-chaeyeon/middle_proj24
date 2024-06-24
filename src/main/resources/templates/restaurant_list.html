@@ -29,7 +29,7 @@
                     <!--                        <span th:if="${restaurant.author != null}" th:text="${restaurant.author.username}"></span>-->
                     <!--                    </div>-->
                     <h5 class="mb-2">
-                        <a th:href="@{|/post/memberPosts/${nickname}|}" class="no-underline">
+                        <a th:href="@{|/post/memberPosts/${restaurant.author.nickname}|}" class="no-underline">
                             <span class="icon-circle">
                                 <i class="fa-regular fa-user"></i>
                             </span>

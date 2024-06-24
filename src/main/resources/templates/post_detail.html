@@ -1,81 +1,55 @@
-<html layout:decorate="~{layout}">
-<div layout:fragment="content" class="container my-3">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>post detail</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2e886fa0387a4683a275ed630512bc1f&libraries=services"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
-
-
-    <!-- 게시물 폼 추가 -->
+    <link rel="stylesheet" type="text/css" href="/postdetailStyle.css">
+</head>
+<body>
+<div class="container my-3">
     <div class="post-wrapper my-3">
-
-        <!-- 작성자 정보 -->
-        <div class="mb-3">
-            <strong>작성자:</strong> <span th:text="${post.author.nickname}"></span> <br>
-            <strong>지역:</strong> <span th:text="${post.author.region}"></span>
-        </div>
-
         <div class="card-body">
             <!-- 썸네일 표시 -->
-            <div th:if="${post.thumbnailImg != null}">
-                <img th:src="@{|/file/${post.thumbnailImg}|}" alt="thumbnail" class="img-thumbnail mb-3">
+            <div th:if="${post.thumbnailImg != null}" class="thumbnail-container">
+                <img th:src="@{|/file/${post.thumbnailImg}|}" alt="thumbnail" class="img-thumbnail">
             </div>
-
-
-            <!-- 추천 버튼과 작성일자 -->
-            <div class="d-flex justify-content-between">
-                <div class="mx-3 float-right">
-                    <div th:if="${post.createDate != null}" class="mx-3">
-                        <a onclick="return confirm('추천하시겠습니까?');" th:href="@{|/post/vote/${post.id}|}">
-                            <i class="far fa-heart fa-lg"></i>
-                        </a>
-                        <span th:text="${#lists.size(post.voters)}"></span>
-                    </div>
-                </div>
-                <div>
-                    <div th:text="${#temporals.format(post.createDate, 'yyyy-MM-dd HH:mm')}"></div>
-                </div>
-            </div>
-
-
-
             <!-- 제목 -->
             <div>
                 <h2 class="border-bottom py-2" th:text="${post.title}"></h2>
             </div>
-
             <!-- 내용 -->
             <div class="card-text" th:utext="${@commonUtil.markdown(post.content)}"></div>
-
-
-            <!-- 버튼 영역 -->
-            <div class="d-flex align-items-center">
-                <!-- 수정일자 -->
-                <div th:if="${post.modifyDate != null}" class="badge bg-light text-dark p-2 text-start mx-3">
-                    <div class="mb-2">수정</div>
-                    <div th:text="${#temporals.format(post.modifyDate, 'yyyy-MM-dd HH:mm')}"></div>
-                </div>
-
-                <!-- 수정 버튼 -->
-                <div class="mx-3">
+            <!-- 작성자 정보 -->
+            <div class="mb-3">
+                <strong>작성자:</strong> <span th:text="${post.author.nickname}"></span> <br>
+                <strong>지역:</strong> <span th:text="${post.author.region}"></span>
+            </div>
+            <!-- 추천 버튼과 작성일자 -->
+            <div class="d-flex justify-content-between">
+                <div class="button-container">
+                    <a onclick="return confirm('추천하시겠습니까?');" th:href="@{|/post/vote/${post.id}|}">
+                        <i class="far fa-heart fa-lg heart-icon"></i>
+                    </a>
+                    <span th:text="${#lists.size(post.voters)}"></span>
                     <a th:href="@{|/post/modify/${post.id}|}"
                        sec:authorize="isAuthenticated()"
                        th:if="${post.author != null and #authentication.getPrincipal().getUsername() == post.author.username}">
                         <i class="far fa-edit fa-lg"></i>
                     </a>
-                </div>
-
-                <!-- 삭제 버튼 -->
-                <!--                관리자 삭제 추가-->
-                <div class="mx-3">
                     <a onclick="return confirm('정말로 삭제하시겠습니까?');" th:href="@{|/post/delete/${post.id}|}"
                        sec:authorize="isAuthenticated()"
                        th:if="${post.author != null and (#authentication.getPrincipal().getUsername() == post.author.username or #authentication.getPrincipal().getAuthorities().contains(new org.springframework.security.core.authority.SimpleGrantedAuthority('ROLE_ADMIN')))}">
                         <i class="fas fa-trash-alt fa-lg"></i>
                     </a>
                 </div>
+                <div class="createDate">
+                    <div th:text="${#temporals.format(post.createDate, 'yyyy-MM-dd HH:mm')}"></div>
+                </div>
             </div>
         </div>
     </div>
-
     <!-- 댓글의 갯수 표시 -->
     <h5 class="border-bottom my-3 py-2"
         th:text="|${#lists.size(post.commentList)}개의 댓글이 있습니다.|"></h5>
@@ -126,4 +100,5 @@
         <input sec:authorize="isAuthenticated()" type="submit" value="댓글등록" class="btn btn-primary my-2">
     </form>
 </div>
+</body>
 </html>
