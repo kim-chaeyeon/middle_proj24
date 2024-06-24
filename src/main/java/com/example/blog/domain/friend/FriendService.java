@@ -32,7 +32,43 @@ public class FriendService {
         return of.get();
     }
 
-    public Friend create(String title, String content, int capacity, String cuisineType, String address, String restaurantName, LocalDate meetingDate, LocalTime meetingTime, Member member) {
+    public Page<Friend> getList(int page, String kw, String region) {
+        List<Sort.Order> sorts = new ArrayList<>();
+        sorts.add(Sort.Order.desc("createDate"));
+
+        Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
+        Specification<Friend> spec = Specification.where(region(region));
+
+        if (kw != null && !kw.trim().isEmpty()) {
+            spec = spec.and(search(kw));
+        }
+
+        return friendRepository.findAll(spec, pageable);
+    }
+
+    public Page<Friend> getList(int page, String kw) {
+        List<Sort.Order> sorts = new ArrayList<>();
+        sorts.add(Sort.Order.desc("createDate"));
+
+        Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
+
+        if (kw == null || kw.trim().length() == 0) {
+            return friendRepository.findAll(pageable);
+        }
+        Specification<Friend> spec = search(kw);
+        return friendRepository.findAll(spec, pageable);
+    }
+
+// 특정 지역에 해당하는 게시글을 검색할때 필요함! 이거 없으면 그냥 전처럼 지역 상관없이 다 출력됨
+// Specification을 사용하여 데이터베이스 쿼리를 동적으로 생성하기 위한 메서드 -> 이 문장은 이해가 안되.. 찌발..
+
+    private Specification<Friend> region(String region) {
+        return (root, query, cb) -> cb.equal(root.get("region"), region);
+    }
+
+
+
+    public Friend create(String title, String content, int capacity, String cuisineType, String address, String restaurantName, LocalDate meetingDate, LocalTime meetingTime, Member member, String region) {
         Friend friend = Friend.builder()
                 .title(title)
                 .content(content)
@@ -40,6 +76,7 @@ public class FriendService {
                 .cuisineType(cuisineType)
                 .address(address)
                 .restaurantName(restaurantName)
+                .region(region)
                 .meetingDate(meetingDate)
                 .meetingTime(meetingTime)
                 .build();
@@ -48,7 +85,7 @@ public class FriendService {
         return friend;
     }
 
-    public Page<Friend> getList(int page, String kw) {
+    public Page<Friend> getList1(int page, String kw) {
         List<Sort.Order> sorts = new ArrayList<>();
         sorts.add(Sort.Order.desc("createDate"));
 
