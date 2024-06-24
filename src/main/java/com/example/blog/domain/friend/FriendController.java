@@ -8,6 +8,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -29,11 +32,30 @@ public class FriendController {
 
     @GetMapping("/list")
     public String list(Model model, @RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value = "kw", defaultValue = "")String kw) {
-        Page<Friend> paging = this.friendService.getList(page, kw);
-        model.addAttribute("paging", paging);
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated() || authentication instanceof AnonymousAuthenticationToken) {
+            return "redirect:/member/login"; // 로그인이 되어 있지 않은 경우 로그인 페이지로 리다이렉트
+        }
+
+
+        Member member = memberService.getCurrentMember();
+
+        if (member != null && member.getUsername().equals("admin")) {
+            Page<Friend> paging = friendService.getList1(page, kw);
+            model.addAttribute("paging", paging);
+            model.addAttribute("loggedInUser", member);
+        } else {
+            String region = member.getRegion();
+            Page<Friend> paging = friendService.getList(page, kw, region);
+            model.addAttribute("paging", paging);
+            model.addAttribute("loggedInUser", member);
+        }
 
         return "friend_list";
     }
+
+
 
     @GetMapping("/detail/{id}")
     public String detail(Model model, @PathVariable("id") Integer id) {
@@ -65,11 +87,12 @@ public class FriendController {
             return "friend_form";
         }
 
-        Member member = this.memberService.getCurrentMember();
-        Friend f = this.friendService.create(title,content,capacity,cuisineType,address, restaurantName, meetingDate, meetingTime, member);
+        Member member = memberService.getCurrentMember();
+        Friend friend = friendService.create(title,content,capacity,cuisineType,address, restaurantName,  meetingDate , meetingTime,member, member.getRegion());
 
         return "redirect:/friend/list";
     }
+
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/modify/{id}")

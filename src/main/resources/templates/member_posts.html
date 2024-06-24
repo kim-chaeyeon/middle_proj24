@@ -29,11 +29,17 @@
     <div class="container my-3">
         <!-- 사용자 프로필 정보 표시 -->
         <div class="profile-section mb-3">
-
+            <div class="profile">
+                <a th:href="@{|/member/myPage/${nickname}|}">
+                    <img th:src="@{|/file/${thumbnailImg}|}" alt="Profile Picture">
+                </a>
+            </div>
             <div class="profile-info">
                 <h2><span th:text="${nickname}"></span>님의 게시물 목록</h2>
+                <p>지역: <span th:text="${region}"></span></p>
+                <p>성별: <span th:text="${gender}"></span></p>
+                <p>나이: <span th:text="${age}"></span></p>
             </div>
-
         </div>
 
         <!-- 사용자 게시물 수 표시 -->
@@ -73,4 +79,5 @@
         </div>
     </div>
     </body>
+</div>
 </html>
