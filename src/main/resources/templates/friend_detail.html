@@ -75,30 +75,23 @@
             <div th:text="${#temporals.format(friend.modifyDate, 'yyyy-MM-dd HH:mm')}"></div>
         </div>
 
+        <div th:text="${#temporals.format(friend.createDate, 'yyyy-MM-dd HH:mm')}"></div>
+
         <div class="badge bg-light text-dark p-2 text-start">
-
-            <!--            <div class="mb-2">-->
-            <!--                <span th:if="${friend.author != null}" th:text="${friend.author.username}"></span>-->
-            <!--            </div>-->
-
-            <div th:text="${#temporals.format(friend.createDate, 'yyyy-MM-dd HH:mm')}"></div>
-
-            <div class="my-3">
-                <div class="vote-container">
-                    <a onclick="return confirm('추천하시겠습니까?');" class="btn btn-sm btn-outline-secondary vote-button"
-                       th:href="@{|/friend/vote/${friend.id}|}">
-                        <i class="far fa-heart fa-lg heart-icon"></i>
-                    </a>
+            <div class="my-3 button-container">
+                <a onclick="return confirm('추천하시겠습니까?');" class="btn btn-sm btn-outline-secondary button-gray"
+                   th:href="@{|/friend/vote/${friend.id}|}">
+                    <i class="far fa-heart fa-lg heart-icon"></i>
                     <span class="badge rounded-pill bg-success" th:text="${#lists.size(friend.voters)}"></span>
-                </div>
+                </a>
 
-                <a th:href="@{|/friend/modify/${friend.id}|}" class="btn btn-sm btn-outline-secondary"
+                <a th:href="@{|/friend/modify/${friend.id}|}" class="btn btn-sm btn-outline-secondary button-gray"
                    sec:authorize="isAuthenticated()"
                    th:if="${friend.author != null and #authentication.getPrincipal().getUsername() == friend.author.username}"
                 ><i class="far fa-edit fa-lg heart-icon"></i></a>
 
                 <a onclick="return confirm('정말로 삭제하시겠습니까?');" th:href="@{|/friend/delete/${friend.id}|}"
-                   class="delete btn btn-sm btn-outline-secondary"
+                   class="delete btn btn-sm btn-outline-secondary button-gray"
                    sec:authorize="isAuthenticated()"
                    th:if="${friend.author != null and #authentication.getPrincipal().getUsername() == friend.author.username}"
                 ><i class="fas fa-trash-alt fa-lg heart-icon"></i></a>
