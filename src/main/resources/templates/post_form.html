@@ -1,7 +1,14 @@
-<html layout:decorate="~{layout}">
-<div layout:fragment="content" class="container my-3">
-    <h5 class="my-3 border-bottom pb-2">질문등록</h5>
-
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>post detail</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2e886fa0387a4683a275ed630512bc1f&libraries=services"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="/postformStyle.css">
+</head>
+<div class="container">
+    <h5>Post Detail</h5>
     <form th:action method="post" th:object="${postForm}" enctype="multipart/form-data">
         <div th:replace="~{form_errors :: formErrorsFragment}"></div>
 

@@ -178,25 +178,6 @@ header .right a {
     margin: 20px auto;
 }
 
-.vote-container {
-    display: flex;
-    align-items: center;
-}
-
-.vote-container .btn {
-    display: flex;
-    align-items: center;
-    margin-right: 0.5rem; /* Adjust spacing between the button and badge as needed */
-}
-
-.vote-container .badge {
-    display: flex;
-    align-items: center;
-}
-
-.vote-button {
-    text-decoration: none; /* Remove underline from the link */
-}
 header {
     background-color: #F57C00;
     display: flex;

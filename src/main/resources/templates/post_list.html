@@ -19,7 +19,7 @@
 </header>
 <body>
 <div class="container my-3">
-    <h2>밥먹다 Daily Story</h2>
+    <h2>Daily Story</h2>
     <!-- 게시물 섹션 -->
     <div class="row">
         <div th:each="post : ${paging}" class="col-md-4 mb-3">
@@ -31,14 +31,14 @@
                     </h5>
                     <p class="card-text">
                         작성자: <span th:text="${post.author.nickname}"></span> <br>
-<!--                    <h5 class="mb-2">-->
-<!--                        <a th:href="@{|/post/memberPosts/${post.author.nickname}|}" class="no-underline">-->
-<!--                            작성자: <span class="icon-circle">-->
-<!--                                <i class="fa-regular fa-user"></i>-->
-<!--                            </span>-->
-<!--                            <span class="nickname" th:text="$post.author.nickname}"></span>-->
-<!--                        </a>-->
-<!--                    </h5>-->
+<!--                        <h5 class="mb-2">-->
+<!--                            <a th:href="@{|/post/memberPosts/${post.author.nickname}|}" class="no-underline">-->
+<!--                                작성자: <span class="icon-circle">-->
+<!--                                    <i class="fa-regular fa-user"></i>-->
+<!--                                </span>-->
+<!--                                <span class="nickname" th:text="$post.author.nickname}"></span>-->
+<!--                            </a>-->
+<!--                        </h5>-->
                         지역: <span th:text="${post.author.region}"></span> <br>
                         <small class="text-muted" th:text="${#temporals.format(post.createDate, 'yyyy-MM-dd HH:mm')}"></small>
                     </p>
