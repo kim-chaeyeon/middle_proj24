@@ -30,12 +30,12 @@ public class PostController {
     private final MemberService memberService;
 
     @GetMapping("/list")
-    public String list(Model model, @RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value = "kw", defaultValue = "")String kw) {
+    public String list(Model model, @RequestParam(value = "page", defaultValue = "0") int page,
+                       @RequestParam(value = "kw", defaultValue = "") String kw) {
         Page<Post> paging = this.postService.getList(page, kw);
         model.addAttribute("paging", paging);
 
-        Member member = memberService.getCurrentMember();
-        model.addAttribute("loggedInUser", member);
+
         return "post_list";
     }
 
