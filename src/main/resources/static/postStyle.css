@@ -120,3 +120,60 @@ h2 {
     text-align: center;
     margin-top: 30px;
 }
+header {
+    background-color: #FF6F00;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    height: 60px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+header a {
+    color: #333;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 20px;
+}
+header .left, header .right {
+    display: flex;
+    align-items: center;
+}
+header .right a {
+    margin-left: 15px;
+    font-size: 16px;
+}
+.header-slider {
+    max-width: 100%;
+    height: auto;
+    margin: 20px auto;
+}
+.search-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+}
+.search-box {
+    width: 100%;
+    max-width: 600px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border-radius: 25px;
+    overflow: hidden;
+}
+.search-box input {
+    border: none;
+    border-radius: 0;
+    padding: 20px;
+    width: 75%;
+}
+.search-box button {
+    border: none;
+    border-radius: 0;
+    background-color: white;
+    color: #ff6600;
+    padding: 0 30px;
+    font-size: 20px;
+}
+.search-box button:hover {
+    background-color: white;
+}

@@ -158,3 +158,35 @@ body {
     color: #fff; /* 텍스트 색상을 흰색으로 변경 */
     text-decoration: none;
 }
+header {
+    background-color: #F57C00 !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 0 20px !important;
+    height: 60px !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+}
+
+header a {
+    color: #333 !important;
+    text-decoration: none !important;
+    font-weight: bold !important;
+    font-size: 20px !important;
+}
+
+header .left, header .right {
+    display: flex !important;
+    align-items: center !important;
+}
+
+header .right a {
+    margin-left: 15px !important;
+    font-size: 16px !important;
+}
+
+.header-slider {
+    max-width: 100% !important;
+    height: auto !important;
+    margin: 20px auto !important;
+}

@@ -1,5 +1,6 @@
 package com.example.blog.domain.chat.model;
 
+import com.example.blog.domain.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -28,6 +29,10 @@ public class ChatRoom {
 
     @ElementCollection
     private List<String> users = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "creator_id")
+    private Member creator; // 생성자 필드 추가
 
 
 //    public static ChatRoom create(String name) {

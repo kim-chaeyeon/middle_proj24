@@ -1,23 +1,73 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>관리자 페이지</title>
+    <title th:text="${pageName}">관리자 페이지</title>
     <style>
         body {
+            margin: 0;
             font-family: Arial, sans-serif;
-            margin: 20px;
+            background-color: #f0f0f0;
         }
-
+        header {
+            background-color: #FFCE45;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            height: 60px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        header a {
+            color: #333;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 20px;
+        }
+        header .left, header .right {
+            display: flex;
+            align-items: center;
+        }
+        header .right a {
+            margin-left: 15px;
+            font-size: 16px;
+        }
         .container {
-            max-width: 800px;
-            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
         }
-
+        section {
+            flex-grow: 1;
+            background-color: #FFF5DB;
+            padding: 20px;
+            box-sizing: border-box;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2, h3 {
+            text-align: center;
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #FFCE45;
+            color: white;
+        }
         .button-box {
-            margin-bottom: 10px;
+            margin-bottom: 20px;
+            text-align: center;
         }
-
         .button {
             display: inline-block;
             padding: 10px 20px;
@@ -25,28 +75,92 @@
             color: #fff;
             text-decoration: none;
             border-radius: 5px;
-            margin-right: 10px;
+            margin: 0 10px;
         }
-
         .button:hover {
             background-color: #0056b3;
+        }
+        footer {
+            height: 60px;
+            line-height: 60px;
+            text-align: center;
+            font-weight: bold;
+            margin-top: 20px;
+            background-color: #FFCE45;
+            box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
 <body>
-<div class="container">
-    <h1>관리자 페이지</h1>
-    <hr/>
-    <h2>관리자 페이지</h2>
-
-    <!-- 버튼들 -->
-    <div class="button-box">
-        <a href="/admin/members" class="button">모든 회원 정보</a>
-        <a href="/admin/reports" class="button">신고된 회원 정보</a>
-        <a href="#" class="button">신고된 게시글 정보</a>
+<header>
+    <div class="left">
+        <a href="javascript:history.back()" class="main-btn">이전 화면으로 이동</a>
     </div>
+    <div class="left" style="margin-left: 10px;">
+        <a href="/">밥먹다</a>
+    </div>
+    <div class="right">
+        <a class="nav-link" sec:authorize="isAnonymous()" href="/member/login">로그인</a>
+        <a class="nav-link" sec:authorize="isAuthenticated()" href="/member/logout" onclick="logout()">로그아웃</a>
+        <a sec:authorize="isAuthenticated()" href="/member/myPage">마이페이지</a>
+        <span sec:authorize="isAuthenticated()" id="username"></span>
+    </div>
+</header>
 
+<div class="container">
+    <section>
+        <h1 th:text="${pageName}">관리자 페이지</h1>
+        <hr/>
+        <h2>관리자 페이지</h2>
+
+        <!-- 버튼들 -->
+        <div class="button-box">
+            <a href="/admin/members" class="button">모든 회원 정보</a>
+            <a href="/admin/reports" class="button">신고된 회원 정보</a>
+            <a href="#" class="button">신고된 게시글 정보</a>
+        </div>
+
+    </section>
 </div>
+
+<footer>
+    밥먹다 관리자 페이지
+</footer>
+
+<script>
+    // 서버에서 받아온 사용자 정보
+    var userInfo = {
+        loggedIn: false, // 로그인 상태 여부
+        username: "" // 로그인된 사용자 이름
+    };
+
+    // 헤더의 로그인 링크와 로그아웃 버튼을 제어하는 함수
+    function toggleLoginState(loggedIn) {
+        var loginLink = document.querySelector(".nav-link[sec\\:authorize=\"isAnonymous()\"]");
+        var logoutLink = document.querySelector(".nav-link[sec\\:authorize=\"isAuthenticated()\"]");
+
+        if (loggedIn) {
+            // 로그인되어 있는 경우, 로그아웃 버튼 표시
+            loginLink.style.display = "none";
+            logoutLink.style.display = "inline";
+            document.getElementById("username").innerText = userInfo.username;
+        } else {
+            // 로그인되어 있지 않은 경우, 로그인 링크 표시
+            loginLink.style.display = "inline";
+            logoutLink.style.display = "none";
+        }
+    }
+
+    // 로그아웃 처리 함수
+    function logout() {
+        // 로그아웃 처리 작업 수행 (예: 세션 삭제 등)
+        // 여기서는 간단히 예시로 로그인 상태를 false로 변경
+        userInfo.loggedIn = false;
+        toggleLoginState(userInfo.loggedIn);
+    }
+
+    // 초기 로그인 상태 설정
+    toggleLoginState(userInfo.loggedIn);
+</script>
 </body>
 </html>
-

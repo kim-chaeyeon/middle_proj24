@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -58,9 +58,10 @@
             display: flex;
             margin: 20px;
             justify-content: center;
+
+
         }
-        nav,
-        aside {
+        nav, aside {
             width: 200px;
             background-color: #FFCE45;
             padding: 10px;
@@ -70,6 +71,8 @@
             text-align: center;
             height: 100%;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 20px;
+            border: 5px solid #F57C00;
         }
         section {
             flex-grow: 1;
@@ -80,6 +83,8 @@
             flex-direction: column;
             justify-content: space-between;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 20px;
+            border: 5px solid #F57C00;
         }
         section header,
         section footer {
@@ -105,6 +110,8 @@
             text-align: center;
             font-weight: bold;
             margin-top: 20px;
+            background-color: #FFCE45;
+            box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
         }
         img {
             width: 100%;
@@ -145,6 +152,8 @@
         <a class="nav-link" sec:authorize="isAuthenticated()" href="/member/logout" onclick="logout()">로그아웃</a>
         <a sec:authorize="isAuthenticated()" href="/member/myPage">마이페이지</a>
         <span sec:authorize="isAuthenticated()" id="username"></span>
+        <a sec:authorize="hasRole('ADMIN')" href="/admin/page">관리자 페이지</a>
+        <span sec:authorize="hasRole('ADMIN')" id="admin"></span>
     </div>
 </header>
 
@@ -175,7 +184,7 @@
     <section>
         <header>
             <div class="hover-item right" onmouseover="showImage('https://i.ibb.co/y5dDc3X/001-6.png')" onmouseout="hideImage()">
-                <a href="restaurant/list" >맛집 추천</a>
+                <a href="restaurant/list" style="font-size: 20px;">맛집 추천</a>
             </div>
             <div class="hover-item center" onmouseover="showImage('https://i.ibb.co/nBLsJfh/adfadf.jpg')" onmouseout="hideImage()">
                 <a href="friend/list">밥 친구 구함</a>
@@ -185,24 +194,33 @@
             </div>
         </header>
         <article id="display-article">
-    원하시는 리스트를 선택해주세요!
-
+            원하시는 리스트를 선택해주세요!
         </article>
         <footer>
-          ☞  만남은 자유지만 오프라인에서 이루어진 사고에 대해서는 당사는 책임 지지 않습니다!  ☜
+            ☞ 만남은 자유지만 오프라인에서 이루어진 사고에 대해서는 당사는 책임 지지 않습니다! ☜
         </footer>
     </section>
     <aside>
+        밥바오톡 바로가기
         <a href="/chat/rooms">
             <img src="https://i.ibb.co/B4bycb0/image.png" alt="오른쪽 밥바오톡" width="50%" height="50%">
         </a>
+        <div>
+            <form id="searchForm" onsubmit="searchUser(event)">
+                <input type="text" id="searchInput" placeholder=" 유저 닉네임 검색">
+                <button type="submit">검색</button>
+            </form>
+            <div id="searchResults"></div>
+        </div>
     </aside>
+
 </div>
 <footer>
     <a href="#">
         <img src="https://i.ibb.co/FYVfC70/003-1.png" alt="아래 사진" width="50%" height="50%">
     </a>
 </footer>
+
 
 <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 <script>
@@ -221,6 +239,25 @@
             disableOnInteraction: false,
         },
     });
+
+      // 사용자 검색 및 페이지 이동 함수
+    function searchUser(event) {
+        event.preventDefault(); // 폼의 기본 제출 동작 방지
+
+        var nickname = document.getElementById('searchInput').value.trim();
+
+        // 예시: 실제 서버에서 검색을 수행하고 해당 사용자의 마이페이지 URL을 가져오는 로직을 구현해야 함
+        // 여기서는 단순 예시로 경로를 하드코딩
+        if (nickname) {
+            var myPageUrl = "/member/myPage/" + encodeURIComponent(nickname);
+            window.location.href = myPageUrl;
+        } else {
+            alert("닉네임을 입력해주세요.");
+        }
+    }
+
+
+
 
     // 서버에서 받아온 사용자 정보
     var userInfo = {

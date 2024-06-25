@@ -6,6 +6,7 @@ import com.example.blog.domain.chat.repository.ChatRoomRepository;
 import com.example.blog.domain.member.entity.Member;
 import com.example.blog.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,11 +40,17 @@ public class ChatRoomController {
 
     @PostMapping("/room")
     @ResponseBody
-    public ResponseEntity<ChatRoom> createRoom(@RequestParam("name") String name) {
-        ChatRoom newRoom = new ChatRoom();
-        newRoom.setName(name);
-        ChatRoom savedRoom = chatRoomRepository.save(newRoom);
-        return ResponseEntity.ok(savedRoom);
+    public ResponseEntity<ChatRoom> createRoom(@RequestParam("name") String name, @RequestParam("creatorId") Long creatorId) {
+        Optional<Member> creator = memberRepository.findById(creatorId);
+        if (creator.isPresent()) {
+            ChatRoom newRoom = new ChatRoom();
+            newRoom.setName(name);
+            newRoom.setCreator(creator.get()); // 생성자 정보 저장
+            ChatRoom savedRoom = chatRoomRepository.save(newRoom);
+            return ResponseEntity.ok(savedRoom);
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @GetMapping("/room/enter/{roomId}")
@@ -66,9 +73,12 @@ public class ChatRoomController {
     }
     @DeleteMapping("/room/{roomId}")
     @ResponseBody
-    public ResponseEntity<Void> deleteRoom(@PathVariable("roomId") UUID roomId) {
+    public ResponseEntity<Void> deleteRoom(@PathVariable("roomId") UUID roomId, @RequestParam("nickname") String nickname) {
         Optional<ChatRoom> chatRoom = chatRoomRepository.findById(roomId);
         if (chatRoom.isPresent()) {
+            if (!chatRoom.get().getCreator().getNickname().equals(nickname)) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            }
             chatRoomRepository.deleteById(roomId);
             return ResponseEntity.noContent().build();
         } else {
