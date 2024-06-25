@@ -104,14 +104,26 @@
             text-align: center;
             flex-grow: 1;
         }
-        footer {
+        footer p {
+            background-color: #FFCE45;
             height: 60px;
             line-height: 60px;
             text-align: center;
             font-weight: bold;
             margin-top: 20px;
-            background-color: #FFCE45;
-            box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+        }
+        footer p {
+            margin: 0;
+            padding: 10px ;
+            color: #333;
+        }
+        footer a {
+            color: #333;
+            text-decoration: none;
+            padding: 0 10px;
+        }
+        footer a:hover {
+            text-decoration: underline;
         }
         img {
             width: 100%;
@@ -140,12 +152,42 @@
         .hover-item:hover .hover-image {
             display: inline-block;
         }
+        header .left img {
+        max-height: 50%;
+        max-width: 50%;
+        margin-top : 25px;
+        vertical-align: middle;
+        }
+         /* 추가한 부분: 입력란과 버튼을 가로 정렬하기 위한 스타일 */
+        aside {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+        }
+        #searchForm {
+            display: flex;
+            flex-direction: row; /* 입력란과 버튼을 가로로 배치 */
+            align-items: center; /* 세로 중앙 정렬 */
+            margin-top: 10px; /* 위쪽 여백 추가 */
+        }
+        #searchInput {
+            flex: 0; /* 입력란이 남는 공간을 모두 차지하도록 설정 */
+            margin-right: 5px; /* 입력란과 버튼 사이의 간격 설정 */
+            padding: 6px; /* 입력란 안의 여백 설정 */
+            font-size: 10px; /* 입력란 텍스트 크기 조정 */
+        }
+        #searchButton {
+            font-size: 10.5px; /* 버튼 텍스트 크기 조정 */
+        }
+
     </style>
 </head>
 <body>
 <header>
     <div class="left">
-        <a href="/">밥먹다</a>
+        <a href="/">
+            <img src="https://i.ibb.co/WgxZJc8/Kakao-Talk-20240625-180640065.png" alt="메인 로고" ></a>
     </div>
     <div class="right">
         <a class="nav-link" sec:authorize="isAnonymous()" href="/member/login">로그인</a>
@@ -216,12 +258,19 @@
 
 </div>
 <footer>
-    <a href="#">
-        <img src="https://i.ibb.co/FYVfC70/003-1.png" alt="아래 사진" width="50%" height="50%">
-    </a>
+    <p>
+        <a href="#">(주)밥먹다∙1조</a> |
+        <a href="#">통신 판매번호 : 2024-SBS-01조</a> |
+        <a href="#">메일 : sbspull@test.com</a> |
+        <a href="#">개인정보처리방침</a> |
+
+    </p>
+    <p>
+        <a href="#">전자서명인증업무준칙</a> |
+        <a href="#">밥먹자 서비스 이용약관</a> |
+        <a href="#">밥먹자 서비스 개인정보처리방침</a>
+    </p>
 </footer>
-
-
 <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 <script>
     // Initialize Swiper
