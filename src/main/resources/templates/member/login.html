@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -45,13 +46,13 @@
             background-color: pink;
             border: none;
             border-radius: 5px;
-            color: #fff;
+            color: black;
             font-size: 16px;
             cursor: pointer;
             margin-bottom: 20px;
         }
         .btn:hover {
-            background-color: #0056b3;
+            background-color: yellow;
         }
         .oauth-btn {
             display: inline-flex;
@@ -108,38 +109,51 @@
             text-decoration: none;
         }
         .register-btn:hover {
-            background-color: pink;
+            background-color: yellow;
         }
         .error-message {
             color: red;
             font-size: 14px;
+        }
+        .link-container {
+            margin-top: 20px;
+        }
+        .link-container a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: black;
+        }
+        .link-container a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 
 <body>
 <div class="container">
-    <header class="header">
-        <div style="text-align: center;">
-            <a href="/">메인으로 이동</a>
-        </div>
-    </header>
     <h1>
-        <img src="https://i.ibb.co/n0szW03/image.png" alt="밥친구 로그인" width="300" height="300">
+        <a href="/">
+            <img src="https://i.ibb.co/n0szW03/image.png" alt="밥친구 로그인" width="300" height="300">
+        </a>
         <nav>로그인</nav>
     </h1>
 
     <form th:action="@{/member/login}" method="post">
         <div>
-            <label >아이디:</label><br>
-            <input type="text"  name="username" placeholder="아이디"><br>
+
+            <input type="text" name="username" placeholder="아이디"><br>
         </div>
         <div>
-            <label >비밀번호:</label><br>
-            <input type="password"  name="password" placeholder="비밀번호"><br><br>
+
+            <input type="password" name="password" placeholder="비밀번호"><br><br>
         </div>
         <button type="submit" class="btn">로그인</button>
         <p th:if="${param.error}" class="error-message">[아이디] 혹은 [비밀번호]를 확인해주세요.</p>
+        <div class="link-container">
+            <a href="/find-id">아이디 찾기</a> |
+            <a href="/find-password">비밀번호 찾기</a> |
+            <a th:href="@{/member/signup}">회원가입</a>
+        </div>
     </form>
 
     <div class="login">
@@ -156,9 +170,10 @@
             <div class="name">&nbsp; 네이버 로그인</div>
         </a>
     </div>
-    <div>
-        <a th:href="@{/member/signup}" class="register-btn">회원가입하러가기</a>
-    </div>
+
+
+
+
 </div>
 </body>
 </html>

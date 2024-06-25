@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -30,11 +31,11 @@
             margin-bottom: 30px;
         }
         label {
-            font-size: 16px;
+            font-size: 13px;
             display: block;
             margin: 10px 0 5px;
             color: #555;
-            text-align: left;
+            text-align: center;
         }
         input[type="text"],
         input[type="password"],
@@ -47,7 +48,7 @@
             margin: 10px 0;
             border: 1px solid #ccc;
             border-radius: 5px;
-            font-size: 16px;
+            font-size: 10px;
             box-sizing: border-box;
         }
         .btn {
@@ -57,7 +58,7 @@
             border: none;
             border-radius: 5px;
             color: #fff;
-            font-size: 16px;
+            font-size: 12px;
             cursor: pointer;
             margin-bottom: 20px;
             transition: background-color 0.3s;
@@ -86,7 +87,7 @@
         }
         .radio-group label {
             margin-right: 10px;
-            font-size: 16px;
+            font-size: 10px;
         }
         .radio-inline {
             display: inline-block;
@@ -94,9 +95,10 @@
         }
         .form-footer {
             margin-top: 20px;
+            font-size: 13.36px;
         }
         img {
-            width: 100%;
+            width: 90%;
             height: auto;
         }
     </style>
@@ -105,41 +107,36 @@
 <a th:href="@{/}" class="main-btn">메인 화면으로 이동</a>
 <div class="container">
     <h1>
-        <img th:src="@{https://i.ibb.co/n0szW03/image.png}" alt="밥친구 로그인">
+        <a href="/">
+            <img th:src="@{https://i.ibb.co/n0szW03/image.png}" alt="밥친구 로그인">
+
+        </a>
+    </h1>
+    <h1>
         <nav>회원 가입</nav>
     </h1>
 
     <form action="signupForm" method="post" enctype="multipart/form-data" th:action="@{/member/signup}">
-        <label for="phoneNumber"><i class="fas fa-phone"></i> 전화번호 (필수):</label>
+        <label for="phoneNumber"><i class="fas fa-phone"></i> 전화번호 (필수)</label>
         <input type="text" id="phoneNumber" name="phoneNumber" required>
 
-        <label for="username"><i class="fas fa-user"></i> 아이디 (필수):</label>
+        <label for="username"><i class="fas fa-user"></i> 아이디 (필수)</label>
         <input type="text" id="username" name="username" required>
 
-        <label for="nickname"><i class="fas fa-user-tag"></i> 닉네임 (필수):</label>
+        <label for="nickname"><i class="fas fa-user-tag"></i> 닉네임 (필수)</label>
         <input type="text" id="nickname" name="nickname" required>
 
-        <label for="password"><i class="fas fa-lock"></i> 비밀번호 (필수):</label>
+        <label for="password"><i class="fas fa-lock"></i> 비밀번호 (필수)</label>
         <input type="password" id="password" name="password" required>
 
-        <label for="email"><i class="fas fa-envelope"></i> 이메일 (필수):</label>
+        <label for="email"><i class="fas fa-envelope"></i> 이메일 (필수)</label>
         <input type="email" id="email" name="email" required>
 
-        <label for="age"><i class="fas fa-birthday-cake"></i> 나이 (필수, 성인만 가능):</label>
+        <label for="age"><i class="fas fa-birthday-cake"></i> 나이 (필수, 성인만 가능)</label>
         <input type="number" id="age" name="age" required min="20">
 
-<!--        <label for="gender"><i class="fas fa-venus-mars"></i> 성별:</label>-->
-<!--        <div class="radio-group">-->
-<!--            <div class="radio-inline">-->
-<!--                <input type="radio" id="남성" name="gender" value="남성">-->
-<!--                <label for="남성">남성</label>-->
-<!--            </div>-->
-<!--            <div class="radio-inline">-->
-<!--                <input type="radio" id="여성" name="gender" value="여성">-->
-<!--                <label for="여성">여성</label>-->
-<!--            </div>-->
-<!--        </div>-->
-        <label for="gender"><i class="fas fa-venus-mars"></i> 성별 (필수) :</label>
+
+        <label for="gender"><i class="fas fa-venus-mars"></i> 성별 (필수) </label>
         <select id="gender" name="gender">
             <option value="--">--</option>
             <option value="남성">남성</option>
@@ -148,7 +145,7 @@
             <!-- 다른 지역 옵션들 추가 -->
         </select>
 
-        <label for="region"><i class="fas fa-map-marker-alt"></i> 지역 (필수) :</label>
+        <label for="region"><i class="fas fa-map-marker-alt"></i> 지역 (필수) </label>
         <select id="region" name="region">
             <option value="--">--</option>
             <option value="서울">서울</option>
@@ -161,16 +158,16 @@
             <!-- 다른 지역 옵션들 추가 -->
         </select>
 
-        <label for="favoriteFood"><i class="fas fa-utensils"></i> 선호 음식 (필수):</label>
+        <label for="favoriteFood"><i class="fas fa-utensils"></i> 선호 음식 (필수)</label>
         <input type="text" id="favoriteFood" name="favoriteFood" required>
 
-        <label for="mbti"><i class="fas fa-smile"></i> 본인 MBTI (선택):</label>
+        <label for="mbti"><i class="fas fa-smile"></i> 본인 MBTI (선택)</label>
         <input type="text" id="mbti" name="mbti">
 
-        <label for="sns"><i class="fab fa-instagram"></i> 인스타 (선택):</label>
+        <label for="sns"><i class="fab fa-instagram"></i> 인스타 (선택)</label>
         <input type="text" id="sns" name="sns">
 
-        <label for="thumbnail"><i class="fas fa-image"></i> 본인 사진 (필수):</label>
+        <label for="thumbnail"><i class="fas fa-image"></i> 본인 사진 (필수)</label>
         <input type="file" id="thumbnail" name="thumbnail" accept="image/png, image/gif, image/jpeg" required>
 
         <button type="submit" class="btn">회원 가입</button>
