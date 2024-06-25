@@ -79,6 +79,7 @@ public class FriendService {
                 .region(region)
                 .meetingDate(meetingDate)
                 .meetingTime(meetingTime)
+                .author(member)
                 .build();
         friendRepository.save(friend);
 

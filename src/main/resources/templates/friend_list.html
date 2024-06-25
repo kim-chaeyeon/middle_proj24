@@ -6,9 +6,20 @@
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2e886fa0387a4683a275ed630512bc1f&libraries=services"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link rel="stylesheet" type="text/css" href="/frdStyle.css">
+    <link rel="stylesheet" type="text/css" href="/postStyle.css">
 </head>
 <body>
+<header>
+    <div class="left">
+        <a href="/">밥먹다</a>
+    </div>
+    <div class="right">
+        <a class="nav-link" sec:authorize="isAnonymous()" href="/member/login">로그인</a>
+        <a class="nav-link" sec:authorize="isAuthenticated()" href="/member/logout" onclick="logout()">로그아웃</a>
+        <a sec:authorize="isAuthenticated()" href="/member/myPage">마이페이지</a>
+        <span sec:authorize="isAuthenticated()" id="username"></span>
+    </div>
+</header>
 <div class="container my-3">
     <div class="row my-3 search-container">
         <div class="col-6 search-box">

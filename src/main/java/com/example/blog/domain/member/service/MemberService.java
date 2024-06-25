@@ -97,7 +97,7 @@ public class MemberService {
 
     @Transactional
     public Member modify(Member member, String phoneNumber, String nickname, String password, int age,
-                         String email, String region, String favoriteFood, String mbti, String sns, MultipartFile thumbnail) {
+                         String email, String region, String favoriteFood, String mbti, String sns, MultipartFile thumbnail, String gender) {
         String thumbnailRelPath = "post/" + UUID.randomUUID().toString() + ".jpg";
         File thumbnailFile = new File(fileDirPath + "/" + thumbnailRelPath);
 
@@ -114,6 +114,7 @@ public class MemberService {
         member.setRegion(region);
         member.setFavoriteFood(favoriteFood);
         member.setAge(age);
+        member.setGender(gender);
         member.setSns(sns);
         member.setMbti(mbti);
         member.setThumbnailImg(thumbnailRelPath);

@@ -28,8 +28,6 @@ $(document).ready(function() {
     // Address search button click event
     $('#searchAddress').click(function(event) {
 
-
-
         event.preventDefault(); // 폼이 자동으로 제출되지 않도록 합니다.
 
         var query = $('#restaurantName').val().trim(); // 사용자가 입력한 식당 이름을 쿼리로 사용
@@ -102,8 +100,6 @@ $(document).ready(function() {
         });
     });
 });
-
-
 
 
 $(document).ready(function() {
@@ -207,4 +203,5 @@ $(document).ready(function() {
         });
     });
 });
+
 

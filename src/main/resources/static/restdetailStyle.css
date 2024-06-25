@@ -189,6 +189,35 @@ h2 {
     gap: 7px;
     justify-content: flex-end;
 }
+header {
+    background-color: #FF6F00;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    height: 60px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+header a {
+    color: #333;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 20px;
+}
+header .left, header .right {
+    display: flex;
+    align-items: center;
+}
+header .right a {
+    margin-left: 15px;
+    font-size: 16px;
+}
+.header-slider {
+    max-width: 100%;
+    height: auto;
+    margin: 20px auto;
+}
+
 
 
 

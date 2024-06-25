@@ -8,88 +8,103 @@
     <link rel="stylesheet" type="text/css" href="/frddetailStyle.css">
 </head>
 <body>
-    <!-- 맛집 게시물 -->
-    <h2 class="border-bottom py-2" th:text="${friend.title}"></h2>
-    <div class="card my-3">
-        <div class="card-body">
-            <!-- 지도 표시 -->
-            <div id="map-${friend.id}" class="map-container"></div>
-            <script src="/js/friendsearchAddressdetail.js"></script>
-        </div>
+<header>
+    <div class="left">
+        <a href="/">밥먹다</a>
+    </div>
+    <div class="right">
+        <a class="nav-link" sec:authorize="isAnonymous()" href="/member/login">로그인</a>
+        <a class="nav-link" sec:authorize="isAuthenticated()" href="/member/logout" onclick="logout()">로그아웃</a>
+        <a sec:authorize="isAuthenticated()" href="/member/myPage">마이페이지</a>
+        <span sec:authorize="isAuthenticated()" id="username"></span>
+        <a sec:authorize="hasRole('ADMIN')" href="/admin/page">관리자 페이지</a>
+        <span sec:authorize="hasRole('ADMIN')" id="admin"></span>
+    </div>
+</header>
+<!-- 맛집 게시물 -->
+<h2 class="border-bottom py-2" th:text="${friend.title}"></h2>
+<div class="card my-3">
+    <div class="card-body">
+        <!-- 지도 표시 -->
+        <div id="map-${friend.id}" class="map-container"></div>
+        <script src="/js/friendsearchAddressdetail.js"></script>
+    </div>
 
-<!--        <h5 class="mb-2">-->
-<!--            <a th:href="@{|/post/memberPosts/${friend.author.username}|}" class="no-underline">-->
-<!--                            <span class="icon-circle">-->
-<!--                                <i class="fa-regular fa-user"></i>-->
-<!--                            </span>-->
-<!--                <span class="username" th:text="${friend.author.username}"></span>-->
-<!--            </a>-->
-<!--        </h5>-->
+    <!--        <h5 class="mb-2">-->
+    <!--            <a th:href="@{|/post/memberPosts/${friend.author.username}|}" class="no-underline">-->
+    <!--                            <span class="icon-circle">-->
+    <!--                                <i class="fa-regular fa-user"></i>-->
+    <!--                            </span>-->
+    <!--                <span class="username" th:text="${friend.author.username}"></span>-->
+    <!--            </a>-->
+    <!--        </h5>-->
 
-        <div class="date-time-container">
-            <div>
-                <label class="font-weight-bold">날짜:</label>
-                <span th:text="${#temporals.format(friend.meetingDate, 'yyyy-MM-dd')}"></span>
-            </div>
-            <div>
-                <label class="font-weight-bold">시간:</label>
-                <span th:text="${#temporals.format(friend.meetingTime, 'HH:mm')}"></span>
-            </div>
+    <div class="date-time-container">
+        <div>
+            <label class="font-weight-bold">날짜:</label>
+            <span th:text="${#temporals.format(friend.meetingDate, 'yyyy-MM-dd')}"></span>
         </div>
         <div>
-            <label class="font-weight-bold">음식 종류:</label>
-            <span th:text="${friend.cuisineType}"></span>
+            <label class="font-weight-bold">시간:</label>
+            <span th:text="${#temporals.format(friend.meetingTime, 'HH:mm')}"></span>
         </div>
-        <div>
-            <label class="font-weight-bold">식당 이름:</label>
-            <span th:text="${friend.restaurantName}"></span>
+    </div>
+    <div>
+        <label class="font-weight-bold">음식 종류:</label>
+        <span th:text="${friend.cuisineType}"></span>
+    </div>
+    <div>
+        <label class="font-weight-bold">식당 이름:</label>
+        <span th:text="${friend.restaurantName}"></span>
+    </div>
+    <div>
+        <label class="font-weight-bold">주소:</label>
+        <span id="address-${friend.id}" th:text="${friend.address}"></span>
+    </div>
+    <div>
+        <label class="font-weight-bold">현재 인원수:</label>
+        <span id="current-participants" th:text="${friend.currentParticipants}"></span>
+    </div>
+
+    <button class="btn btn-primary increment-btn" th:data-id="${friend.id}">같이먹기</button>
+    <script src="/js/currentParticipants.js"></script>
+
+    <div class="d-flex justify-content-end">
+        <div th:if="${friend.modifyDate != null}" class="badge bg-light text-dark p-2 text-start mx-3">
+            <div class="mb-2">modified at</div>
+            <div th:text="${#temporals.format(friend.modifyDate, 'yyyy-MM-dd HH:mm')}"></div>
         </div>
-        <div>
-            <label class="font-weight-bold">주소:</label>
-            <span id="address-${friend.id}" th:text="${friend.address}"></span>
-        </div>
-        <div>
-            <label class="font-weight-bold">현재 인원수:</label>
-            <span id="current-participants" th:text="${friend.currentParticipants}"></span>
-        </div>
 
-        <button class="btn btn-primary increment-btn" th:data-id="${friend.id}">같이먹기</button>
-        <script src="/js/currentParticipants.js"></script>
+        <div class="badge bg-light text-dark p-2 text-start">
 
-        <div class="d-flex justify-content-end">
-            <div th:if="${friend.modifyDate != null}" class="badge bg-light text-dark p-2 text-start mx-3">
-                <div class="mb-2">modified at</div>
-                <div th:text="${#temporals.format(friend.modifyDate, 'yyyy-MM-dd HH:mm')}"></div>
-            </div>
+            <!--            <div class="mb-2">-->
+            <!--                <span th:if="${friend.author != null}" th:text="${friend.author.username}"></span>-->
+            <!--            </div>-->
 
-            <div class="badge bg-light text-dark p-2 text-start">
+            <div th:text="${#temporals.format(friend.createDate, 'yyyy-MM-dd HH:mm')}"></div>
 
-<!--                <div class="mb-2">-->
-<!--                    <span th:if="${friend.author != null}" th:text="${friend.author.username}"></span>-->
-<!--                </div>-->
-
-                <div th:text="${#temporals.format(friend.createDate, 'yyyy-MM-dd HH:mm')}"></div>
-
-                <div class="my-3">
-                    <a onclick="return confirm('추천하시겠습니까?');" class="btn btn-sm btn-outline-secondary"
+            <div class="my-3">
+                <div class="vote-container">
+                    <a onclick="return confirm('추천하시겠습니까?');" class="btn btn-sm btn-outline-secondary vote-button"
                        th:href="@{|/friend/vote/${friend.id}|}">
-                        추천
-                        <span class="badge rounded-pill bg-success" th:text="${#lists.size(friend.voters)}"></span>
+                        <i class="far fa-heart fa-lg heart-icon"></i>
                     </a>
-
-                    <a th:href="@{|/friend/modify/${friend.id}|}" class="btn btn-sm btn-outline-secondary"
-                       sec:authorize="isAuthenticated()"
-                       th:if="${friend.author != null and #authentication.getPrincipal().getUsername() == friend.author.username}"
-                       th:text="수정"></a>
-
-                    <a onclick="return confirm('정말로 삭제하시겠습니까?');" th:href="@{|/friend/delete/${friend.id}|}"
-                       class="delete btn btn-sm btn-outline-secondary"
-                       sec:authorize="isAuthenticated()"
-                       th:if="${friend.author != null and #authentication.getPrincipal().getUsername() == friend.author.username}"
-                       th:text="삭제"></a>
+                    <span class="badge rounded-pill bg-success" th:text="${#lists.size(friend.voters)}"></span>
                 </div>
+
+                <a th:href="@{|/friend/modify/${friend.id}|}" class="btn btn-sm btn-outline-secondary"
+                   sec:authorize="isAuthenticated()"
+                   th:if="${friend.author != null and #authentication.getPrincipal().getUsername() == friend.author.username}"
+                ><i class="far fa-edit fa-lg heart-icon"></i></a>
+
+                <a onclick="return confirm('정말로 삭제하시겠습니까?');" th:href="@{|/friend/delete/${friend.id}|}"
+                   class="delete btn btn-sm btn-outline-secondary"
+                   sec:authorize="isAuthenticated()"
+                   th:if="${friend.author != null and #authentication.getPrincipal().getUsername() == friend.author.username}"
+                ><i class="fas fa-trash-alt fa-lg heart-icon"></i></a>
             </div>
         </div>
     </div>
+</div>
 </body>
 </html>

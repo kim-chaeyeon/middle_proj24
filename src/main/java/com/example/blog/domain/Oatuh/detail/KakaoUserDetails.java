@@ -1,6 +1,5 @@
 package com.example.blog.domain.Oatuh.detail;
 
-
 import com.example.blog.domain.Oatuh.OAuth2UserInfo;
 import lombok.AllArgsConstructor;
 
@@ -30,8 +29,13 @@ public class KakaoUserDetails implements OAuth2UserInfo {
     public String getNickname() {
         return (String) ((Map) attributes.get("properties")).get("nickname");
     }
+
     @Override
     public String getName() {
-        return (String) ((Map) attributes.get("properties")).get("name");
+        String name = (String) ((Map) attributes.get("properties")).get("name");
+        if (name == null || name.isEmpty()) {
+            name = getNickname(); // 이름이 없는 경우 닉네임을 반환
+        }
+        return name;
     }
 }
