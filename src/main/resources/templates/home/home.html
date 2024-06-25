@@ -11,6 +11,7 @@
             margin: 0;
             font-family: Arial, sans-serif;
             background-color: #f0f0f0;
+            overflow-x: hidden;
         }
         header {
             background-color: #FFCE45;
@@ -58,8 +59,6 @@
             display: flex;
             margin: 20px;
             justify-content: center;
-
-
         }
         nav, aside {
             width: 200px;
@@ -102,7 +101,16 @@
             box-sizing: border-box;
             font-weight: bold;
             text-align: center;
-            flex-grow: 1;
+            display: flex;
+            flex-direction: row; /* 가로로 나열하도록 설정 */
+            gap: 10px; /* 박스 간격 조정 */
+        }
+        .box {
+            background-color: #FFD700;
+            padding: 20px;
+            border: 2px solid #F57C00;
+            border-radius: 10px;
+            flex: 1;
         }
         footer p {
             background-color: #FFCE45;
@@ -114,7 +122,7 @@
         }
         footer p {
             margin: 0;
-            padding: 10px ;
+            padding: 10px;
             color: #333;
         }
         footer a {
@@ -131,34 +139,13 @@
             display: flex;
             margin: 0 auto 20px;
         }
-        .header-slider .swiper-slide img,
-        .container img {
-            width: 100%;
-            height: 100%;
-        }
-        .hover-image {
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            display: none;
-            width: 200px;
-            height: auto;
-            border: 1px solid #ccc;
-            border-radius: 50%;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            z-index: 100;
-        }
-        .hover-item:hover .hover-image {
-            display: inline-block;
-        }
-        header .left img {
+         header .left img {
         max-height: 50%;
         max-width: 50%;
         margin-top : 25px;
         vertical-align: middle;
         }
-         /* 추가한 부분: 입력란과 버튼을 가로 정렬하기 위한 스타일 */
+
         aside {
             display: flex;
             flex-direction: column;
@@ -173,9 +160,9 @@
         }
         #searchInput {
             flex: 0; /* 입력란이 남는 공간을 모두 차지하도록 설정 */
-            margin-right: 5px; /* 입력란과 버튼 사이의 간격 설정 */
+            margin-right: 4px; /* 입력란과 버튼 사이의 간격 설정 */
             padding: 6px; /* 입력란 안의 여백 설정 */
-            font-size: 10px; /* 입력란 텍스트 크기 조정 */
+            font-size: 9px; /* 입력란 텍스트 크기 조정 */
         }
         #searchButton {
             font-size: 10.5px; /* 버튼 텍스트 크기 조정 */
@@ -187,7 +174,7 @@
 <header>
     <div class="left">
         <a href="/">
-            <img src="https://i.ibb.co/WgxZJc8/Kakao-Talk-20240625-180640065.png" alt="메인 로고" ></a>
+            <img src="https://i.ibb.co/WgxZJc8/Kakao-Talk-20240625-180640065.png" alt="메인 로고"></a>
     </div>
     <div class="right">
         <a class="nav-link" sec:authorize="isAnonymous()" href="/member/login">로그인</a>
@@ -225,18 +212,32 @@
     </nav>
     <section>
         <header>
-            <div class="hover-item right" onmouseover="showImage('https://i.ibb.co/y5dDc3X/001-6.png')" onmouseout="hideImage()">
-                <a href="restaurant/list" style="font-size: 20px;">맛집 추천</a>
-            </div>
-            <div class="hover-item center" onmouseover="showImage('https://i.ibb.co/nBLsJfh/adfadf.jpg')" onmouseout="hideImage()">
-                <a href="friend/list">밥 친구 구함</a>
-            </div>
-            <div class="hover-item left" onmouseover="showImage('https://i.ibb.co/FKrkMQd/business-card-ver.jpg')" onmouseout="hideImage()">
-                <a href="post/list">밥먹다 D.S</a>
-            </div>
+        <div class="right">
+            <a href="/restaurant/list" style="font-size: 20px;">맛집 추천</a>
+        </div>
+        <div class="center">
+            <a href="/friend/list">밥 친구 구함</a>
+        </div>
+        <div class="left">
+            <a href="/post/list">밥먹다 D.S</a>
+        </div>
         </header>
         <article id="display-article">
-            원하시는 리스트를 선택해주세요!w
+            <div class="box" id="restaurant-box">
+        맛집이 어디가 있는지 궁금할땐?<br><br> <br>" 맛집 추천! "
+                <br><br><img src="https://i.ibb.co/gWVkT1y/image.png" alt="이미지 설명"
+                     style="width: 80%; height: 75%; display: block; margin-top: 20px;">
+            </div>
+
+            <div class="box" id="friend-box"> 혼밥은 이제 그만! 원하는 음식을 사람들과 함께 먹고싶다면?<br><br>
+                " 밥친구 구함!"
+                <br><br> <img src="https://i.ibb.co/7vKnxnn/image.png" alt="이미지 설명"
+                     style="width: 80%; height: 75%; display: block; margin-top: 20px;">
+            </div>
+            <div class="box" id="post-box">사람들의 일상 스토리가 궁금하다면? <br><br><br>" 밥먹다 D.S! "
+                <br><br> <img src="https://i.ibb.co/fvpc3Zm/image.png" alt="이미지 설명"
+                     style="width: 80%; height: 75%; display: block; margin-top: 20px;">
+            </div>
         </article>
         <footer>
             ☞ 만남은 자유지만 오프라인에서 이루어진 사고에 대해서는 당사는 책임 지지 않습니다! ☜
@@ -255,7 +256,6 @@
             <div id="searchResults"></div>
         </div>
     </aside>
-
 </div>
 <footer>
     <p>
@@ -263,7 +263,6 @@
         <a href="#">통신 판매번호 : 2024-SBS-01조</a> |
         <a href="#">메일 : sbspull@test.com</a> |
         <a href="#">개인정보처리방침</a> |
-
     </p>
     <p>
         <a href="#">전자서명인증업무준칙</a> |
@@ -289,7 +288,7 @@
         },
     });
 
-      // 사용자 검색 및 페이지 이동 함수
+    // 사용자 검색 및 페이지 이동 함수
     function searchUser(event) {
         event.preventDefault(); // 폼의 기본 제출 동작 방지
 
@@ -304,9 +303,6 @@
             alert("닉네임을 입력해주세요.");
         }
     }
-
-
-
 
     // 서버에서 받아온 사용자 정보
     var userInfo = {
@@ -350,6 +346,29 @@
     function hideImage() {
         var article = document.getElementById('display-article');
         article.innerHTML = '원하시는 리스트를 선택해주세요!';
+    }
+
+    // 리스트 출력 함수
+    function showList(listType) {
+        var data = {
+            restaurant: ['맛집 1', '맛집 2', '맛집 3'],
+            friend: ['친구 1', '친구 2', '친구 3'],
+            post: ['포스트 1', '포스트 2', '포스트 3']
+        };
+
+        var article = document.getElementById('display-article');
+        article.innerHTML = '';
+
+        var list = document.createElement('div');
+        list.classList.add('list-box');
+
+        data[listType].forEach(function(item) {
+            var listItem = document.createElement('div');
+            listItem.textContent = item;
+            list.appendChild(listItem);
+        });
+
+        article.appendChild(list);
     }
 </script>
 </body>
