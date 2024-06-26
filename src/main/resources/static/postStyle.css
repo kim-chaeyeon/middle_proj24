@@ -8,7 +8,7 @@ body {
 
 h2 {
     text-align: center;
-    color: #f57c00;
+    color: #FFCE45;
     margin-bottom: 30px;
 }
 
@@ -85,25 +85,9 @@ h2 {
     border-radius: 0;
 }
 
-.btn-blog {
-    color: #495057;
-    background-color: transparent;
-    border: 2px solid #f57c00;
-    transition: background-color 0.3s ease;
-    display: inline-block;
-    padding: 10px 20px;
-    text-decoration: none;
-}
-
-.btn-blog:hover {
-    background-color: #f57c00;
-    color: #fff;
-    text-decoration: none;
-}
-
 .btn-register {
     color: #fff;
-    background-color: #f57c00;
+    background-color: #FFCE45;
     border: none;
     padding: 10px 20px;
     border-radius: 5px;
@@ -121,7 +105,7 @@ h2 {
     margin-top: 30px;
 }
 header {
-    background-color: #FF6F00;
+    background-color: #FFCE45;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -142,6 +126,12 @@ header .left, header .right {
 header .right a {
     margin-left: 15px;
     font-size: 16px;
+}
+ header .left img {
+    max-height: 50%;
+    max-width: 50%;
+    margin-top : 5px;
+    vertical-align: middle;
 }
 .header-slider {
     max-width: 100%;
@@ -170,7 +160,7 @@ header .right a {
     border: none;
     border-radius: 0;
     background-color: white;
-    color: #ff6600;
+    color: #FFCE45;
     padding: 0 30px;
     font-size: 20px;
 }

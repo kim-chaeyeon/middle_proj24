@@ -6,18 +6,21 @@
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2e886fa0387a4683a275ed630512bc1f&libraries=services"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link rel="stylesheet" type="text/css" href="/postStyle.css">
+    <link rel="stylesheet" type="text/css" href="/frdStyle.css">
 </head>
 <body>
 <header>
     <div class="left">
-        <a href="/">밥먹다</a>
+        <a href="/">
+            <img src="https://i.ibb.co/WgxZJc8/Kakao-Talk-20240625-180640065.png" alt="메인 로고"></a>
     </div>
     <div class="right">
         <a class="nav-link" sec:authorize="isAnonymous()" href="/member/login">로그인</a>
         <a class="nav-link" sec:authorize="isAuthenticated()" href="/member/logout" onclick="logout()">로그아웃</a>
         <a sec:authorize="isAuthenticated()" href="/member/myPage">마이페이지</a>
         <span sec:authorize="isAuthenticated()" id="username"></span>
+        <a sec:authorize="hasRole('ADMIN')" href="/admin/page">관리자 페이지</a>
+        <span sec:authorize="hasRole('ADMIN')" id="admin"></span>
     </div>
 </header>
 <div class="container my-3">
@@ -34,7 +37,7 @@
 
     <div class="row">
         <div th:each="friend, loop : ${paging}" class="col-md-4 mb-3">
-            <div class="card" th:id="'address' + ${friend.id}">
+            <div class="card" th:onclick="|location.href='@{/friend/detail/{id}(id=${friend.id})}'|" style="cursor: pointer;">
                 <div class="card-body">
                     <div th:id="'map-' + ${friend.id}" class="map-container" style="width:100%;height:300px;"></div>
                     <h2 class="card-title" th:text="${friend.title}"></h2>
@@ -78,7 +81,7 @@
     </nav>
     <!-- 페이징 끝 -->
     <div class="col-6">
-        <a th:href="@{/friend/create}" class="btn btn-primary btn-blog">밥 친구 찾기</a>
+        <a th:href="@{/friend/create}" class="btn-blog">밥 친구 찾기</a>
     </div>
 </div>
 

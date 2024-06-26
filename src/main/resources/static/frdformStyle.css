@@ -62,7 +62,7 @@ select {
 #searchAddress {
     padding: 10px 15px;
     font-size: 16px;
-    background-color: #fd7e14;
+    background-color: #FFCE45;
     color: #fff;
     border: none;
     border-radius: 4px;
@@ -143,7 +143,7 @@ select {
 .btn-primary {
     padding: 10px 20px;
     font-size: 18px;
-    background-color: #fd7e14;
+    background-color: #FFCE45;
     color: #fff;
     border: none;
     border-radius: 4px;

@@ -1,83 +1,93 @@
-<html layout:decorate="~{layout}">
-<div layout:fragment="content" class="container my-3">
-    <head>
-        <title>User Posts</title>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-        <style>
-            .profile-section {
-                display: flex;
-                align-items: center;
-                margin-bottom: 20px;
-            }
-            .profile {
-                display: flex;
-                align-items: center;
-            }
-            .profile img {
-                border-radius: 50%;
-                margin-right: 20px;
-                width: 100px;
-                height: 100px;
-                object-fit: cover;
-            }
-            .profile-info p {
-                margin: 0;
-            }
-        </style>
-    </head>
-    <body>
-    <div class="container my-3">
-        <!-- 사용자 프로필 정보 표시 -->
-        <div class="profile-section mb-3">
-            <div class="profile">
-                <a th:href="@{|/member/myPage/${nickname}|}">
-                    <img th:src="@{|/file/${thumbnailImg}|}" alt="Profile Picture">
-                </a>
-            </div>
-            <div class="profile-info">
-                <h2><span th:text="${nickname}"></span>님의 게시물 목록</h2>
-                <p>지역: <span th:text="${region}"></span></p>
-                <p>성별: <span th:text="${gender}"></span></p>
-                <p>나이: <span th:text="${age}"></span></p>
-            </div>
-        </div>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>User Post</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/memberPosts.css">
+</head>
+<header>
+<div class="left">
+    <a href="/">
+        <img src="https://i.ibb.co/WgxZJc8/Kakao-Talk-20240625-180640065.png" alt="메인 로고"></a>
+</div>
+<div class="right">
+    <a class="nav-link" sec:authorize="isAnonymous()" href="/member/login">로그인</a>
+    <a class="nav-link" sec:authorize="isAuthenticated()" href="/member/logout" onclick="logout()">로그아웃</a>
+    <a sec:authorize="isAuthenticated()" href="/member/myPage">마이페이지</a>
+    <span sec:authorize="isAuthenticated()" id="username"></span>
+    <a sec:authorize="hasRole('ADMIN')" href="/admin/page">관리자 페이지</a>
+    <span sec:authorize="hasRole('ADMIN')" id="admin"></span>
+</div>
+</header>
+<body>
+<div class="container my-3">
+    <!-- 프로필 제목 -->
+    <div class="text-center mb-3">
+        <h2><span th:text="${nickname}"></span>님의 프로필</h2>
+    </div>
 
-        <!-- 사용자 게시물 수 표시 -->
-        <div class="row">
-            <div th:if="${userPosts != null}" class="col-12">
-                <p th:text="'Total posts: ' + ${userPosts.size()}"></p>
-            </div>
+    <!-- 사용자 프로필 정보 표시 -->
+    <div class="profile-section mb-3">
+        <div class="profile">
+            <a th:href="@{|/member/myPage/${nickname}|}">
+                <img th:src="@{|/file/${thumbnailImg}|}" alt="Profile Picture" class="profile-picture">
+            </a>
         </div>
-
-        <!-- 사용자 게시물 목록 출력 -->
-        <div class="row">
-            <div th:each="post : ${userPosts}" class="col-md-4 mb-3">
-                <div class="card">
-                    <!-- 썸네일 이미지 및 게시물 정보 출력 -->
-                    <img th:src="@{|/file/${post.thumbnailImg}|}" class="card-img-top" alt="Thumbnail">
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            <a th:href="@{|/post/detail/${post.id}|}" th:text="${post.title}" class="no-underline"></a>
-                        </h5>
-                        <p class="card-text">
-                            작성자: <span th:text="${post.author.nickname}"></span> <br>
-                            지역: <span th:text="${post.author.region}"></span> <br>
-                            <small class="text-muted" th:text="${#temporals.format(post.createDate, 'yyyy-MM-dd HH:mm')}"></small>
-                        </p>
-                    </div>
+        <div class="profile-info">
+            <div class="profile-info-row">
+                <div class="profile-info-column">
+                    <p>지역: <span th:text="${region}"></span></p>
+                    <p>성별: <span th:text="${gender}"></span></p>
+                    <p>나이: <span th:text="${age}"></span></p>
+                </div>
+                <div class="profile-info-column">
+                    <p>MBTI: <span th:text="${mbti}"></span></p>
+                    <p>SNS: <span th:text="${sns}"></span></p>
+                    <p>좋아하는 음식: <span th:text="${favoriteFood}"></span></p>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- 페이지네이션 기능 추가 -->
-        <div class="row my-3">
-            <div class="col-12">
-                <ul class="pagination">
-                    <!-- Pagination 추가 -->
-                </ul>
+    <!-- 구분선 -->
+    <hr class="my-4">
+
+    <!-- 사용자 게시물 수 표시 -->
+    <div class="row">
+        <div th:if="${userPosts != null}" class="col-12 text-center">
+            <p th:text="'Total posts: ' + ${userPosts.size()}"></p>
+        </div>
+    </div>
+
+    <!-- 사용자 게시물 목록 출력 -->
+    <div class="row">
+        <div th:each="post : ${userPosts}" class="col-md-4 mb-3">
+            <div class="card">
+                <!-- 썸네일 이미지 및 게시물 정보 출력 -->
+                <img th:src="@{|/file/${post.thumbnailImg}|}" class="card-img-top" alt="Thumbnail">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <a th:href="@{|/post/detail/${post.id}|}" th:text="${post.title}" class="no-underline"></a>
+                    </h5>
+                    <p class="card-text">
+                        작성자: <span th:text="${post.author.nickname}"></span> <br>
+                        지역: <span th:text="${post.author.region}"></span> <br>
+                        <small class="text-muted" th:text="${#temporals.format(post.createDate, 'yyyy-MM-dd HH:mm')}"></small>
+                    </p>
+                </div>
             </div>
         </div>
     </div>
-    </body>
+
+    <!-- 페이지네이션 기능 추가 -->
+    <div class="row my-3">
+        <div class="col-12">
+            <ul class="pagination justify-content-center">
+                <!-- Pagination 추가 -->
+            </ul>
+        </div>
+    </div>
 </div>
+</body>
 </html>

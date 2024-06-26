@@ -22,7 +22,7 @@ body {
 
 h2 {
     font-size: 24px;
-    color: #FF6F00;
+    color: #FFCE45;
 }
 
 .label {
@@ -82,7 +82,7 @@ h2 {
 }
 
 .btn-outline-secondary {
-    border-color: #FF6F00;
+    border-color: #FFCE45;
     color: #FF6F00;
     margin-right: 5px;
 }
@@ -93,8 +93,8 @@ h2 {
 }
 
 .btn-primary {
-    background-color: #FF6F00;
-    border-color: #FF6F00;
+    background-color: #FFCE45;
+    border-color: #FFCE45;
     color: white;
     cursor: pointer;
     display: block;
@@ -165,13 +165,13 @@ h2 {
 
 .button-gray i {
     vertical-align: middle;
-    font-size: 1.2em;
+    font-size: 1em;
     margin-top: 4px;
 }
 
 .heart-icon {
-    font-size: 1.2em;
-    margin-right: 5px;
+    font-size: 1em;
+    margin-right: 0.3px;
     color: #333;
 }
 
@@ -221,28 +221,44 @@ h2 {
 }
 
 /* Comment Form */
-form.my-3 {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+.card-text {
+    line-height: 1.6; /* 카드 텍스트 줄간격 */
 }
 
-form.my-3 textarea.form-control {
-    width: 100%;
-    resize: vertical;
-    margin-bottom: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    padding: 10px;
-    font-size: 14px;
-    line-height: 1.5;
+.d-flex {
+    display: flex; /* Flexbox 사용 */
+    align-items: center; /* 아이템들을 세로 가운데 정렬 */
 }
 
-form.my-3 textarea.form-control[disabled] {
-    background-color: #f9f9f9;
-    color: #999;
+.card-body {
+    padding: 10px 15px; /* 카드 바디 패딩 */
+}
+
+.badge {
+    font-size: 0.875rem; /* 뱃지 폰트 크기 */
+    font-weight: 400; /* 뱃지 폰트 두께 */
+}
+
+.badge.bg-light {
+    background-color: #f8f9fa; /* 뱃지 배경색 */
+}
+
+.badge.bg-secondary {
+    background-color: white; /* 뱃지 배경색 (secondary) */
+    color: black; /* 뱃지 텍스트 색상 (secondary) */
+}
+
+/* 댓글 작성 폼 스타일 */
+.form-control {
+    border-radius: 10px; /* 입력란 모서리를 더 둥글게 */
+    margin-bottom: 20px; /* 더 큰 하단 마진 */
+    padding: 12px; /* 내부 패딩을 추가하여 더 큰 입력란 크기 지정 */
+    font-size: 1rem; /* 폰트 크기를 기본 크기로 설정 */
+    width: 100%; /* 너비를 100%로 설정하여 오른쪽으로 길게 늘어지게 함 */
+    box-sizing: border-box; /* 패딩과 테두리를 포함한 전체 너비 설정 */
+    display: block; /* 블록 요소로 지정하여 가로 정렬을 위해 필요 */
+    margin-left: auto; /* 왼쪽 여백을 자동으로 설정하여 가운데 정렬 */
+    margin-right: 0; /* 오른쪽 여백을 0으로 설정하여 가운데 정렬 */
 }
 
 form.my-3 input.btn-primary {
@@ -253,7 +269,7 @@ form.my-3 input.btn-primary {
 }
 
 header {
-    background-color: #FF6F00;
+    background-color: #FFCE45;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -275,9 +291,64 @@ header .right a {
     margin-left: 15px;
     font-size: 16px;
 }
+ header .left img {
+    max-height: 50%;
+    max-width: 50%;
+    margin-top : 5px;
+    vertical-align: middle;
+}
 .header-slider {
     max-width: 100%;
     height: auto;
     margin: 20px auto;
 }
 
+.button-container i {
+    vertical-align: middle;
+    margin-top: 4px; /* Adjust the value as needed to move the icons down */
+}
+
+/* Ensure the buttons are horizontally aligned */
+.button-container {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end; /* Align buttons to the right */
+    margin-bottom: 38px;
+    margin-left: auto; /* Right align the icon */
+}
+
+/* Gray button styles */
+.button-gray {
+    background-color: white;
+    color: black;
+    text-decoration: none; /* Remove underline */
+    display: flex;
+     /* Center align the contents */
+}
+
+/* Change button color on hover */
+.button-gray:hover {
+    background-color: white;
+    border-color: #545b62;
+    color: gray;
+    text-decoration: none; /* Remove underline */
+}
+
+/* Ensure icons inside buttons are centered */
+.button-gray i {
+    vertical-align: middle;
+    font-size: 1em; /* Adjust the size as needed */
+    margin-top: 4px; /* Move the icon slightly down */
+}
+
+/* Increase the size of the heart icon */
+.heart-icon {
+    font-size: 1em; /* Adjust the size as needed */
+    margin-right: 5px; /* Add space between the icon and the text */
+}
+
+/* Ensure badge is inline with icon */
+.button-gray .badge {
+    margin-left: 5px;
+    vertical-align: middle;
+}
