@@ -33,7 +33,7 @@
                         <a th:href="@{/post/detail/{id}(id=${post.id})}" th:text="${post.title}" class="no-underline"></a>
                     </h5>
                     <p class="card-text">
-                        작성자: <span th:text="${post.author.nickname}"></span> <br>
+                        작성자:<a th:href="@{|/post/memberPosts/${post.author.nickname}|}" class="no-underline"> <span th:text="${post.author.nickname}" class="text"></span></a> <br>
 <!--                        <h5 class="mb-2">-->
 <!--                            <a th:href="@{|/post/memberPosts/${post.author.nickname}|}" class="no-underline">-->
 <!--                                작성자: <span class="icon-circle">-->

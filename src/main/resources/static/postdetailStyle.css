@@ -184,6 +184,8 @@ h2 {
     display: flex;
     gap: 7px;
     justify-content: flex-end;
+    margin-top: 20px;
+    background-color: white;
 }
 
 .card-text {
@@ -220,6 +222,11 @@ h2 {
     align-items: center;
 }
 
+.text {
+    color: #000;
+    text-decoration: none;
+}
+
 /* Comment Form */
 .card-text {
     line-height: 1.6; /* 카드 텍스트 줄간격 */
@@ -240,7 +247,7 @@ h2 {
 }
 
 .badge.bg-light {
-    background-color: #f8f9fa; /* 뱃지 배경색 */
+    background-color: white; /* 뱃지 배경색 */
 }
 
 .badge.bg-secondary {
@@ -313,17 +320,18 @@ header .right a {
     display: flex;
     gap: 10px;
     justify-content: flex-end; /* Align buttons to the right */
-    margin-bottom: 38px;
-    margin-left: auto; /* Right align the icon */
+    margin-bottom: 10px;
+    background-color: white;
 }
 
 /* Gray button styles */
 .button-gray {
     background-color: white;
+    border-color: white;
     color: black;
     text-decoration: none; /* Remove underline */
     display: flex;
-     /* Center align the contents */
+    align-items: center; /* Center align the contents */
 }
 
 /* Change button color on hover */
@@ -338,13 +346,13 @@ header .right a {
 .button-gray i {
     vertical-align: middle;
     font-size: 1em; /* Adjust the size as needed */
-    margin-top: 4px; /* Move the icon slightly down */
+    margin-top: 5px; /* Move the icon slightly down */
 }
 
 /* Increase the size of the heart icon */
 .heart-icon {
     font-size: 1em; /* Adjust the size as needed */
-    margin-right: 5px; /* Add space between the icon and the text */
+    margin-right: 0.3px; /* Add space between the icon and the text */
 }
 
 /* Ensure badge is inline with icon */
