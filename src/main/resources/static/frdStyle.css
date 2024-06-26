@@ -1,6 +1,6 @@
 /* 검색 */
 body {
-    background-color: white;
+    background-color: #f8f9fa;
 }
 .search-container {
     display: flex;
@@ -24,7 +24,7 @@ body {
     border: none;
     border-radius: 0;
     background-color: white;
-    color: #ff6600;
+    color: #FFCE45;
     padding: 0 30px;
     font-size: 20px;
 }
@@ -146,47 +146,52 @@ body {
 
 /*질문등록*/
 .btn-blog {
-    color: #495057; /* 텍스트 색상 */
-    background-color: transparent; /* 배경을 투명하게 설정 */
-    border: 2px solid #f57c00; /* 주황색 테두리 */
+    color: #fff;
+    background-color: #FFCE45;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
     transition: background-color 0.3s ease;
-    display: inline-block; /* 인*/
-    text-decoration: none;
+}
 
 .btn-blog:hover {
-    background-color: #f57c00; /* 마우스 오버 시 배경을 주황색으로 변경 */
-    color: #fff; /* 텍스트 색상을 흰색으로 변경 */
+    background-color: #e65100;
+    color: #fff;
     text-decoration: none;
 }
+
+
 header {
-    background-color: #F57C00 !important;
-    display: flex !important;
-    justify-content: space-between !important;
-    align-items: center !important;
-    padding: 0 20px !important;
-    height: 60px !important;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+    background-color: #FFCE45;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    height: 60px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
-
 header a {
-    color: #333 !important;
-    text-decoration: none !important;
-    font-weight: bold !important;
-    font-size: 20px !important;
+    color: #333;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 20px;
 }
-
 header .left, header .right {
-    display: flex !important;
-    align-items: center !important;
+    display: flex;
+    align-items: center;
 }
-
 header .right a {
-    margin-left: 15px !important;
-    font-size: 16px !important;
+    margin-left: 15px;
+    font-size: 16px;
 }
-
+ header .left img {
+    max-height: 50%;
+    max-width: 50%;
+    margin-top : 5px;
+    vertical-align: middle;
+}
 .header-slider {
-    max-width: 100% !important;
-    height: auto !important;
-    margin: 20px auto !important;
+    max-width: 100%;
+    height: auto;
+    margin: 20px auto;
 }

@@ -10,19 +10,29 @@
 </head>
 <header>
     <div class="left">
-        <a href="/">밥먹다</a>
+        <a href="/">
+            <img src="https://i.ibb.co/WgxZJc8/Kakao-Talk-20240625-180640065.png" alt="메인 로고"></a>
     </div>
     <div class="right">
         <a class="nav-link" sec:authorize="isAnonymous()" href="/member/login">로그인</a>
         <a class="nav-link" sec:authorize="isAuthenticated()" href="/member/logout" onclick="logout()">로그아웃</a>
         <a sec:authorize="isAuthenticated()" href="/member/myPage">마이페이지</a>
         <span sec:authorize="isAuthenticated()" id="username"></span>
+        <a sec:authorize="hasRole('ADMIN')" href="/admin/page">관리자 페이지</a>
+        <span sec:authorize="hasRole('ADMIN')" id="admin"></span>
     </div>
 </header>
 <body>
 <div layout:fragment="content" class="container my-3">
     <!-- 맛집 게시물 -->
-    <h2 class="border-bottom py-2" th:text="${restaurant.title}"></h2>
+    <h5 class="mb-2">
+        <a th:href="@{|/post/memberPosts/${restaurant.author.nickname}|}" class="no-underline">
+                            <span class="icon-circle">
+                                <i class="fa-regular fa-user"></i>
+                            </span>
+            <span class="nickname" th:text="${restaurant.author.nickname}"></span>
+        </a>
+    </h5>
     <div class="card my-3">
         <div class="card-body">
             <!-- 썸네일 및 지도 표시 -->
@@ -33,14 +43,7 @@
                 <div id="map-${restaurant.id}" class="map-container"></div>
             </div>
 
-            <h5 class="mb-2">
-                <a th:href="@{|/post/memberPosts/${restaurant.author.username}|}" class="no-underline">
-                            <span class="icon-circle">
-                                <i class="fa-regular fa-user"></i>
-                            </span>
-                    <span class="username" th:text="${restaurant.author.username}"></span>
-                </a>
-            </h5>
+            <h2 class="border-bottom py-2" th:text="${restaurant.title}"></h2>
 
             <div>
                 <label class="font-weight-bold">추천 메뉴:</label>
@@ -72,8 +75,8 @@
                     <a onclick="return confirm('추천하시겠습니까?');" class="btn btn-sm btn-outline-secondary button-gray"
                        th:href="@{|/restaurant/vote/${restaurant.id}|}">
                         <i class="fa-solid fa-heart heart-icon"></i>
-                        <span class="badge rounded-pill bg-success" th:text="${#lists.size(restaurant.voters)}"></span>
                     </a>
+                    <span class="badge rounded-pill bg-success" th:text="${#lists.size(restaurant.voters)}"></span>
 
                     <a th:href="@{|/restaurant/modify/${restaurant.id}|}" class="btn btn-sm btn-outline-secondary button-gray"
                        sec:authorize="isAuthenticated()"

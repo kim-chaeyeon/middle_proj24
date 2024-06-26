@@ -1,0 +1,136 @@
+.profile-section {
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: nowrap; /* nowrap으로 변경 */
+    max-width: 800px; /* 프로필 카드 너비 조정 */
+    margin: 0 auto; /* 가운데 정렬 */
+}
+
+.profile-picture {
+    max-width: 150px; /* 크기 조정 */
+    max-height: 150px; /* 크기 조정 */
+    border-radius: 50%; /* 원형으로 만들기 */
+    margin: 65px; /* 이미지 좌우 간격 */
+    object-fit: cover; /* 이미지를 잘라서 맞춤 */
+}
+
+.profile-info {
+    text-align: left; /* 텍스트 왼쪽 정렬 */
+    margin-left: 20px; /* 정보 좌측 간격 */
+    margin-top: 10px; /* 상단 간격 */
+    flex-grow: 1; /* 정보 칸 크기 늘리기 */
+
+}
+
+.profile-info p {
+    margin-bottom: 20px; /* 정보 간의 간격 최대화 */
+    white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+    overflow: hidden; /* 넘치는 텍스트 숨기기 */
+    text-overflow: ellipsis; /* 넘치는 텍스트 생략 부호(...) 추가 */
+}
+
+.profile-info-row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.profile-info-column {
+    flex: 1 1 33%; /* 각 정보 칸을 3등분 */
+    max-width: 33%; /* 각 정보 칸을 3등분 */
+}
+
+.card {
+    border: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card-title a {
+    color: #000;
+    text-decoration: none;
+}
+
+.card-title a:hover {
+    color: #FFCE45;
+}
+
+.btn-primary {
+    background-color: #FFCE45;
+    border-color: #FFCE45;
+}
+
+.btn-primary:hover {
+    background-color: #e6b940;
+    border-color: #e6b940;
+}
+
+.pagination .page-link {
+    color: #FFCE45;
+    border: 1px solid #FFCE45;
+}
+
+.pagination .page-link:hover {
+    color: #fff;
+    background-color: #FFCE45;
+    border-color: #FFCE45;
+}
+
+.pagination .active .page-link {
+    color: #fff;
+    background-color: #FFCE45;
+    border-color: #FFCE45;
+}
+
+hr.my-4 {
+    border: 0;
+    border-top: 2px solid #FFCE45;
+}
+
+header {
+    background-color: #FFCE45;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    height: 60px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+header a {
+    color: #333;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 20px;
+}
+header .left, header .right {
+    display: flex;
+    align-items: center;
+}
+header .right a {
+    margin-left: 15px;
+    font-size: 16px;
+}
+ header .left img {
+    max-height: 50%;
+    max-width: 50%;
+    margin-top : 5px;
+    vertical-align: middle;
+}
+.header-slider {
+    max-width: 100%;
+    height: auto;
+    margin: 20px auto;
+}
+
+.profile-title {
+    text-align: center;
+    margin-bottom: 20px;
+}

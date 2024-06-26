@@ -8,13 +8,16 @@
 </head>
 <header>
     <div class="left">
-        <a href="/">밥먹다</a>
+        <a href="/">
+            <img src="https://i.ibb.co/WgxZJc8/Kakao-Talk-20240625-180640065.png" alt="메인 로고"></a>
     </div>
     <div class="right">
         <a class="nav-link" sec:authorize="isAnonymous()" href="/member/login">로그인</a>
         <a class="nav-link" sec:authorize="isAuthenticated()" href="/member/logout" onclick="logout()">로그아웃</a>
         <a sec:authorize="isAuthenticated()" href="/member/myPage">마이페이지</a>
         <span sec:authorize="isAuthenticated()" id="username"></span>
+        <a sec:authorize="hasRole('ADMIN')" href="/admin/page">관리자 페이지</a>
+        <span sec:authorize="hasRole('ADMIN')" id="admin"></span>
     </div>
 </header>
 <body>
@@ -23,7 +26,7 @@
     <!-- 게시물 섹션 -->
     <div class="row">
         <div th:each="post : ${paging}" class="col-md-4 mb-3">
-            <div class="card">
+            <div class="card" th:onclick="|location.href='@{/post/detail/{id}(id=${post.id})}'|" style="cursor: pointer;">
                 <img th:src="@{/file/{filename}(filename=${post.thumbnailImg})}" class="card-img-top" alt="Thumbnail">
                 <div class="card-body">
                     <h5 class="card-title">

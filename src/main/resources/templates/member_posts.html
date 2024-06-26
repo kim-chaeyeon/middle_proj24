@@ -1,163 +1,61 @@
 <!DOCTYPE html>
-<html layout:decorate="~{layout}">
-<div layout:fragment="content" class="container my-3">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>User Posts</title>
+    <title>User Post</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <style>
-        body {
-            background-color: white;
-            color: #333;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            margin-top: 80px; /* Adjusted margin-top to accommodate fixed header */
-        }
-        .profile-section {
-            display: flex;
-            align-items: center;
-            margin-bottom: 20px;
-            background-color: #FFF5DB; /* Matched background color */
-            padding: 10px;
-            border-radius: 10px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        .profile {
-            display: flex;
-            align-items: center;
-        }
-        .profile img {
-            border-radius: 50%;
-            margin-right: 20px;
-            width: 100px;
-            height: 100px;
-            object-fit: cover;
-            border: 3px solid #FFCE45;
-        }
-        .profile-info p {
-            margin: 0;
-        }
-        .card {
-            background-color: white;
-            border: none;
-            border-radius: 10px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        .card-body {
-            padding: 10px;
-        }
-        .card-title a {
-            color: #333;
-            text-decoration: none;
-        }
-        .card-title a:hover {
-            color: #F57C00;
-        }
-        .card-text {
-            color: #333;
-        }
-        .pagination .page-link {
-            color: #333;
-            background-color: #FFEBB0;
-            border: 1px solid #FFCE45;
-        }
-        .pagination .page-link:hover {
-            background-color: #FFD700;
-            color: #333;
-        }
-        .pagination .active .page-link {
-            background-color: #F57C00;
-            border-color: #F57C00;
-            color: #fff;
-        }
-        .btn-primary {
-            background-color: #F57C00;
-            border-color: #F57C00;
-        }
-        .btn-primary:hover {
-            background-color: #FFCE45;
-            border-color: #FFCE45;
-        }
-        header {
-            background-color: #FFCE45;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 20px;
-            height: 60px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 1000;
-        }
-        header a {
-            color: #333;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 20px;
-        }
-        header .left, header .right {
-            display: flex;
-            align-items: center;
-        }
-        header .right a {
-            margin-left: 15px;
-            font-size: 16px;
-        }
-        .header-slider {
-            max-width: 100%;
-            height: auto;
-            margin: 20px auto;
-        }
-        header .left img {
-            max-height: 50%;
-            max-width: 50%;
-            margin-top : 8px;
-            vertical-align: middle;
-        }
-    </style>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/memberPosts.css">
 </head>
 <header>
-    <div class="left">
-        <a href="/">
-            <img src="https://i.ibb.co/WgxZJc8/Kakao-Talk-20240625-180640065.png" alt="메인 로고"></a>
-    </div>
-    <div class="right">
-        <a class="nav-link" sec:authorize="isAnonymous()" href="/member/login">로그인</a>
-        <a class="nav-link" sec:authorize="isAuthenticated()" href="/member/logout" onclick="logout()">로그아웃</a>
-        <a sec:authorize="isAuthenticated()" href="/member/myPage">마이페이지</a>
-        <span sec:authorize="isAuthenticated()" id="username"></span>
-        <a sec:authorize="hasRole('ADMIN')" href="/admin/page">관리자 페이지</a>
-        <span sec:authorize="hasRole('ADMIN')" id="admin"></span>
-    </div>
+<div class="left">
+    <a href="/">
+        <img src="https://i.ibb.co/WgxZJc8/Kakao-Talk-20240625-180640065.png" alt="메인 로고"></a>
+</div>
+<div class="right">
+    <a class="nav-link" sec:authorize="isAnonymous()" href="/member/login">로그인</a>
+    <a class="nav-link" sec:authorize="isAuthenticated()" href="/member/logout" onclick="logout()">로그아웃</a>
+    <a sec:authorize="isAuthenticated()" href="/member/myPage">마이페이지</a>
+    <span sec:authorize="isAuthenticated()" id="username"></span>
+    <a sec:authorize="hasRole('ADMIN')" href="/admin/page">관리자 페이지</a>
+    <span sec:authorize="hasRole('ADMIN')" id="admin"></span>
+</div>
 </header>
 <body>
 <div class="container my-3">
+    <!-- 프로필 제목 -->
+    <div class="text-center mb-3">
+        <h2><span th:text="${nickname}"></span>님의 프로필</h2>
+    </div>
+
     <!-- 사용자 프로필 정보 표시 -->
     <div class="profile-section mb-3">
         <div class="profile">
             <a th:href="@{|/member/myPage/${nickname}|}">
-                <img th:src="@{|/file/${thumbnailImg}|}" alt="Profile Picture">
+                <img th:src="@{|/file/${thumbnailImg}|}" alt="Profile Picture" class="profile-picture">
             </a>
         </div>
         <div class="profile-info">
-            <h2><span th:text="${nickname}"></span>님의 게시물 목록</h2>
-            <p>지역: <span th:text="${region}"></span></p>
-            <p>성별: <span th:text="${gender}"></span></p>
-            <p>나이: <span th:text="${age}"></span></p>
+            <div class="profile-info-row">
+                <div class="profile-info-column">
+                    <p>지역: <span th:text="${region}"></span></p>
+                    <p>성별: <span th:text="${gender}"></span></p>
+                    <p>나이: <span th:text="${age}"></span></p>
+                </div>
+                <div class="profile-info-column">
+                    <p>MBTI: <span th:text="${mbti}"></span></p>
+                    <p>SNS: <span th:text="${sns}"></span></p>
+                    <p>좋아하는 음식: <span th:text="${favoriteFood}"></span></p>
+                </div>
+            </div>
         </div>
     </div>
 
+    <!-- 구분선 -->
+    <hr class="my-4">
+
     <!-- 사용자 게시물 수 표시 -->
     <div class="row">
-        <div th:if="${userPosts != null}" class="col-12">
+        <div th:if="${userPosts != null}" class="col-12 text-center">
             <p th:text="'Total posts: ' + ${userPosts.size()}"></p>
         </div>
     </div>
@@ -185,26 +83,11 @@
     <!-- 페이지네이션 기능 추가 -->
     <div class="row my-3">
         <div class="col-12">
-            <ul class="pagination">
-                <li th:classappend="${userPosts.hasPrevious()} ? '' : 'disabled'" class="page-item">
-                    <a th:href="@{|/post/memberPosts?page=${userPosts.number - 1}|}" class="page-link">Previous</a>
-                </li>
-                <li th:each="i : ${#numbers.sequence(1, userPosts.totalPages)}" class="page-item" th:classappend="${userPosts.number + 1 == i} ? 'active'">
-                    <a th:href="@{|/post/memberPosts?page=${i - 1}|}" class="page-link" th:text="${i}">1</a>
-                </li>
-                <li th:classappend="${userPosts.hasNext()} ? '' : 'disabled'" class="page-item">
-                    <a th:href="@{|/post/memberPosts?page=${userPosts.number + 1}|}" class="page-link">Next</a>
-                </li>
+            <ul class="pagination justify-content-center">
+                <!-- Pagination 추가 -->
             </ul>
-        </div>
-    </div>
-
-    <div class="row my-3">
-        <div class="col-6">
-            <a th:href="@{/post/create}" class="btn btn-primary">게시물 등록하기</a>
         </div>
     </div>
 </div>
 </body>
-</div>
 </html>
