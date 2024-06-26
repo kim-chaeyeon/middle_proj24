@@ -25,7 +25,7 @@ public class Dev {
     public ApplicationRunner init(MemberService memberService) {
         return args -> {
             // Read profile image file and convert to MultipartFile
-            File file = new File("C:\\Users\\82109\\Desktop\\박진영.jpeg");
+            File file = new File("C:\\Users\\82109\\Desktop\\박진영.jpg");
             try (FileInputStream input = new FileInputStream(file)) {
                 MockMultipartFile multipartFile = new MockMultipartFile("file", file.getName(), "image/jpeg", input);
 
@@ -37,7 +37,7 @@ public class Dev {
                 e.printStackTrace();
             }
 
-            File file1 = new File("C:\\Users\\82109\\Desktop\\예지.jpeg");
+            File file1 = new File("C:\\Users\\82109\\Desktop\\예지.jpg");
             try (FileInputStream input = new FileInputStream(file1)) {
                 MockMultipartFile multipartFile1 = new MockMultipartFile("file1", file1.getName(), "image/jpeg", input);
 
@@ -48,7 +48,7 @@ public class Dev {
                 e.printStackTrace();
             }
 
-            File file2 = new File("C:\\Users\\82109\\Desktop\\유나.jpeg");
+            File file2 = new File("C:\\Users\\82109\\Desktop\\유나.jpg");
             try (FileInputStream input = new FileInputStream(file2)) {
                 MockMultipartFile multipartFile2 = new MockMultipartFile("file2", file2.getName(), "image/jpeg", input);
 
