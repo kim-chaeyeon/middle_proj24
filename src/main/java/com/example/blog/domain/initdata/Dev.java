@@ -42,7 +42,7 @@ public class Dev {
                 MockMultipartFile multipartFile1 = new MockMultipartFile("file1", file1.getName(), "image/jpeg", input);
 
                 // Call the signup method
-                memberService.signup("user2", "01012345678", "예지", "1234", 25,
+                memberService.signup("user2", "01012345678", "철이", "1234", 25,
                         "coco@test.com", "여자", "대전", "일식", "iiii", "holy", multipartFile1, MemberRole.USER);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -54,7 +54,54 @@ public class Dev {
 
                 // Call the signup method
 
-                memberService.signup("user1", "01012345678", "유나", "1234", 0, "cake@test.com",
+                memberService.signup("user1", "01012345678", "혁이", "1234", 0, "cake@test.com",
+                        "남자", "대전", "양식", "대전", "tong", multipartFile2, MemberRole.USER);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            File file3 = new File("C:\\Users\\82109\\Desktop\\박진영.jpg");
+            try (FileInputStream input = new FileInputStream(file3)) {
+                MockMultipartFile multipartFile = new MockMultipartFile("file3", file.getName(), "image/jpeg", input);
+
+                // Call the signup method
+
+                memberService.signup("user3", "01012345678", "미니", "1234", 25,
+                        "admin@test.com", "남자", "대전", "대전", "ISTP", "asd", multipartFile, MemberRole.ADMIN);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            File file4 = new File("C:\\Users\\82109\\Desktop\\예지.jpg");
+            try (FileInputStream input = new FileInputStream(file4)) {
+                MockMultipartFile multipartFile1 = new MockMultipartFile("file4", file1.getName(), "image/jpeg", input);
+
+                // Call the signup method
+                memberService.signup("user4", "01012345678", "써니", "1234", 25,
+                        "coco@test.com", "남자", "대전", "일식", "iiii", "holy", multipartFile1, MemberRole.USER);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            File file5 = new File("C:\\Users\\82109\\Desktop\\유나.jpg");
+            try (FileInputStream input = new FileInputStream(file5)) {
+                MockMultipartFile multipartFile2 = new MockMultipartFile("file5", file2.getName(), "image/jpeg", input);
+
+                // Call the signup method
+
+                memberService.signup("user5", "01012345678", "정이", "1234", 0, "cake@test.com",
+                        "남자", "대전", "양식", "대전", "tong", multipartFile2, MemberRole.USER);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            File file6 = new File("C:\\Users\\82109\\Desktop\\유나.jpg");
+            try (FileInputStream input = new FileInputStream(file6)) {
+                MockMultipartFile multipartFile2 = new MockMultipartFile("file6", file2.getName(), "image/jpeg", input);
+
+                // Call the signup method
+
+                memberService.signup("user6", "01012345678", "혀니", "1234", 0, "cake@test.com",
                         "남자", "고성", "양식", "대전", "tong", multipartFile2, MemberRole.USER);
 
             } catch (IOException e) {

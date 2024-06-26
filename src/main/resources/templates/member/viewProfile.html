@@ -9,7 +9,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            margin: 0;
+            margin: 10%;
             background-color: #f0f0f0;
             font-family: Arial, sans-serif;
         }
@@ -21,6 +21,7 @@
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             box-sizing: border-box;
+            display: none; /* 초기에는 숨김 */
         }
         h1 {
             text-align: center;
@@ -107,7 +108,7 @@
     </style>
 </head>
 <body>
-<div class="container">
+<div class="container" id="profileContainer">
     <div class="button-container">
         <button class="report-btn" onclick="reportMember()"><i class="fa-solid fa-triangle-exclamation"></i>&nbsp;신고</button>
         <button class="block-btn" onclick="blockMember()"><i class="fa-solid fa-user-lock"></i>&nbsp;차단</button>
@@ -201,21 +202,32 @@
     }
 
     function checkBlockedStatus() {
-        let nickname = document.querySelector('h1 span').textContent;
-        fetch(`/member/isBlocked?nickname=${nickname}`)
-            .then(response => response.json())
-            .then(data => {
-                if (data) {
-                    alert("차단된 사용자입니다. 프로필을 볼 수 없습니다.");
-                    window.location.href = "/"; // 메인 페이지로 리다이렉트
-                }
-            });
+    let nickname = document.querySelector('h1 span').textContent;
+    fetch(`/member/isBlocked?nickname=${nickname}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Network response was not ok");
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data) {
+                alert("차단된 사용자입니다. 프로필을 볼 수 없습니다.");
+                window.location.href = "/"; // 메인 페이지로 리다이렉트
+            } else {
+                document.querySelector('.container').style.display = 'block'; // 프로필 표시
+            }
+        })
+        .catch(error => {
+            console.error("There was a problem with the fetch operation:", error);
+        });
     }
 
-    window.onload = function() {
-        checkLogin();
-        checkBlockedStatus();
+        window.onload = function() {
+            checkLogin();
+            checkBlockedStatus();
     };
+
 </script>
 </body>
 </html>

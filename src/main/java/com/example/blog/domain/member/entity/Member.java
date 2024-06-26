@@ -124,6 +124,8 @@ public class Member {
     }
 
 
+
+
     public void getUsername(String username) {
         this.username = username;
     }
@@ -132,5 +134,29 @@ public class Member {
         this.resetToken = resetToken;
     }
     private String resetToken;
+
+    public String getMbti() {
+        return mbti;
+    }
+
+    public void setMbti(String mbti) {
+        this.mbti = mbti;
+    }
+
+    public String getSns() {
+        return sns;
+    }
+
+    public void setSns(String sns) {
+        this.sns = sns;
+    }
+
+    public String getFavoriteFood() {
+        return favoriteFood;
+    }
+
+    public void setFavoriteFood(String gender) {
+        this.gender = favoriteFood;
+    }
 }
 
