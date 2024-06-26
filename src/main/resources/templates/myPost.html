@@ -1,30 +1,146 @@
+<!DOCTYPE html>
 <html layout:decorate="~{layout}">
 <div layout:fragment="content" class="container my-3">
     <head>
         <title>My Posts</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
         <style>
+            body {
+                background-color: white;
+                color: #333;
+                margin: 0; /* 추가 */
+                padding: 0; /* 추가 */
+            }
+            .container {
+                background-color: white;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
             .profile-section {
-                 display: flex;
-                 align-items: center;
-                 margin-bottom: 20px;
-             }
-             .profile {
-                 display: flex;
-                 align-items: center;
-             }
-             .profile img {
-                 border-radius: 50%;
-                 margin-right: 20px;
-                 width: 100px;
-                 height: 100px;
-                 object-fit: cover;
-             }
-             .profile-info p {
-                 margin: 0;
-             }
+                display: flex;
+                align-items: center;
+                margin-bottom: 20px;
+                background-color: #FFF5DB;
+                padding: 10px;
+                border-radius: 10px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+            .profile {
+                display: flex;
+                align-items: center;
+            }
+            .profile img {
+                border-radius: 50%;
+                margin-right: 20px;
+                width: 100px;
+                height: 100px;
+                object-fit: cover;
+                border: 3px solid #FFCE45;
+            }
+            .profile-info h2, .profile-info p {
+                margin: 0;
+                color: #333;
+            }
+            .card {
+                background-color: white;
+                border: none;
+                border-radius: 10px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+            .card-body {
+                padding: 10px;
+            }
+            .card-title a {
+                color: #333;
+                text-decoration: none;
+            }
+            .card-title a:hover {
+                color: #F57C00;
+            }
+            .card-text {
+                color: #333;
+            }
+            .pagination .page-link {
+                color: #333;
+                background-color: #FFEBB0;
+                border: 1px solid #FFCE45;
+            }
+            .pagination .page-link:hover {
+                background-color: #FFD700;
+                color: #333;
+            }
+            .pagination .active .page-link {
+                background-color: #F57C00;
+                border-color: #F57C00;
+                color: #fff;
+            }
+            .btn-primary {
+                background-color: #F57C00;
+                border-color: #F57C00;
+            }
+            .btn-primary:hover {
+                background-color: #FFCE45;
+                border-color: #FFCE45;
+            }
+            header {
+                background-color: #FFCE45;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0 20px;
+                height: 60px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                width: 100%; /* 추가 */
+                position: fixed; /* 추가 */
+                top: 0; /* 추가 */
+                left: 0; /* 추가 */
+                z-index: 1000; /* 추가 */
+            }
+            header a {
+                color: #333;
+                text-decoration: none;
+                font-weight: bold;
+                font-size: 20px;
+            }
+            header .left, header .right {
+                display: flex;
+                align-items: center;
+            }
+            header .right a {
+                margin-left: 15px;
+                font-size: 16px;
+            }
+            .header-slider {
+                max-width: 100%;
+                height: auto;
+                margin: 20px auto;
+            }
+            .container {
+                margin-top: 80px; /* 헤더 높이만큼 추가 */
+            }
+             header .left img {
+        max-height: 50%;
+        max-width: 50%;
+        margin-top : 8px;
+        vertical-align: middle;
+        }
         </style>
     </head>
+    <header>
+        <div class="left">
+            <a href="/">
+                <img src="https://i.ibb.co/WgxZJc8/Kakao-Talk-20240625-180640065.png" alt="메인 로고"></a>
+        </div>
+        <div class="right">
+            <a class="nav-link" sec:authorize="isAnonymous()" href="/member/login">로그인</a>
+            <a class="nav-link" sec:authorize="isAuthenticated()" href="/member/logout" onclick="logout()">로그아웃</a>
+            <a sec:authorize="isAuthenticated()" href="/member/myPage">마이페이지</a>
+            <span sec:authorize="isAuthenticated()" id="username"></span>
+            <a sec:authorize="hasRole('ADMIN')" href="/admin/page">관리자 페이지</a>
+            <span sec:authorize="hasRole('ADMIN')" id="admin"></span>
+        </div>
+    </header>
     <body>
     <div class="container my-3">
         <h2>My Posts</h2>
@@ -91,4 +207,3 @@
     </body>
 </div>
 </html>
-
