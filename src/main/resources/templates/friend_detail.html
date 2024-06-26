@@ -10,7 +10,8 @@
 <body>
 <header>
     <div class="left">
-        <a href="/">밥먹다</a>
+        <a href="/">
+            <img src="https://i.ibb.co/WgxZJc8/Kakao-Talk-20240625-180640065.png" alt="메인 로고"></a>
     </div>
     <div class="right">
         <a class="nav-link" sec:authorize="isAnonymous()" href="/member/login">로그인</a>
@@ -22,7 +23,15 @@
     </div>
 </header>
 <!-- 맛집 게시물 -->
-<h2 class="border-bottom py-2" th:text="${friend.title}"></h2>
+<h5 class="mb-2">
+    <a th:href="@{|/post/memberPosts/${friend.author.nickname}|}" class="no-underline">
+                    <span class="icon-circle">
+                        <i class="fa-regular fa-user"></i>
+                    </span>
+        <span class="username" th:text="${friend.author.nickname}"></span>
+    </a>
+</h5>
+
 <div class="card my-3">
     <div class="card-body">
         <!-- 지도 표시 -->
@@ -30,15 +39,7 @@
         <script src="/js/friendsearchAddressdetail.js"></script>
     </div>
 
-    <!--        <h5 class="mb-2">-->
-    <!--            <a th:href="@{|/post/memberPosts/${friend.author.username}|}" class="no-underline">-->
-    <!--                            <span class="icon-circle">-->
-    <!--                                <i class="fa-regular fa-user"></i>-->
-    <!--                            </span>-->
-    <!--                <span class="username" th:text="${friend.author.username}"></span>-->
-    <!--            </a>-->
-    <!--        </h5>-->
-
+    <h2 class="border-bottom py-2" th:text="${friend.title}"></h2>
     <div class="date-time-container">
         <div>
             <label class="font-weight-bold">날짜:</label>
@@ -65,9 +66,6 @@
         <label class="font-weight-bold">현재 인원수:</label>
         <span id="current-participants" th:text="${friend.currentParticipants}"></span>
     </div>
-
-    <button class="btn btn-primary increment-btn" th:data-id="${friend.id}">같이먹기</button>
-    <script src="/js/currentParticipants.js"></script>
 
     <div class="d-flex justify-content-end">
         <div th:if="${friend.modifyDate != null}" class="badge bg-light text-dark p-2 text-start mx-3">
@@ -97,6 +95,10 @@
                 ><i class="fas fa-trash-alt fa-lg heart-icon"></i></a>
             </div>
         </div>
+
+        <button class="btn btn-primary increment-btn" th:data-id="${friend.id}">같이먹기</button>
+        <script src="/js/currentParticipants.js"></script>
+
     </div>
 </div>
 </body>

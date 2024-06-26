@@ -14,7 +14,7 @@ body {
 
 h2 {
     font-size: 24px;
-    color: #FF6F00;
+    color: #FFCE45;
 }
 
 .label {
@@ -94,8 +94,8 @@ h2 {
 }
 
 .btn-primary {
-    background-color: #FF6F00;
-    border-color: #FF6F00;
+    background-color: #FFCE45;
+    border-color: #FFCE45;
     color: white;
     cursor: pointer;
     display: block;
@@ -122,6 +122,7 @@ h2 {
     border-radius: 50%; /* Makes the container circular */
     font-size: 18px; /* Adjust icon size */
     margin-right: 5px; /* 아이콘과 유저 이름 사이 여백 설정 */
+    text-decoration: none;
 }
 .icon-circle i {
     color: #495057; /* Icon color */
@@ -129,6 +130,7 @@ h2 {
 .nickname {
     font-size: 0.8rem; /* 작은 텍스트 사이즈 */
     color: #555; /* 텍스트 색상 */
+    text-decoration: none;
 }
 .icon-circle:hover .nickname {
     color: #000; /* 마우스 오버 시 텍스트 색상 변경 */
@@ -168,14 +170,14 @@ h2 {
 /* Ensure icons inside buttons are centered */
 .button-gray i {
     vertical-align: middle;
-    font-size: 1.5em; /* Adjust the size as needed */
-    margin-top: 4px; /* Move the icon slightly down */
+    font-size: 1em; /* Adjust the size as needed */
+    margin-top: 5px; /* Move the icon slightly down */
 }
 
 /* Increase the size of the heart icon */
 .heart-icon {
-    font-size: 1.5em; /* Adjust the size as needed */
-    margin-right: 5px; /* Add space between the icon and the text */
+    font-size: 1em; /* Adjust the size as needed */
+    margin-right: 0.3px; /* Add space between the icon and the text */
 }
 
 /* Ensure badge is inline with icon */
@@ -189,8 +191,9 @@ h2 {
     gap: 7px;
     justify-content: flex-end;
 }
+
 header {
-    background-color: #FF6F00;
+    background-color: #FFCE45;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -211,6 +214,12 @@ header .left, header .right {
 header .right a {
     margin-left: 15px;
     font-size: 16px;
+}
+ header .left img {
+    max-height: 50%;
+    max-width: 50%;
+    margin-top : 5px;
+    vertical-align: middle;
 }
 .header-slider {
     max-width: 100%;
