@@ -77,3 +77,8 @@ spring:
       max-request-size: 10MB
 custom:
   fileDirPath: C:\work\thumbnail
+app:
+  base:
+    url: http://localhost:8010.com
+
+

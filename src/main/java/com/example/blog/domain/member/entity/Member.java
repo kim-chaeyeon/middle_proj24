@@ -124,6 +124,13 @@ public class Member {
     }
 
 
+    public void getUsername(String username) {
+        this.username = username;
+    }
 
+    public void setResetToken(String resetToken) { // 이 부분을 추가합니다.
+        this.resetToken = resetToken;
+    }
+    private String resetToken;
 }
 

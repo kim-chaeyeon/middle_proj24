@@ -35,4 +35,11 @@ public class EmailService {
         send(to, subject, bodyWithCode);
     }
 
+    public void sendPasswordResetEmail(String to, String resetLink) {
+        String subject = "비밀번호 재설정 안내";
+        String body = "비밀번호를 재설정하려면 아래 링크를 클릭하세요:<br><br>" +
+                "<a href=\"" + resetLink + "\">비밀번호 재설정</a><br><br>" +
+                "이 링크는 1시간 동안 유효합니다.";
+        send(to, subject, body);
+    }
 }
