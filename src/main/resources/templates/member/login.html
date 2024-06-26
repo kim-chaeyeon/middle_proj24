@@ -10,7 +10,7 @@
             justify-content: center;
             align-items: center;
             min-height: 100%;
-            margin: 10%;
+            margin: 2%;
             background-color: #f0f0f0;
         }
         .container {
@@ -150,8 +150,8 @@
         <button type="submit" class="btn">로그인</button>
         <p th:if="${param.error}" class="error-message">[아이디] 혹은 [비밀번호]를 확인해주세요.</p>
         <div class="link-container">
-            <a href="/find-id">아이디 찾기</a> |
-            <a href="/find-password">비밀번호 찾기</a> |
+            <a th:href="@{/member/find-username}">아이디 찾기</a> |
+            <a th:href="@{/member/request-reset}">비밀번호 찾기</a> |
             <a th:href="@{/member/signup}">회원가입</a>
         </div>
     </form>

@@ -43,7 +43,7 @@ public class Dev {
 
                 // Call the signup method
                 memberService.signup("user2", "01012345678", "예지", "1234", 25,
-                        "admin@test.com", "여자", "대전", "일식", "iiii", "holy", multipartFile1, MemberRole.USER);
+                        "coco@test.com", "여자", "대전", "일식", "iiii", "holy", multipartFile1, MemberRole.USER);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -54,7 +54,7 @@ public class Dev {
 
                 // Call the signup method
 
-                memberService.signup("user1", "01012345678", "유나", "1234", 0, "admin@test.com",
+                memberService.signup("user1", "01012345678", "유나", "1234", 0, "cake@test.com",
                         "남자", "고성", "양식", "대전", "tong", multipartFile2, MemberRole.USER);
 
             } catch (IOException e) {

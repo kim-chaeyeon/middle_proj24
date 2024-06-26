@@ -1,5 +1,6 @@
 package com.example.blog.domain.member.controller;
 
+import com.example.blog.DataNotFoundException;
 import com.example.blog.domain.block.service.BlockService;
 import com.example.blog.domain.email.EmailService;
 import com.example.blog.domain.member.entity.Member;
@@ -307,4 +308,91 @@ public class MemberController {
         boolean isBlocked = blockService.isBlocked(currentUsername, nickname);
         return ResponseEntity.ok(isBlocked);
     }
+
+
+    // 아이디 찾기 시작
+    @GetMapping("/find-username")
+    public String showFindUsernamePage(Model model) {
+        model.addAttribute("username", null); // 초기화: 아이디 결과 없음
+        model.addAttribute("error", null); // 초기화: 에러 메시지 없음
+        return "member/find-username"; // templates/user/find-username.html 경로에 파일이 있어야 함
+    }
+
+    // 아이디 찾기 기능 처리
+    @PostMapping("/find-username")
+    public String processFindUsername(@RequestParam("email") String email, Model model) {
+        try {
+            String username = memberService.findUsernameByEmail(email); // 이메일로 아이디 찾기
+            model.addAttribute("username", username); // 결과를 모델에 추가
+            model.addAttribute("error", null); // 에러 메시지 초기화
+        } catch (DataNotFoundException e) {
+            model.addAttribute("username", null); // 아이디 결과 초기화
+            model.addAttribute("error", "해당 이메일로 등록된 사용자가 없습니다."); // 에러 메시지 설정
+        }
+        return "member/find-username"; // 결과 표시 페이지로 이동
+    }
+
+    // 아이디 찾기 끝
+
+    // 인증 코드 요청 폼 표시
+    @GetMapping("/request-reset")
+    public String showRequestResetForm() {
+        return "member/request-reset";
+    }
+
+    // 인증 코드 요청 처리
+    @PostMapping("/request-reset")
+    public String sendVerificationCode(@RequestParam("username") String username,
+                                       @RequestParam("email") String email,
+                                       Model model) {
+        try {
+            String verificationCode = verificationCodeService.generateVerificationCode(email);
+            emailService.sendVerificationCode(email, "비밀번호 재설정 인증 코드", "비밀번호를 재설정하려면 다음 인증 코드를 입력하세요:", verificationCode);
+
+            model.addAttribute("username", username);
+            model.addAttribute("email", email);
+            model.addAttribute("message", "이메일로 인증 코드가 전송되었습니다.");
+            return "member/verify-reset"; // 인증 코드 입력 폼으로 리턴
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("error", e.getMessage());
+            return "member/request-reset"; // 에러 발생 시 다시 요청 폼으로 리턴
+        }
+    }
+
+    // 인증 코드 확인 및 비밀번호 재설정
+    @PostMapping("/verify-reset")
+    public String verifyReset(@RequestParam("username") String username,
+                              @RequestParam("email") String email,
+                              @RequestParam("verificationCode") String verificationCode,
+                              @RequestParam("newPassword") String newPassword,
+                              Model model) {
+        try {
+            if (verificationCodeService.verifyCode(email, verificationCode)) {
+                memberService.resetPassword(username, email, newPassword);
+                model.addAttribute("message", "비밀번호가 성공적으로 변경되었습니다.");
+                return "redirect:/member/login"; // 성공 시 로그인 페이지로 리다이렉트
+            } else {
+                model.addAttribute("error", "인증 코드가 일치하지 않습니다.");
+                model.addAttribute("username", username);
+                model.addAttribute("email", email);
+                return "member/verify-reset"; // 인증 코드 입력 폼으로 리턴
+            }
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("error", e.getMessage());
+            model.addAttribute("username", username);
+            model.addAttribute("email", email);
+            return "member/verify-reset"; // 에러 발생 시 다시 인증 코드 입력 폼으로 리턴
+        }
+    }
+
+    // 인증 코드 입력 폼 표시
+    @GetMapping("/verify-reset")
+    public String showVerifyResetForm(@RequestParam("username") String username,
+                                      @RequestParam("email") String email,
+                                      Model model) {
+        model.addAttribute("username", username);
+        model.addAttribute("email", email);
+        return "member/verify-reset";
+    }
+
 }

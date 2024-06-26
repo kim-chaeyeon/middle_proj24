@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>비밀번호 재설정 확인</title>
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+    .container {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        width: 300px;
+    }
+    h2 {
+        color: #333;
+        margin-bottom: 20px;
+    }
+     h4 {
+        color: red;
+        margin-bottom: 20px;
+    }
+    form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    label {
+        margin-bottom: 10px;
+        color: #666;
+    }
+    input[type=text], input[type=password] {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+    button[type=submit] {
+        background-color: gray;
+        color: black;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        margin-top: 10px; /* 버튼과 다음 요소 사이 여백 추가 */
+    }
+    button[type=submit]:hover {
+        background-color: yellow;
+    }
+    .error {
+        color: red;
+        margin-top: 10px;
+    }
+    .success {
+        color: green;
+        margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <h2>비밀번호 재설정 확인</h2>
+  <h4>회원가입 이메일, 인증코드가 일치하지 않으면 재설정이 진행되지 않습니다.</h4>
+  <!-- 인증 코드 입력 폼 -->
+  <form action="/member/verify-reset" method="post">
+    <input type="hidden" id="username" name="username" th:value="${username}" required>
+    <input type="hidden" id="email" name="email" th:value="${email}" required>
+    <br>
+    <label for="verificationCode">인증 코드</label>
+    <input type="text" id="verificationCode" name="verificationCode" required>
+    <br>
+    <label for="newPassword">새 비밀번호</label>
+    <input type="password" id="newPassword" name="newPassword" required>
+    <br>
+    <button type="submit">비밀번호 재설정</button>
+  </form>
+
+  <!-- 에러 또는 성공 메시지 표시 -->
+  <div th:if="${error}" class="error">오류: <span th:text="${error}"></span></div>
+  <div th:if="${message}" class="success">성공: <span th:text="${message}"></span></div>
+
+</div>
+</body>
+</html>
