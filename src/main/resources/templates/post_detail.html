@@ -46,33 +46,30 @@
             <div class="card-text" th:utext="${@commonUtil.markdown(post.content)}"></div>
             <!-- 작성자 정보 -->
             <div class="mb-3">
-                <strong>작성자:</strong> <span th:text="${post.author.nickname}"></span> <br>
+                <strong>작성자:</strong> <a th:href="@{|/post/memberPosts/${post.author.nickname}|}" class="no-underline"> <span th:text="${post.author.nickname}" class="text"></span></a> <br>
                 <strong>지역:</strong> <span th:text="${post.author.region}"></span>
             </div>
             <!-- 추천 버튼과 작성일자 -->
-            <div class="d-flex justify-content-between">
-                <div class="button-container">
-                    <a onclick="return confirm('추천하시겠습니까?');" th:href="@{|/post/vote/${post.id}|}" class="button-gray">
+            <div class="badge bg-light text-dark p-2 text-start">
+                <div class="my-3 button-container">
+                    <a onclick="return confirm('추천하시겠습니까?');" th:href="@{|/post/vote/${post.id}|}" class="btn btn-sm btn-outline-secondary button-gray">
                         <i class="far fa-heart fa-lg heart-icon"></i>
                         <span th:text="${#lists.size(post.voters)}"></span>
                     </a>
                     <a th:href="@{|/post/modify/${post.id}|}"
                        sec:authorize="isAuthenticated()"
                        th:if="${post.author != null and #authentication.getPrincipal().getUsername() == post.author.username}"
-                       class="button-gray">
+                       class="btn btn-sm btn-outline-secondary button-gray">
                         <i class="far fa-edit fa-lg"></i>
                     </a>
                     <a onclick="return confirm('정말로 삭제하시겠습니까?');" th:href="@{|/post/delete/${post.id}|}"
                        sec:authorize="isAuthenticated()"
                        th:if="${post.author != null and (#authentication.getPrincipal().getUsername() == post.author.username or #authentication.getPrincipal().getAuthorities().contains(new org.springframework.security.core.authority.SimpleGrantedAuthority('ROLE_ADMIN')))}"
-                       class="button-gray">
+                       class="btn btn-sm btn-outline-secondary button-gray">
                         <i class="fas fa-trash-alt fa-lg"></i>
                     </a>
-
-                    <div class="createDate">
-                        <div th:text="${#temporals.format(post.createDate, 'yyyy-MM-dd HH:mm')}" class="text-left"></div>
-                    </div>
                 </div>
+                <div class="createDate" th:text="${#temporals.format(post.createDate, 'yyyy-MM-dd HH:mm')}"></div>
             </div>
         </div>
     </div>

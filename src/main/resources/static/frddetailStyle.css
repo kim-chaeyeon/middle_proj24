@@ -14,7 +14,7 @@ body {
 
 h2 {
     font-size: 24px;
-    color: #FF6F00;
+    color: #FFCE45;
 }
 
 .font-weight-bold {
@@ -48,8 +48,8 @@ h2 {
 }
 
 .btn-primary {
-    background-color: #FF6F00;
-    border-color: #FF6F00;
+    background-color: #FFCE45;
+    border-color: #FFCE45;
     color: white;
     cursor: pointer;
     display: block;

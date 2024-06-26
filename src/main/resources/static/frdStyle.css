@@ -129,13 +129,13 @@ body {
 
 .pagination .page-item.active .page-link {
     color: #fff; /* 흰색 */
-    background-color: #f57c00; /* 주황색 */
+    background-color: #FFCE45; /* 주황색 */
     border: none;
 }
 
 .pagination .page-link:hover {
     color: #fff; /* 흰색 */
-    background-color: #e65100; /* 진한 주황색 */
+    background-color: #FFCE45; /* 진한 주황색 */
     border: none;
 }
 
