@@ -183,16 +183,60 @@
             flex-shrink: 0;
             margin-left: 5px;
         }
+        header {
+            background-color: #FFCE45;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            height: 60px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        header a {
+            color: #333;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 20px;
+        }
+        header .left, header .right {
+            display: flex;
+            align-items: center;
+        }
+        header .right a {
+            margin-left: 15px;
+            font-size: 16px;
+        }
+         header .left img {
+            max-height: 50%;
+            max-width: 50%;
+            margin-top : 5px;
+            vertical-align: middle;
+        }
+        .header-slider {
+            max-width: 100%;
+            height: auto;
+            margin: 20px auto;
+        }
     </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg" style="background-color: #FFCE45;">
-    <a class="navbar-brand" href="/" style="color: #333;">밥.먹.다</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon" style="color: #333;"></span>
-    </button>
-    <a href="javascript:history.back()" class="main-btn">채팅방 목록</a>
-</nav>
+<header>
+    <div class="left">
+        <a href="/">
+            <img src="https://i.ibb.co/WgxZJc8/Kakao-Talk-20240625-180640065.png" alt="메인 로고"></a>
+    </div>
+    <div class="right">
+        <a class="nav-link" sec:authorize="isAnonymous()" href="/member/login">로그인</a>
+        <a class="nav-link" sec:authorize="isAuthenticated()" href="/member/logout" onclick="logout()">로그아웃</a>
+        <a sec:authorize="isAuthenticated()" href="/member/myPage">마이페이지</a>
+        <span sec:authorize="isAuthenticated()" id="username"></span>
+        <a sec:authorize="hasRole('ADMIN')" href="/admin/page">관리자 페이지</a>
+        <span sec:authorize="hasRole('ADMIN')" id="admin"></span>
+        <a href="javascript:history.back()" class="main-btn">채팅방 목록</a>
+    </div>
+</header>
+
+
 <div class="container-fluid" id="app" v-cloak>
     <div class="wrap">
         <div class="chat-container">
